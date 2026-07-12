@@ -15,11 +15,15 @@ public class HeroController : MonoBehaviour
     private Rigidbody2D rb;
 
     private IInputService inputService;
+    private ITimeService timeService;
+
+    private float speed;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         inputService = ServiceLocator.GetService<IInputService>();
+        timeService = ServiceLocator.GetService<ITimeService>();
     }
 
     // Update is called once per frame
@@ -34,12 +38,72 @@ public class HeroController : MonoBehaviour
     {
         float horizontalInput = inputService.MoveAxis.x;
 
-        rb.linearVelocityX = horizontalInput * heroConfig.HeroData.MovementSpeed * Time.deltaTime;
+        if (horizontalInput != 0)
+        {
+            PositionSprite(horizontalInput);
+
+            speed = heroConfig.HeroData.MovementSpeed;
+            SetLinearVelocityY(horizontalInput, speed);
+
+            SetAnimationWalk();
+
+            if (inputService.IsRunning)
+            {
+                speed = heroConfig.HeroData.MovementSpeed * heroConfig.HeroData.RunSpeedCoefficient;
+                SetLinearVelocityY(horizontalInput, speed);
+
+                SetAnimationRun();
+            }
+        }
+        else
+        {
+            //recompile
+            SetAnimationIdle();
+        }
 
         if (inputService.IsJumping == true)
         {
-            float verticalInput = inputService.MoveAxis.y;
-            rb.linearVelocityY = heroConfig.HeroData.JumpForce;
+            Jump();
         }
+    }
+
+    private void PositionSprite(float horizontalInput)
+    {
+        if (horizontalInput > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if (horizontalInput < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
+    }
+
+    private void SetLinearVelocityY(float horizontalInput, float speed)
+    {
+        rb.linearVelocityX = horizontalInput * speed * timeService.DeltaTime;
+    }
+
+    private void Jump()
+    {
+        rb.linearVelocityY = heroConfig.HeroData.JumpForce;
+    }
+
+    private void SetAnimationWalk()
+    {
+        animator.SetBool("isWalking", true);
+        animator.SetBool("isRunning", false);
+    }
+
+    private void SetAnimationRun()
+    {
+        animator.SetBool("isRunning", true);
+        animator.SetBool("isWalking", false);
+    }
+
+    private void SetAnimationIdle()
+    {
+        animator.SetBool("isRunning", false);
+        animator.SetBool("isWalking", false);
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class HeroData
 {
     public float MovementSpeed;
+    public float RunSpeedCoefficient;
 
     public float JumpForce;
 }

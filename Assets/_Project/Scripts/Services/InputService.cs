@@ -23,4 +23,13 @@ public class InputService : IInputService
             return isJumpKeyDown;
         }
     }
+
+    public bool IsRunning
+    {
+        get
+        {
+            bool isRunKeyDown = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+            return isRunKeyDown;
+        }
+    }
 }
