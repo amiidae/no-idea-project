@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: HeroConfig
   m_EditorClassIdentifier: 
   HeroData:
-    MovementSpeed: 50
-    RunSpeedCoefficient: 2.5
+    MovementSpeed: 5
+    runSpeedCoefficient: 2.5
     JumpForce: 5

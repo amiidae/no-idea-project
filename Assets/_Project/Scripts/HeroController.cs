@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class HeroController : MonoBehaviour
 {
@@ -15,56 +17,84 @@ public class HeroController : MonoBehaviour
     private Rigidbody2D rb;
 
     private IInputService inputService;
-    private ITimeService timeService;
+    private IPhysics2DService physics2DService;
 
-    private float speed;
+    private float horizontalInput;
+    private float currentSpeed;
+
+    private bool isJumpInputReceived;
+    private bool isRunInputReceived;
+
+    private bool isGrounded;
+
+    private int hashedAnimatorParameter_LinearVelocityY = Animator.StringToHash("LinearVelocityY");
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = isGrounded ? Color.green : Color.red;
+        Gizmos.DrawSphere(gameObject.transform.position, 0.25f);
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        inputService = ServiceLocator.GetService<IInputService>();
-        timeService = ServiceLocator.GetService<ITimeService>();
+        InitializeServices();
     }
 
     // Update is called once per frame
-    void Update() { }
+    void Update()
+    {
+        UpdateInputs();
+        UpdateCurrentSpeed();
+        UpdateMovementAnimation();
+
+        PositionSprite(horizontalInput);
+    }
 
     void FixedUpdate()
     {
-        MovePlayer();
+        GroundCheck();
+        PhysicalMovement();
     }
 
-    private void MovePlayer()
+    private void InitializeServices()
     {
-        float horizontalInput = inputService.MoveAxis.x;
+        inputService = ServiceLocator.GetService<IInputService>();
+        physics2DService = ServiceLocator.GetService<IPhysics2DService>();
+    }
 
+    private void UpdateInputs()
+    {
+        horizontalInput = inputService.MoveAxis.x;
+
+        isJumpInputReceived = isJumpInputReceived ? true : inputService.IsJumpInputReceived;
+        isRunInputReceived = isRunInputReceived ? true : inputService.IsRunInputReceived;
+    }
+
+    private void UpdateCurrentSpeed()
+    {
         if (horizontalInput != 0)
         {
-            PositionSprite(horizontalInput);
+            currentSpeed = heroConfig.HeroData.MovementSpeed;
 
-            speed = heroConfig.HeroData.MovementSpeed;
-            SetLinearVelocityY(horizontalInput, speed);
-
-            SetAnimationWalk();
-
-            if (inputService.IsRunning)
+            if (isRunInputReceived == true)
             {
-                speed = heroConfig.HeroData.MovementSpeed * heroConfig.HeroData.RunSpeedCoefficient;
-                SetLinearVelocityY(horizontalInput, speed);
-
-                SetAnimationRun();
+                currentSpeed = heroConfig.HeroData.RunSpeed;
             }
         }
         else
         {
-            //recompile
-            SetAnimationIdle();
+            currentSpeed = 0f;
         }
+    }
 
-        if (inputService.IsJumping == true)
-        {
-            Jump();
-        }
+    private void UpdateMovementAnimation()
+    {
+        // magic of math states that this should
+        // normalize currentSpeed to contain itself in the range from 0 to 1
+        float value = currentSpeed / heroConfig.HeroData.RunSpeed;
+
+        animator.SetFloat(hashedAnimatorParameter_LinearVelocityY, value);
     }
 
     private void PositionSprite(float horizontalInput)
@@ -79,31 +109,51 @@ public class HeroController : MonoBehaviour
         }
     }
 
+    private void GroundCheck()
+    {
+        Collider2D playersCollision = physics2DService.OverlapCircle(
+            gameObject.transform.position,
+            0.25f,
+            1 << 7
+        );
+        if (playersCollision != null)
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+    }
+
+    private void PhysicalMovement()
+    {
+        if (isRunInputReceived)
+        {
+            ConsumeInput(ref isRunInputReceived);
+        }
+
+        SetLinearVelocityY(horizontalInput, currentSpeed);
+
+        if (isJumpInputReceived == true)
+        {
+            ConsumeInput(ref isJumpInputReceived);
+            Jump();
+        }
+
+        void Jump()
+        {
+            rb.linearVelocityY = heroConfig.HeroData.JumpForce;
+        }
+    }
+
     private void SetLinearVelocityY(float horizontalInput, float speed)
     {
-        rb.linearVelocityX = horizontalInput * speed * timeService.DeltaTime;
+        rb.linearVelocityX = horizontalInput * speed;
     }
 
-    private void Jump()
+    private void ConsumeInput<T>(ref T input)
     {
-        rb.linearVelocityY = heroConfig.HeroData.JumpForce;
-    }
-
-    private void SetAnimationWalk()
-    {
-        animator.SetBool("isWalking", true);
-        animator.SetBool("isRunning", false);
-    }
-
-    private void SetAnimationRun()
-    {
-        animator.SetBool("isRunning", true);
-        animator.SetBool("isWalking", false);
-    }
-
-    private void SetAnimationIdle()
-    {
-        animator.SetBool("isRunning", false);
-        animator.SetBool("isWalking", false);
+        input = default;
     }
 }

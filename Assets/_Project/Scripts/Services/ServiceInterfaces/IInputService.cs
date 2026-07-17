@@ -4,6 +4,6 @@ public interface IInputService
 {
     public Vector2 MoveAxis { get; }
 
-    public bool IsJumping { get; }
-    public bool IsRunning { get; }
+    public bool IsJumpInputReceived { get; }
+    public bool IsRunInputReceived { get; }
 }

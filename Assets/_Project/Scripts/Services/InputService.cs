@@ -15,7 +15,7 @@ public class InputService : IInputService
         }
     }
 
-    public bool IsJumping
+    public bool IsJumpInputReceived
     {
         get
         {
@@ -24,7 +24,7 @@ public class InputService : IInputService
         }
     }
 
-    public bool IsRunning
+    public bool IsRunInputReceived
     {
         get
         {

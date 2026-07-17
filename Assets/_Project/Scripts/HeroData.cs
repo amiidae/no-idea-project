@@ -5,7 +5,17 @@ using UnityEngine;
 public class HeroData
 {
     public float MovementSpeed;
-    public float RunSpeedCoefficient;
+    public float RunSpeed
+    {
+        get
+        {
+            float runSpeed = MovementSpeed * runSpeedCoefficient;
+            return runSpeed;
+        }
+    }
+
+    [SerializeField]
+    private float runSpeedCoefficient;
 
     public float JumpForce;
 }

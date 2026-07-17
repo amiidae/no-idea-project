@@ -7,7 +7,7 @@ public class EntryPoint : MonoBehaviour
         IInputService inputService = new InputService();
         ServiceLocator.RegisterService<IInputService>(inputService);
 
-        ITimeService timeService = new TimeService();
-        ServiceLocator.RegisterService<ITimeService>(timeService);
+        IPhysics2DService physics2DService = new Physics2DService();
+        ServiceLocator.RegisterService<IPhysics2DService>(physics2DService);
     }
 }
