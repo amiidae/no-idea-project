@@ -5,9 +5,6 @@ using UnityEngine.PlayerLoop;
 public class HeroController : MonoBehaviour
 {
     [SerializeField]
-    private HeroConfig heroConfig;
-
-    [SerializeField]
     private SpriteRenderer spriteRenderer;
 
     [SerializeField]
@@ -18,6 +15,7 @@ public class HeroController : MonoBehaviour
 
     private IInputService inputService;
     private IPhysics2DService physics2DService;
+    private IHeroDataRepository heroDataRepository;
 
     private float horizontalInput;
     private float currentSpeed;
@@ -61,6 +59,7 @@ public class HeroController : MonoBehaviour
     {
         inputService = ServiceLocator.GetService<IInputService>();
         physics2DService = ServiceLocator.GetService<IPhysics2DService>();
+        heroDataRepository = ServiceLocator.GetService<IHeroDataRepository>();
     }
 
     private void UpdateInputs()
@@ -75,11 +74,11 @@ public class HeroController : MonoBehaviour
     {
         if (horizontalInput != 0)
         {
-            currentSpeed = heroConfig.HeroData.MovementSpeed;
+            currentSpeed = heroDataRepository.Data.MovementSpeed;
 
             if (isRunInputReceived == true)
             {
-                currentSpeed = heroConfig.HeroData.RunSpeed;
+                currentSpeed = heroDataRepository.Data.RunSpeed;
             }
         }
         else
@@ -92,7 +91,20 @@ public class HeroController : MonoBehaviour
     {
         // magic of math states that this should
         // normalize currentSpeed to contain itself in the range from 0 to 1
-        float value = currentSpeed / heroConfig.HeroData.RunSpeed;
+        float value;
+
+        if (currentSpeed == 0)
+        {
+            value = 0f;
+        }
+        else if (currentSpeed == heroDataRepository.Data.MovementSpeed)
+        {
+            value = 0.5f;
+        }
+        else
+        {
+            value = 1f;
+        }
 
         animator.SetFloat(hashedAnimatorParameter_LinearVelocityY, value);
     }
@@ -143,7 +155,7 @@ public class HeroController : MonoBehaviour
 
         void Jump()
         {
-            rb.linearVelocityY = heroConfig.HeroData.JumpForce;
+            rb.linearVelocityY = heroDataRepository.Data.JumpForce;
         }
     }
 

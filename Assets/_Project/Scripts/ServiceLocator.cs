@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public static class ServiceLocator
 {
@@ -13,6 +15,17 @@ public static class ServiceLocator
     public static T GetService<T>()
     {
         return (T)services[typeof(T)];
+    }
+
+    public static List<T> GetServices<T>()
+    {
+        List<T> serviceList = Enumerable.ToList<T>(
+            services
+                .Where((keyValue) => typeof(T).IsAssignableFrom(keyValue.Key))
+                .Select((keyValue) => (T)keyValue.Value)
+        );
+
+        return serviceList;
     }
 
     public static bool TryGetService<T>(out T service)
