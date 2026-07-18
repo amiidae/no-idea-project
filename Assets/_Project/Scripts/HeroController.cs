@@ -2,13 +2,55 @@ using System;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
+// LocomotionState
+// Idle: Idle, Walk, Run, Fall  IdleStateMachine 
+// Action: Hit, SpecialAttack, Jump ActionStateMachine
+// Reaction: HitStun
+
+public abstract class HeroState
+{
+    public abstract HeroState GetState();
+}
+
+public class IdleState : HeroState
+{
+    
+    public override HeroState GetState()
+    {
+        return null;
+    }
+}
+
+public class WalkState : HeroState
+{
+    public bool CanEnter
+    {
+        get
+        {
+            return Input.GetAxisRaw("Horizontal") != 0;
+        }
+    }
+    
+    public override HeroState GetState()
+    {
+        return null;
+    }
+}
+
+
 public class HeroController : MonoBehaviour
 {
+    [field: SerializeField] public Animator Animator { get; private set; }
+
+   
+
+    [SerializeField] private float _foo;
+    
     [SerializeField]
     private SpriteRenderer spriteRenderer;
 
-    [SerializeField]
-    private Animator animator;
+    //[SerializeField]
+    //private Animator animator;
 
     [SerializeField]
     private Rigidbody2D rb;
@@ -106,7 +148,7 @@ public class HeroController : MonoBehaviour
             value = 1f;
         }
 
-        animator.SetFloat(hashedAnimatorParameter_LinearVelocityY, value);
+        Animator.SetFloat(hashedAnimatorParameter_LinearVelocityY, value);
     }
 
     private void PositionSprite(float horizontalInput)
