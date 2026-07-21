@@ -1,4 +1,4 @@
-public interface IDataService<T>
+public interface IDataService : IInitializableService
 {
-    public T Data { get; }
+    public HeroData HeroData { get; }
 }

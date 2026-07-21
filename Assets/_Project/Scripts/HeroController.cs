@@ -1,35 +1,18 @@
 using System;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 public class HeroController : MonoBehaviour
 {
-    [SerializeField]
-    private SpriteRenderer spriteRenderer;
-
-    [SerializeField]
-    private Animator animator;
-
-    [SerializeField]
-    private Rigidbody2D rb;
+    [field: SerializeField]
+    public HeroContext HeroContext { get; private set; }
 
     private IInputService inputService;
     private IPhysics2DService physics2DService;
-    private IHeroDataRepository heroDataRepository;
-
-    private float horizontalInput;
-    private float currentSpeed;
-
-    private bool isJumpInputReceived;
-    private bool isRunInputReceived;
-
-    private bool isGrounded;
-
-    private int hashedAnimatorParameter_LinearVelocityY = Animator.StringToHash("LinearVelocityY");
+    private IDataService DataRepository;
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = isGrounded ? Color.green : Color.red;
+        Gizmos.color = HeroContext.IsGrounded ? Color.green : Color.red;
         Gizmos.DrawSphere(gameObject.transform.position, 0.25f);
     }
 
@@ -44,9 +27,9 @@ public class HeroController : MonoBehaviour
     {
         UpdateInputs();
         UpdateCurrentSpeed();
-        UpdateMovementAnimation();
+        // UpdateMovementAnimation();
 
-        PositionSprite(horizontalInput);
+        PositionSprite(HeroContext.HorizontalInput);
     }
 
     void FixedUpdate()
@@ -59,45 +42,49 @@ public class HeroController : MonoBehaviour
     {
         inputService = ServiceLocator.GetService<IInputService>();
         physics2DService = ServiceLocator.GetService<IPhysics2DService>();
-        heroDataRepository = ServiceLocator.GetService<IHeroDataRepository>();
+        DataRepository = ServiceLocator.GetService<IDataService>();
     }
 
     private void UpdateInputs()
     {
-        horizontalInput = inputService.MoveAxis.x;
+        HeroContext.HorizontalInput = inputService.MoveAxis.x;
 
-        isJumpInputReceived = isJumpInputReceived ? true : inputService.IsJumpInputReceived;
-        isRunInputReceived = isRunInputReceived ? true : inputService.IsRunInputReceived;
+        HeroContext.IsJumpInputReceived = HeroContext.IsJumpInputReceived
+            ? true
+            : inputService.IsJumpInputReceived;
+        HeroContext.IsRunInputReceived = HeroContext.IsRunInputReceived
+            ? true
+            : inputService.IsRunInputReceived;
     }
 
     private void UpdateCurrentSpeed()
     {
-        if (horizontalInput != 0)
+        if (HeroContext.HorizontalInput != 0)
         {
-            currentSpeed = heroDataRepository.Data.MovementSpeed;
+            HeroContext.CurrentSpeed = DataRepository.HeroData.MovementSpeed;
 
-            if (isRunInputReceived == true)
+            if (HeroContext.IsRunInputReceived == true)
             {
-                currentSpeed = heroDataRepository.Data.RunSpeed;
+                HeroContext.CurrentSpeed = DataRepository.HeroData.RunSpeed;
             }
         }
         else
         {
-            currentSpeed = 0f;
+            HeroContext.CurrentSpeed = 0f;
         }
     }
 
     private void UpdateMovementAnimation()
     {
         // magic of math states that this should
-        // normalize currentSpeed to contain itself in the range from 0 to 1
+        // normalize HeroContext.CurrentSpeed to contain itself in the range from 0 to 1
         float value;
 
-        if (currentSpeed == 0)
+        if (HeroContext.CurrentSpeed == 0)
         {
             value = 0f;
         }
-        else if (currentSpeed == heroDataRepository.Data.MovementSpeed)
+        else if (HeroContext.CurrentSpeed == DataRepository.HeroData.MovementSpeed)
         {
             value = 0.5f;
         }
@@ -106,18 +93,18 @@ public class HeroController : MonoBehaviour
             value = 1f;
         }
 
-        animator.SetFloat(hashedAnimatorParameter_LinearVelocityY, value);
+        HeroContext.Animator.SetFloat(HeroContext.HashedAnimatorParameter_LinearVelocityY, value);
     }
 
     private void PositionSprite(float horizontalInput)
     {
-        if (horizontalInput > 0)
+        if (HeroContext.HorizontalInput > 0)
         {
-            spriteRenderer.flipX = false;
+            HeroContext.SpriteRenderer.flipX = false;
         }
-        else if (horizontalInput < 0)
+        else if (HeroContext.HorizontalInput < 0)
         {
-            spriteRenderer.flipX = true;
+            HeroContext.SpriteRenderer.flipX = true;
         }
     }
 
@@ -130,38 +117,38 @@ public class HeroController : MonoBehaviour
         );
         if (playersCollision != null)
         {
-            isGrounded = true;
+            HeroContext.IsGrounded = true;
         }
         else
         {
-            isGrounded = false;
+            HeroContext.IsGrounded = false;
         }
     }
 
     private void PhysicalMovement()
     {
-        if (isRunInputReceived)
+        if (HeroContext.IsRunInputReceived)
         {
-            ConsumeInput(ref isRunInputReceived);
+            ConsumeInput(ref HeroContext.IsRunInputReceived);
         }
 
-        SetLinearVelocityY(horizontalInput, currentSpeed);
+        SetLinearVelocityY(HeroContext.HorizontalInput, HeroContext.CurrentSpeed);
 
-        if (isJumpInputReceived == true)
+        if (HeroContext.IsJumpInputReceived == true)
         {
-            ConsumeInput(ref isJumpInputReceived);
+            ConsumeInput(ref HeroContext.IsJumpInputReceived);
             Jump();
         }
 
         void Jump()
         {
-            rb.linearVelocityY = heroDataRepository.Data.JumpForce;
+            HeroContext.Rb.linearVelocityY = DataRepository.HeroData.JumpForce;
         }
     }
 
     private void SetLinearVelocityY(float horizontalInput, float speed)
     {
-        rb.linearVelocityX = horizontalInput * speed;
+        HeroContext.Rb.linearVelocityX = HeroContext.HorizontalInput * speed;
     }
 
     private void ConsumeInput<T>(ref T input)

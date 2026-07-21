@@ -19,13 +19,13 @@ public static class ServiceLocator
 
     public static List<T> GetServices<T>()
     {
-        List<T> serviceList = Enumerable.ToList<T>(
-            services
-                .Where((keyValue) => typeof(T).IsAssignableFrom(keyValue.Key))
-                .Select((keyValue) => (T)keyValue.Value)
-        );
+        // List<T> serviceList = Enumerable.ToList<T>(
+        //     services
+        //         .Where((keyValue) => typeof(T).IsAssignableFrom(keyValue.Key))
+        //         .Select((keyValue) => (T)keyValue.Value)
+        // );
 
-        return serviceList;
+        return services.Values.OfType<T>().ToList<T>();
     }
 
     public static bool TryGetService<T>(out T service)

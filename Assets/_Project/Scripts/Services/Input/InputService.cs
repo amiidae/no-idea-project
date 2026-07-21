@@ -6,6 +6,8 @@ public class InputService : IInputService
     {
         get
         {
+            // logical inconsistency
+            // need to lose the y input
             float horizontalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");
 
@@ -13,6 +15,11 @@ public class InputService : IInputService
 
             return inputVector;
         }
+    }
+
+    public bool IsMoveInputReceived
+    {
+        get { return MoveAxis.x > 0; }
     }
 
     public bool IsJumpInputReceived
