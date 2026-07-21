@@ -17,5 +17,11 @@ public class HeroData
     [SerializeField]
     private float runSpeedCoefficient;
 
-    public float JumpForce;
+
+    public float JumpHeight;
+
+
+    public float WalkSmoothing;
+    public float RunSmoothing;
+    public float AirSmoothing;
 }

@@ -15,3 +15,21 @@ public class HeroDataRepository : IHeroDataRepository
         Data = heroConfig.HeroData;
     }
 }
+
+
+public class HeroDataServerRepository : IHeroDataRepository
+{
+    public HeroData Data
+    {
+        get; private set;
+    }
+    public void Initialize()
+    {
+        Data = GetFromServer();
+    }
+
+    private HeroData GetFromServer()
+    {
+        throw new System.NotImplementedException();
+    }
+}

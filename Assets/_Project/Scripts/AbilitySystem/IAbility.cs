@@ -8,30 +8,45 @@
     
     public interface IAbility
     {
-        // 
-        bool IsTriggered(); 
+        void Init();
 
-        // 
+        bool IsTriggered();
+
         bool CanBeUsed();
         
-        // 
-        void OnUse();
+        bool CanComplete();
+
+        void Use();
         
-        AbilityStatus OnPerform();
-        
-        void OnComplete();
+        void Tick();
+
+        void FixedTick();
+
+        void Complete();
+
+        void Destroy();
     }
 
     public abstract class Ability : IAbility
     {
+        public virtual bool IsComplete => false;
+        
+        public virtual void Init() { }
+
         public virtual bool IsTriggered() => false;
 
         public virtual bool CanBeUsed() => true;
+        
+        public virtual bool CanComplete() => false;
 
-        public virtual void OnUse() { }
+        public virtual void Use() { }
+        
+        public virtual void Tick() { }
 
-        public virtual AbilityStatus OnPerform() => AbilityStatus.Completed;
+        public virtual void FixedTick() { }
 
-        public virtual void OnComplete() { }
+        public virtual void Complete() { }
+
+        public virtual void Destroy() { }
     }
 }

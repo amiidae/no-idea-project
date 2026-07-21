@@ -30,6 +30,5 @@ public class EntryPoint : MonoBehaviour
         {
             initializableService.Initialize();
         }
-        { }
     }
 }

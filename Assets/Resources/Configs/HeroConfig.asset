@@ -15,4 +15,7 @@ MonoBehaviour:
   HeroData:
     MovementSpeed: 5
     runSpeedCoefficient: 2.5
-    JumpForce: 5
+    JumpHeight: 3
+    WalkSmoothing: 0
+    RunSmoothing: 0.15
+    AirSmoothing: 0.3

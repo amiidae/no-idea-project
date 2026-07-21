@@ -1,26 +1,27 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace _Project.Scripts.AbilitySystem
 {
-    public class IdleAbility : Ability
+    public class IdleAbility : LocomotionAbility
     {
-        private IInputService _inputService;
-        private HeroController _heroController;
-
-        public IdleAbility(HeroController heroController, IInputService inputService)
+        public IdleAbility(AbilityUser abilityUser, IInputService inputService)
+            : base(abilityUser, inputService)
         {
-            _heroController = heroController;
-            _inputService = inputService;
         }
-        
+
         public override bool IsTriggered()
         {
             return _inputService.MoveAxis.x == 0;
         }
 
-        public override void OnUse()
+        public override void Use()
         {
             _heroController.Animator.Play("Idle");
+        }
+
+        public override void FixedTick()
+        {
+            _heroController.Move(0f, 0f, 0f);
         }
     }
 }

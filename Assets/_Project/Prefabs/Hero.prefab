@@ -122,6 +122,8 @@ GameObject:
   - component: {fileID: 725275484281500931}
   - component: {fileID: 6845752984891367293}
   - component: {fileID: 5407588135443703117}
+  - component: {fileID: 2464336737047606956}
+  - component: {fileID: 8954484564853811236}
   m_Layer: 0
   m_Name: Hero
   m_TagString: Player
@@ -171,7 +173,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &6845752984891367293
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -230,7 +232,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bff132496c6fe5940bfda884e2ae08ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heroConfig: {fileID: 11400000, guid: 03145f210a4365d4ab3bdae591961528, type: 2}
+  <Animator>k__BackingField: {fileID: 886367470124809660}
   spriteRenderer: {fileID: 1537745906251605907}
-  animator: {fileID: 886367470124809660}
   rb: {fileID: 725275484281500931}
+--- !u!114 &2464336737047606956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8027582293499904200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8eacce32f3741fe8a25af40bf157976, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _heroController: {fileID: 5407588135443703117}
+--- !u!114 &8954484564853811236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8027582293499904200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8eacce32f3741fe8a25af40bf157976, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _heroController: {fileID: 5407588135443703117}
