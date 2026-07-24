@@ -6292,31 +6292,29 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hero
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5407588135443703117, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8027582293499904200, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2854902444382225615}
+      addedObject: {fileID: 2854902444382225619}
+    - targetCorrespondingSourceObject: {fileID: 8027582293499904200, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2854902444382225618}
   m_SourcePrefab: {fileID: 100100000, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
 --- !u!4 &2854902444382225611 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3692434697990013234, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
   m_PrefabInstance: {fileID: 2854902444382225610}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2854902444382225612 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5407588135443703117, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
+--- !u!50 &2854902444382225617 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 725275484281500931, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
   m_PrefabInstance: {fileID: 2854902444382225610}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 637530338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bff132496c6fe5940bfda884e2ae08ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2854902444382225615
+--- !u!114 &2854902444382225618
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6325,15 +6323,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 637530338}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2416b024ad0348dd8d2635da574f51e, type: 3}
+  m_Script: {fileID: 11500000, guid: a41a254cf0483404d8b9def43a6d245a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heroController: {fileID: 2854902444382225612}
---- !u!50 &2854902444382225617 stripped
-Rigidbody2D:
-  m_CorrespondingSourceObject: {fileID: 725275484281500931, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
-  m_PrefabInstance: {fileID: 2854902444382225610}
+--- !u!114 &2854902444382225619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637530338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b777965be2054fea999735206ffb44f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actor: {fileID: 2854902444382225618}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
