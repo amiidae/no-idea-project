@@ -1,0 +1,52 @@
+using UnityEngine;
+
+public class JumpAbility : Ability
+{
+    private IInputService inputService;
+    private IDataService dataService;
+    private HeroController heroController;
+
+    public JumpAbility(
+        AbilityUser abilityUser,
+        IInputService inputService,
+        IDataService dataService
+    )
+    {
+        this.inputService = inputService;
+        this.dataService = dataService;
+        this.heroController = abilityUser.HeroController;
+    }
+
+    public override bool IsTriggered()
+    {
+        return inputService.IsJumpInputReceived;
+    }
+
+    public override bool CanBeUsed()
+    {
+        return heroController.IsGrounded;
+    }
+
+    public override bool CanComplete()
+    {
+        AnimatorStateInfo state = heroController.Animator.GetCurrentAnimatorStateInfo(0);
+        return state.IsName("Jump") && state.normalizedTime >= 1f;
+    }
+
+    public override void Use()
+    {
+        heroController.Jump();
+        heroController.Animator.Play("Jump");
+    }
+
+    public override void FixedUpdate()
+    {
+        float direction = inputService.MoveAxis.x;
+
+        float speed = inputService.IsRunInputReceived
+            ? dataService.HeroData.RunSpeed
+            : dataService.HeroData.MovementSpeed;
+
+        heroController.AirMove(direction, speed);
+    }
+}

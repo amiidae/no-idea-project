@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class HeroContext : ActorContext
+public class HeroContext
 {
     public SpriteRenderer SpriteRenderer;
 

@@ -4,7 +4,7 @@ public abstract class Ability : IAbility
 
     public virtual bool IsTriggered()
     {
-        return true;
+        return false;
     }
 
     public virtual bool CanBeUsed()
@@ -14,7 +14,7 @@ public abstract class Ability : IAbility
 
     public virtual bool CanComplete()
     {
-        return true;
+        return false;
     }
 
     public virtual void Use() { }
