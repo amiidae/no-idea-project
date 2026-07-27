@@ -1,17 +1,17 @@
+using Code.AbilitySystem.Unity;
 using UnityEngine;
 
-namespace _Project.Scripts.AbilitySystem
+namespace Code.AbilitySystem
 {
     public class IdleAbility : LocomotionAbility
     {
-        public IdleAbility(AbilityUser abilityUser, IInputService inputService)
-            : base(abilityUser, inputService)
+        public IdleAbility(AbilityUser abilityUser) : base(abilityUser)
         {
         }
 
         public override bool IsTriggered()
         {
-            return _inputService.MoveAxis.x == 0;
+            return !AbilityUser.Control.HasMoveInput();
         }
 
         public override void Use()

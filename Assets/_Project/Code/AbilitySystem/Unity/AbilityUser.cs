@@ -1,30 +1,31 @@
 using System.Collections.Generic;
+using Code.AbilitySystem.Core;
 using UnityEngine;
 
-namespace _Project.Scripts.AbilitySystem
+namespace Code.AbilitySystem.Unity
 {
-    public class AbilityUser : MonoBehaviour
+    public class AbilityUser : MonoBehaviour, IAbilityUser
     {
-        [SerializeField] private HeroController _heroController;
-
-        public HeroController HeroController => _heroController;
-
+        public IAbilityControl Control { get; private set; }
+        
         public List<AbilityLayer> Layers { get; private set; }
-
-
+        
+        
         private void Start()
         {
+            Control = GetComponent<IAbilityControl>();
+            
             Layers = new List<AbilityLayer>();
 
             Layers.Add(new AbilityLayer(
-                new IdleAbility(this, ServiceLocator.GetService<IInputService>()),
-                new WalkAbility(this, ServiceLocator.GetService<IInputService>(), ServiceLocator.GetService<IHeroDataRepository>()),
-                new RunAbility(this, ServiceLocator.GetService<IInputService>(), ServiceLocator.GetService<IHeroDataRepository>()),
-                new FallAbility(this, ServiceLocator.GetService<IInputService>(), ServiceLocator.GetService<IHeroDataRepository>())
+                new IdleAbility(this),
+                new WalkAbility(this, ServiceLocator.GetService<IHeroDataRepository>()),
+                new RunAbility(this, ServiceLocator.GetService<IHeroDataRepository>()),
+                new FallAbility(this, ServiceLocator.GetService<IHeroDataRepository>())
             ));
 
             Layers.Add(new AbilityLayer(
-                new JumpAbility(this, ServiceLocator.GetService<IInputService>(), ServiceLocator.GetService<IHeroDataRepository>()),
+                new JumpAbility(this, ServiceLocator.GetService<IHeroDataRepository>()),
                 new LandAbility(this)
             ));
 
@@ -33,17 +34,6 @@ namespace _Project.Scripts.AbilitySystem
                 foreach (IAbility ability in abilityLayer.Abilities)
                 {
                     ability.Init();
-                }
-            }
-        }
-
-        private void OnDestroy()
-        {
-            foreach (AbilityLayer abilityLayer in Layers)
-            {
-                foreach (IAbility ability in abilityLayer.Abilities)
-                {
-                    ability.Destroy();
                 }
             }
         }

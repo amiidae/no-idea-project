@@ -1,15 +1,16 @@
+using Code.AbilitySystem.Unity;
 using UnityEngine;
 
-namespace _Project.Scripts.AbilitySystem
+namespace Code.AbilitySystem
 {
-    public class LandAbility : Ability
+    public class LandAbility : AbilityBase
     {
         private bool _landed;
         private HeroController _heroController;
 
-        public LandAbility(AbilityUser abilityUser)
+        public LandAbility(AbilityUser abilityUser) : base(abilityUser)
         {
-            _heroController = abilityUser.HeroController;
+            _heroController = abilityUser.GetComponent<HeroController>();
         }
 
         public override void Init()

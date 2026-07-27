@@ -1,20 +1,21 @@
-using UnityEngine;
+using Code.AbilitySystem.Unity;
 
-namespace _Project.Scripts.AbilitySystem
+namespace Code.AbilitySystem
 {
     public class WalkAbility : LocomotionAbility
     {
         private IHeroDataRepository _heroDataRepository;
 
-        public WalkAbility(AbilityUser abilityUser, IInputService inputService, IHeroDataRepository heroDataRepository)
-            : base(abilityUser, inputService)
+        public WalkAbility(AbilityUser abilityUser, IHeroDataRepository heroDataRepository)
+            : base(abilityUser)
         {
             _heroDataRepository = heroDataRepository;
         }
 
         public override bool IsTriggered()
         {
-            return _inputService.MoveAxis.x != 0 && !_inputService.IsRunInputReceived;
+            return AbilityUser.Control.HasMoveInput()
+                   && !AbilityUser.Control.HasRunInput();
         }
 
         public override void Use()
@@ -24,7 +25,7 @@ namespace _Project.Scripts.AbilitySystem
 
         public override void FixedTick()
         {
-            float dir = _inputService.MoveAxis.x;
+            float dir = AbilityUser.Control.MoveAxis2D().x;
             _heroController.Move(dir, _heroDataRepository.Data.MovementSpeed, _heroDataRepository.Data.WalkSmoothing);
         }
     }

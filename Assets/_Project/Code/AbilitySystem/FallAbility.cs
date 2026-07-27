@@ -1,16 +1,16 @@
-namespace _Project.Scripts.AbilitySystem
+using Code.AbilitySystem.Unity;
+
+namespace Code.AbilitySystem
 {
-    public class FallAbility : Ability
+    public class FallAbility : AbilityBase
     {
         private HeroController _heroController;
         private IHeroDataRepository _heroDataRepository;
-        private IInputService _inputService;
 
-        public FallAbility(AbilityUser abilityUser, IInputService inputService, IHeroDataRepository heroDataRepository)
+        public FallAbility(AbilityUser abilityUser, IHeroDataRepository heroDataRepository) : base(abilityUser)
         {
-            _inputService = inputService;
             _heroDataRepository = heroDataRepository;
-            _heroController = abilityUser.HeroController;
+            _heroController = abilityUser.GetComponent<HeroController>();
         }
 
         public override bool IsTriggered()
@@ -25,9 +25,9 @@ namespace _Project.Scripts.AbilitySystem
 
         public override void FixedTick()
         {
-            float dir = _inputService.MoveAxis.x;
+            float dir = AbilityUser.Control.MoveAxis2D().x;
 
-            float speed = _inputService.IsRunInputReceived
+            float speed = AbilityUser.Control.HasRunInput()
                 ? _heroDataRepository.Data.RunSpeed
                 : _heroDataRepository.Data.MovementSpeed;
 

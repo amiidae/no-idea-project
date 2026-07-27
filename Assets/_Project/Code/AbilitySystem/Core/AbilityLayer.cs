@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace _Project.Scripts.AbilitySystem
+namespace Code.AbilitySystem.Core
 {
     public class AbilityLayer
     {

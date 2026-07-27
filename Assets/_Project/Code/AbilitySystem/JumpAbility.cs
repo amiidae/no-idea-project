@@ -1,23 +1,23 @@
+using Code.AbilitySystem.Unity;
 using UnityEngine;
 
-namespace _Project.Scripts.AbilitySystem
+namespace Code.AbilitySystem
 {
-    public class JumpAbility : Ability
+    public class JumpAbility : AbilityBase
     {
         private IInputService _inputService;
         private HeroController _heroController;
         private IHeroDataRepository _heroDataRepository;
 
-        public JumpAbility(AbilityUser abilityUser, IInputService inputService, IHeroDataRepository heroDataRepository)
+        public JumpAbility(AbilityUser abilityUser, IHeroDataRepository heroDataRepository) : base(abilityUser)
         {
             _heroDataRepository = heroDataRepository;
-            _heroController = abilityUser.HeroController;
-            _inputService = inputService;
+            _heroController = abilityUser.GetComponent<HeroController>();
         }
 
         public override bool IsTriggered()
         {
-            return _inputService.IsJumpInputReceived;
+            return AbilityUser.Control.HasJumpInput();
         }
 
         public override bool CanBeUsed()
@@ -39,9 +39,9 @@ namespace _Project.Scripts.AbilitySystem
 
         public override void FixedTick()
         {
-            float dir = _inputService.MoveAxis.x;
+            float dir = AbilityUser.Control.MoveAxis2D().x;
 
-            float speed = _inputService.IsRunInputReceived
+            float speed = AbilityUser.Control.HasRunInput()
                 ? _heroDataRepository.Data.RunSpeed
                 : _heroDataRepository.Data.MovementSpeed;
 

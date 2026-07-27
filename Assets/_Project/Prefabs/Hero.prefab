@@ -122,8 +122,9 @@ GameObject:
   - component: {fileID: 725275484281500931}
   - component: {fileID: 6845752984891367293}
   - component: {fileID: 5407588135443703117}
-  - component: {fileID: 2464336737047606956}
-  - component: {fileID: 8954484564853811236}
+  - component: {fileID: 994062611634741779}
+  - component: {fileID: 5380259937776759052}
+  - component: {fileID: 8772161431854188198}
   m_Layer: 0
   m_Name: Hero
   m_TagString: Player
@@ -235,7 +236,7 @@ MonoBehaviour:
   <Animator>k__BackingField: {fileID: 886367470124809660}
   spriteRenderer: {fileID: 1537745906251605907}
   rb: {fileID: 725275484281500931}
---- !u!114 &2464336737047606956
+--- !u!114 &994062611634741779
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -244,11 +245,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8027582293499904200}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8eacce32f3741fe8a25af40bf157976, type: 3}
+  m_Script: {fileID: 11500000, guid: 6079b61dcf0f4f3b902b19234e720b95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _heroController: {fileID: 5407588135443703117}
---- !u!114 &8954484564853811236
+--- !u!114 &5380259937776759052
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -257,7 +257,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 8027582293499904200}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8eacce32f3741fe8a25af40bf157976, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a64eb1cd8d947708ac3b5ffef92486e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _heroController: {fileID: 5407588135443703117}
+--- !u!114 &8772161431854188198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8027582293499904200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28cacec1dab74f7a9b27c9cc0258512a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
