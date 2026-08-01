@@ -6,25 +6,158 @@ public class HeroController : MonoBehaviour
 {
     public event Action Landed;
 
-    public SpriteRenderer SpriteRenderer;
+    public bool IsGrounded { get; private set; } = true;
+    public int NumberOfJumpsLeft { get; private set; }
 
-    public Animator Animator;
+    [field: SerializeField]
+    public Animator Animator { get; private set; }
 
-    public Rigidbody2D Rb;
+    [SerializeField]
+    private SpriteRenderer SpriteRenderer;
 
-    public float HorizontalInput;
+    [SerializeField]
+    private Rigidbody2D Rb;
 
-    public float CurrentSpeed;
+    private float moveVelocity;
+    private float airMoveVelocity;
 
-    public bool IsJumpInputReceived;
+    private IPhysics2DService physics2DService;
+    private IDataService DataRepository;
 
-    public bool IsRunInputReceived;
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = IsGrounded ? Color.green : Color.red;
+        Gizmos.DrawSphere(gameObject.transform.position, 0.25f);
+    }
 
-    public bool IsGrounded;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        InitializeServices();
 
-    public void Move(float axis, float speed, float smoothing) { }
+        JumpNumberReset();
+    }
 
-    public void AirMove(float axis, float speed) { }
+    void FixedUpdate()
+    {
+        GroundCheck();
+    }
 
-    public void Jump() { }
+    public void Move(float axis, float speed, float smoothing)
+    {
+        float target = axis * speed;
+        Rb.linearVelocityX = Mathf.SmoothDamp(
+            Rb.linearVelocityX,
+            target,
+            ref moveVelocity,
+            smoothing,
+            Mathf.Infinity,
+            Time.deltaTime
+        );
+        PositionSprite(axis);
+    }
+
+    public void AirMove(float axis, float speed)
+    {
+        float target = axis * speed;
+        Rb.linearVelocityX = Mathf.SmoothDamp(
+            Rb.linearVelocityX,
+            target,
+            ref airMoveVelocity,
+            DataRepository.HeroData.AirSmoothing,
+            Mathf.Infinity,
+            Time.deltaTime
+        );
+        PositionSprite(axis);
+    }
+
+    public void Jump()
+    {
+        // Derive launch speed from gravity so the arc peaks at exactly JumpHeight metres
+        // (kit-style): v = sqrt(2 * g * h). g is the body's actual gravity magnitude.
+        float gravity = Mathf.Abs(Physics2D.gravity.y * Rb.gravityScale);
+        Rb.linearVelocityY = Mathf.Sqrt(2f * gravity * DataRepository.HeroData.JumpHeight);
+    }
+
+    public void LongJump()
+    {
+        Rb.linearVelocityY = DataRepository.HeroData.JumpHeight;
+    }
+
+    public void JumpNumberReset()
+    {
+        NumberOfJumpsLeft = DataRepository.HeroData.MaxNumberOfJumps;
+
+        // Debug.Log(NumberOfJumpsLeft);
+    }
+
+    public void JumpNumberUpdate()
+    {
+        --NumberOfJumpsLeft;
+
+        // Debug.Log(NumberOfJumpsLeft);
+    }
+
+    private void InitializeServices()
+    {
+        physics2DService = ServiceLocator.GetService<IPhysics2DService>();
+        DataRepository = ServiceLocator.GetService<IDataService>();
+    }
+
+    private void GroundCheck()
+    {
+        Collider2D playersGroundCollision = physics2DService.OverlapCircle(
+            gameObject.transform.position,
+            0.25f,
+            1 << 7
+        );
+
+        // драгоценная Вы моя тарталетка демоническобожественная
+        // совесть имейте
+        // желательно в наличии
+        // hugs = true;
+        // kisses = true;
+        // if (hugs && kisses)
+        //     <3
+
+        bool isPlayerGroundedCurrentFixedUpdate = playersGroundCollision != null;
+        bool wasPlayerGroundedPreviousFixedUpdate = IsGrounded;
+
+        if (
+            isPlayerGroundedCurrentFixedUpdate == true
+            && wasPlayerGroundedPreviousFixedUpdate == false
+        )
+        {
+            // player was in the air and now on the ground
+            // player has landed
+
+            moveVelocity = 0f;
+
+            Landed!.Invoke();
+        }
+        else if (
+            isPlayerGroundedCurrentFixedUpdate == false
+            && wasPlayerGroundedPreviousFixedUpdate == true
+        )
+        {
+            // player was on the ground, but now he is not
+            // player is jumping or falling
+
+            airMoveVelocity = 0f;
+        }
+
+        IsGrounded = isPlayerGroundedCurrentFixedUpdate;
+    }
+
+    private void PositionSprite(float horizontalInput)
+    {
+        if (horizontalInput > 0)
+        {
+            SpriteRenderer.flipX = false;
+        }
+        else if (horizontalInput < 0)
+        {
+            SpriteRenderer.flipX = true;
+        }
+    }
 }

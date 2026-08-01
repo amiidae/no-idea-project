@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class JumpAbility : Ability
+public class DoubleJumpAbility : Ability
 {
     private IInputService inputService;
     private IDataService dataService;
     private HeroController heroController;
 
-    public JumpAbility(
+    public DoubleJumpAbility(
         AbilityUser abilityUser,
         IInputService inputService,
         IDataService dataService
@@ -19,12 +19,12 @@ public class JumpAbility : Ability
 
     public override bool IsTriggered()
     {
-        return inputService.IsJumpInputReceived;
+        return heroController.IsGrounded == false && inputService.IsJumpInputReceived;
     }
 
     public override bool CanBeUsed()
     {
-        return heroController.IsGrounded;
+        return heroController.NumberOfJumpsLeft > 0;
     }
 
     public override bool CanComplete()
@@ -39,11 +39,6 @@ public class JumpAbility : Ability
         heroController.JumpNumberUpdate();
 
         heroController.Animator.Play("Jump");
-    }
-
-    public override void Update()
-    {
-        Debug.Log(inputService.IsJumpInputContinuous);
     }
 
     public override void FixedUpdate()

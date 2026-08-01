@@ -129,6 +129,16 @@ public class AbilityUser : MonoBehaviour
                     ServiceLocator.GetService<IInputService>(),
                     ServiceLocator.GetService<IDataService>()
                 ),
+                new DoubleJumpAbility(
+                    this,
+                    ServiceLocator.GetService<IInputService>(),
+                    ServiceLocator.GetService<IDataService>()
+                ),
+                new LongJumpAbility(
+                    this,
+                    ServiceLocator.GetService<IInputService>(),
+                    ServiceLocator.GetService<IDataService>()
+                ),
                 new LandAbility(this)
             )
         );

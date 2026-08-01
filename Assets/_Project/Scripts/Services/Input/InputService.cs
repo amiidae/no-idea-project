@@ -31,6 +31,15 @@ public class InputService : IInputService
         }
     }
 
+    public bool IsJumpInputContinuous
+    {
+        get
+        {
+            bool isJumpKeyHeld = Input.GetKey(KeyCode.Space);
+            return isJumpKeyHeld;
+        }
+    }
+
     public bool IsRunInputReceived
     {
         get

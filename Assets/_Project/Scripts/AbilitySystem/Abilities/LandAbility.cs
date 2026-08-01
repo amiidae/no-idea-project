@@ -33,12 +33,15 @@ public class LandAbility : Ability
 
     public override void Use()
     {
-        landed = false;
         heroController.Animator.Play("Land");
+
+        landed = false;
     }
 
     private void OnLanded()
     {
+        heroController.JumpNumberReset();
+
         landed = true;
     }
 }

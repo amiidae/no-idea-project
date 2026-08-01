@@ -121,7 +121,8 @@ GameObject:
   - component: {fileID: 3692434697990013234}
   - component: {fileID: 725275484281500931}
   - component: {fileID: 6845752984891367293}
-  - component: {fileID: 5407588135443703117}
+  - component: {fileID: 6111450382306786523}
+  - component: {fileID: 5957918600937711404}
   m_Layer: 0
   m_Name: Hero
   m_TagString: Player
@@ -218,7 +219,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.3467484, y: 2.2762976}
   m_EdgeRadius: 0
---- !u!114 &5407588135443703117
+--- !u!114 &6111450382306786523
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -227,10 +228,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 8027582293499904200}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bff132496c6fe5940bfda884e2ae08ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b777965be2054fea999735206ffb44f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <HeroContext>k__BackingField:
-    <SpriteRenderer>k__BackingField: {fileID: 1537745906251605907}
-    <Animator>k__BackingField: {fileID: 886367470124809660}
-    <Rb>k__BackingField: {fileID: 725275484281500931}
+  <HeroController>k__BackingField: {fileID: 5957918600937711404}
+--- !u!114 &5957918600937711404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8027582293499904200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef1e46935aee94f81b9779823aa7a35a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Animator>k__BackingField: {fileID: 886367470124809660}
+  SpriteRenderer: {fileID: 1537745906251605907}
+  Rb: {fileID: 725275484281500931}

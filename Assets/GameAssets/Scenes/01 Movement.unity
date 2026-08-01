@@ -2484,11 +2484,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &637530338 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8027582293499904200, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
-  m_PrefabInstance: {fileID: 2854902444382225610}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &641075242
 GameObject:
   m_ObjectHideFlags: 0
@@ -4509,16 +4504,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &1199104181 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 886367470124809660, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
-  m_PrefabInstance: {fileID: 2854902444382225610}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &1199104182 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 1537745906251605907, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
-  m_PrefabInstance: {fileID: 2854902444382225610}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1429256646
 GameObject:
   m_ObjectHideFlags: 0
@@ -6272,76 +6257,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5407588135443703117, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
-      propertyPath: <HeroContext>k__BackingField.Rb
-      value: 
-      objectReference: {fileID: 2854902444382225617}
-    - target: {fileID: 5407588135443703117, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
-      propertyPath: <HeroContext>k__BackingField.Animator
-      value: 
-      objectReference: {fileID: 1199104181}
-    - target: {fileID: 5407588135443703117, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
-      propertyPath: <HeroContext>k__BackingField.SpriteRenderer
-      value: 
-      objectReference: {fileID: 1199104182}
-    - target: {fileID: 6034908773367524596, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8027582293499904200, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
       propertyPath: m_Name
       value: Hero
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5407588135443703117, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8027582293499904200, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2854902444382225619}
-    - targetCorrespondingSourceObject: {fileID: 8027582293499904200, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2854902444382225621}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
 --- !u!4 &2854902444382225611 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3692434697990013234, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
   m_PrefabInstance: {fileID: 2854902444382225610}
   m_PrefabAsset: {fileID: 0}
---- !u!50 &2854902444382225617 stripped
-Rigidbody2D:
-  m_CorrespondingSourceObject: {fileID: 725275484281500931, guid: fe1ab1fae85f9484688687d78db7fe19, type: 3}
-  m_PrefabInstance: {fileID: 2854902444382225610}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2854902444382225619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 637530338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b777965be2054fea999735206ffb44f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <HeroController>k__BackingField: {fileID: 2854902444382225621}
---- !u!114 &2854902444382225621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 637530338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef1e46935aee94f81b9779823aa7a35a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Animator>k__BackingField: {fileID: 1199104181}
-  spriteRenderer: {fileID: 1199104182}
-  rb: {fileID: 2854902444382225617}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
