@@ -27,8 +27,8 @@ public class LegacyInputManagerService : IInputService
     {
         get
         {
-            bool isRunKeyDown = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-            return isRunKeyDown;
+            bool isRunKeyHeld = Input.GetKey(KeyCode.LeftShift);
+            return isRunKeyHeld;
         }
     }
     public bool IsJumpInputReceived

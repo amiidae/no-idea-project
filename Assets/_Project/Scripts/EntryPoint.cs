@@ -16,9 +16,9 @@ public class EntryPoint : MonoBehaviour
 #if ENABLE_LEGACY_INPUT_MANAGER
         inputService = new LegacyInputManagerService();
 #endif
-        // #if ENABLE_INPUT_SYSTEM
-        //         inputService = new InputSystemService();
-        // #endif
+#if ENABLE_INPUT_SYSTEM
+        inputService = new InputSystemService();
+#endif
 
         ServiceLocator.RegisterService<IInputService>(inputService);
 
@@ -38,6 +38,5 @@ public class EntryPoint : MonoBehaviour
         {
             initializableService.Initialize();
         }
-        { }
     }
 }
