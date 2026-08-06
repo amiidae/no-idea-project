@@ -6,17 +6,18 @@ public class WalkAbility : LocomotionAbility
 
     public WalkAbility(
         AbilityUser abilityUser,
-        IInputService inputService,
+        IAbilityUserBlackboard abilityUserBlackboard,
         IDataService dataService
     )
-        : base(abilityUser, inputService)
+        : base(abilityUser, abilityUserBlackboard)
     {
         this.dataService = dataService;
     }
 
     public override bool IsTriggered()
     {
-        return inputService.MoveAxis.x != 0 && inputService.IsRunInputReceived == false;
+        return abilityUserBlackboard.GetAxis2D((int)InputTypeId.Move).x != 0
+            && abilityUserBlackboard.GetState((int)InputTypeId.Run) == false;
     }
 
     public override void Use()
@@ -26,7 +27,7 @@ public class WalkAbility : LocomotionAbility
 
     public override void FixedUpdate()
     {
-        float direction = inputService.MoveAxis.x;
+        float direction = abilityUserBlackboard.GetAxis2D((int)InputTypeId.Move).x;
         heroController.Move(
             direction,
             dataService.HeroData.MovementSpeed,

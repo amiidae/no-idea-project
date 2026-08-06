@@ -7,6 +7,8 @@ public class HeroController : MonoBehaviour
     public event Action Landed;
 
     public bool IsGrounded { get; private set; } = true;
+    public bool IsFacedAgainstWall { get; private set; } = false;
+
     public int NumberOfJumpsLeft { get; private set; }
 
     [field: SerializeField]
@@ -18,6 +20,9 @@ public class HeroController : MonoBehaviour
     [SerializeField]
     private Rigidbody2D Rb;
 
+    [SerializeField]
+    private Collider2D heroCollider;
+
     private float moveVelocity;
     private float airMoveVelocity;
 
@@ -28,6 +33,23 @@ public class HeroController : MonoBehaviour
     {
         Gizmos.color = IsGrounded ? Color.green : Color.red;
         Gizmos.DrawSphere(gameObject.transform.position, 0.25f);
+
+        Collider2D heroCollider = gameObject.GetComponent<Collider2D>();
+
+        float rayDirection = SpriteRenderer.flipX == true ? -1f : 1f;
+
+        Gizmos.DrawLine(
+            new Vector3(
+                gameObject.transform.position.x,
+                gameObject.transform.position.y + heroCollider.bounds.extents.y,
+                gameObject.transform.position.z
+            ),
+            new Vector3(
+                gameObject.transform.position.x + rayDirection,
+                gameObject.transform.position.y + heroCollider.bounds.extents.y,
+                gameObject.transform.position.z
+            )
+        );
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -41,6 +63,7 @@ public class HeroController : MonoBehaviour
     void FixedUpdate()
     {
         GroundCheck();
+        WallCheck();
     }
 
     public void Move(float axis, float speed, float smoothing)
@@ -115,10 +138,10 @@ public class HeroController : MonoBehaviour
         // драгоценная Вы моя тарталетка демоническобожественная
         // совесть имейте
         // желательно в наличии
-        // hugs = true;
-        // kisses = true;
+        // bool hugs = true;
+        // bool kisses = true;
         // if (hugs && kisses)
-        //     <3
+        //     print("<3");
 
         bool isPlayerGroundedCurrentFixedUpdate = playersGroundCollision != null;
         bool wasPlayerGroundedPreviousFixedUpdate = IsGrounded;
@@ -147,6 +170,32 @@ public class HeroController : MonoBehaviour
         }
 
         IsGrounded = isPlayerGroundedCurrentFixedUpdate;
+    }
+
+    private void WallCheck()
+    {
+        Vector2 origin = new Vector2(
+            gameObject.transform.position.x,
+            gameObject.transform.position.y + heroCollider.bounds.extents.y
+        );
+
+        Vector2 rayDirection = SpriteRenderer.flipX == true ? Vector2.left : Vector2.right;
+
+        RaycastHit2D playersWallCollision = physics2DService.Raycast(
+            origin,
+            rayDirection,
+            1f,
+            1 << 8
+        );
+
+        if (playersWallCollision == true)
+        {
+            IsFacedAgainstWall = true;
+        }
+        else
+        {
+            IsFacedAgainstWall = false;
+        }
     }
 
     private void PositionSprite(float horizontalInput)

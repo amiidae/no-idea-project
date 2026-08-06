@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 
-public class InputService : IInputService
+public class LegacyInputManagerService : IInputService
 {
     public Vector2 MoveAxis
     {
@@ -19,9 +20,17 @@ public class InputService : IInputService
 
     public bool IsMoveInputReceived
     {
-        get { return MoveAxis.x > 0; }
+        get { return Math.Abs(MoveAxis.x) > 0; }
     }
 
+    public bool IsRunInputReceived
+    {
+        get
+        {
+            bool isRunKeyDown = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+            return isRunKeyDown;
+        }
+    }
     public bool IsJumpInputReceived
     {
         get
@@ -37,15 +46,6 @@ public class InputService : IInputService
         {
             bool isJumpKeyHeld = Input.GetKey(KeyCode.Space);
             return isJumpKeyHeld;
-        }
-    }
-
-    public bool IsRunInputReceived
-    {
-        get
-        {
-            bool isRunKeyDown = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-            return isRunKeyDown;
         }
     }
 }

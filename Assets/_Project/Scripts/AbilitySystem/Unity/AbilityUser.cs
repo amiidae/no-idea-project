@@ -2,14 +2,20 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AbilityUser : MonoBehaviour
+public class AbilityUser : MonoBehaviour, IAbilityUser
 {
     [field: SerializeField]
     public HeroController HeroController { get; private set; }
+
+    [field: SerializeField]
+    public IAbilityUserBlackboard AbilityUserBlackboard { get; private set; }
+
     public List<AbilityLayer> AbilityLayers { get; private set; } = new List<AbilityLayer>();
 
     void Start()
     {
+        AbilityUserBlackboard = gameObject.GetComponent<IAbilityUserBlackboard>();
+
         PopulateAbilityLayers();
         InitializeAbilities();
     }
@@ -60,7 +66,7 @@ public class AbilityUser : MonoBehaviour
 
     void FixedUpdate()
     {
-        for (int i = 0; i < AbilityLayers.Count; i++)
+        for (int i = AbilityLayers.Count - 1; i >= 0; i--)
         {
             if (IsSuppressed(i))
             {
@@ -103,20 +109,30 @@ public class AbilityUser : MonoBehaviour
     {
         AbilityLayers.Add(
             new AbilityLayer(
-                new IdleAbility(this, ServiceLocator.GetService<IInputService>()),
+                new IdleAbility(this, AbilityUserBlackboard),
                 new WalkAbility(
                     this,
-                    ServiceLocator.GetService<IInputService>(),
+                    AbilityUserBlackboard,
                     ServiceLocator.GetService<IDataService>()
                 ),
                 new RunAbility(
                     this,
-                    ServiceLocator.GetService<IInputService>(),
+                    AbilityUserBlackboard,
                     ServiceLocator.GetService<IDataService>()
                 ),
                 new FallAbility(
                     this,
-                    ServiceLocator.GetService<IInputService>(),
+                    AbilityUserBlackboard,
+                    ServiceLocator.GetService<IDataService>()
+                )
+            )
+        );
+
+        AbilityLayers.Add(
+            new AbilityLayer(
+                new WallSlideAbility(
+                    this,
+                    AbilityUserBlackboard,
                     ServiceLocator.GetService<IDataService>()
                 )
             )
@@ -126,17 +142,17 @@ public class AbilityUser : MonoBehaviour
             new AbilityLayer(
                 new JumpAbility(
                     this,
-                    ServiceLocator.GetService<IInputService>(),
+                    AbilityUserBlackboard,
                     ServiceLocator.GetService<IDataService>()
                 ),
                 new DoubleJumpAbility(
                     this,
-                    ServiceLocator.GetService<IInputService>(),
+                    AbilityUserBlackboard,
                     ServiceLocator.GetService<IDataService>()
                 ),
                 new LongJumpAbility(
                     this,
-                    ServiceLocator.GetService<IInputService>(),
+                    AbilityUserBlackboard,
                     ServiceLocator.GetService<IDataService>()
                 ),
                 new LandAbility(this)

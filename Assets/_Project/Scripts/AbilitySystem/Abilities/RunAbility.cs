@@ -4,15 +4,20 @@ public class RunAbility : LocomotionAbility
 {
     private IDataService dataService;
 
-    public RunAbility(AbilityUser abilityUser, IInputService inputService, IDataService dataService)
-        : base(abilityUser, inputService)
+    public RunAbility(
+        AbilityUser abilityUser,
+        IAbilityUserBlackboard abilityUserBlackboard,
+        IDataService dataService
+    )
+        : base(abilityUser, abilityUserBlackboard)
     {
         this.dataService = dataService;
     }
 
     public override bool IsTriggered()
     {
-        return inputService.MoveAxis.x != 0 && inputService.IsRunInputReceived == true;
+        return abilityUserBlackboard.GetAxis2D((int)InputTypeId.Move).x != 0
+            && abilityUserBlackboard.GetState((int)InputTypeId.Run) == true;
     }
 
     public override void Use()
@@ -22,7 +27,7 @@ public class RunAbility : LocomotionAbility
 
     public override void FixedUpdate()
     {
-        float direction = inputService.MoveAxis.x;
+        float direction = abilityUserBlackboard.GetAxis2D((int)InputTypeId.Move).x;
         heroController.Move(
             direction,
             dataService.HeroData.RunSpeed,

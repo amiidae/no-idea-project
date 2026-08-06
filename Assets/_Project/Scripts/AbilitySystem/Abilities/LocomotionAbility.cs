@@ -2,12 +2,15 @@ using UnityEngine;
 
 public abstract class LocomotionAbility : Ability
 {
-    protected IInputService inputService;
+    protected IAbilityUserBlackboard abilityUserBlackboard;
     protected HeroController heroController;
 
-    protected LocomotionAbility(AbilityUser abilityUser, IInputService inputService)
+    protected LocomotionAbility(
+        AbilityUser abilityUser,
+        IAbilityUserBlackboard abilityUserBlackboard
+    )
     {
-        this.inputService = inputService;
+        this.abilityUserBlackboard = abilityUserBlackboard;
         this.heroController = abilityUser.HeroController;
     }
 

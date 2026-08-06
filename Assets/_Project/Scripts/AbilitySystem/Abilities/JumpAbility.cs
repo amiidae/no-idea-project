@@ -2,24 +2,24 @@ using UnityEngine;
 
 public class JumpAbility : Ability
 {
-    private IInputService inputService;
+    private IAbilityUserBlackboard abilityUserBlackboard;
     private IDataService dataService;
     private HeroController heroController;
 
     public JumpAbility(
         AbilityUser abilityUser,
-        IInputService inputService,
+        IAbilityUserBlackboard abilityUserBlackboard,
         IDataService dataService
     )
     {
-        this.inputService = inputService;
+        this.abilityUserBlackboard = abilityUserBlackboard;
         this.dataService = dataService;
         this.heroController = abilityUser.HeroController;
     }
 
     public override bool IsTriggered()
     {
-        return inputService.IsJumpInputReceived;
+        return abilityUserBlackboard.GetState((int)InputTypeId.Jump);
     }
 
     public override bool CanBeUsed()
@@ -41,16 +41,13 @@ public class JumpAbility : Ability
         heroController.Animator.Play("Jump");
     }
 
-    public override void Update()
-    {
-        Debug.Log(inputService.IsJumpInputContinuous);
-    }
+    public override void Update() { }
 
     public override void FixedUpdate()
     {
-        float direction = inputService.MoveAxis.x;
+        float direction = abilityUserBlackboard.GetAxis2D((int)InputTypeId.Move).x;
 
-        float speed = inputService.IsRunInputReceived
+        float speed = abilityUserBlackboard.GetState((int)InputTypeId.Run)
             ? dataService.HeroData.RunSpeed
             : dataService.HeroData.MovementSpeed;
 

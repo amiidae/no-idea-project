@@ -2,24 +2,25 @@ using UnityEngine;
 
 public class DoubleJumpAbility : Ability
 {
-    private IInputService inputService;
+    private IAbilityUserBlackboard abilityUserBlackboard;
     private IDataService dataService;
     private HeroController heroController;
 
     public DoubleJumpAbility(
         AbilityUser abilityUser,
-        IInputService inputService,
+        IAbilityUserBlackboard abilityUserBlackboard,
         IDataService dataService
     )
     {
-        this.inputService = inputService;
+        this.abilityUserBlackboard = abilityUserBlackboard;
         this.dataService = dataService;
         this.heroController = abilityUser.HeroController;
     }
 
     public override bool IsTriggered()
     {
-        return heroController.IsGrounded == false && inputService.IsJumpInputReceived;
+        return heroController.IsGrounded == false
+            && abilityUserBlackboard.GetState((int)InputTypeId.Jump);
     }
 
     public override bool CanBeUsed()
@@ -43,9 +44,9 @@ public class DoubleJumpAbility : Ability
 
     public override void FixedUpdate()
     {
-        float direction = inputService.MoveAxis.x;
+        float direction = abilityUserBlackboard.GetAxis2D((int)InputTypeId.Move).x;
 
-        float speed = inputService.IsRunInputReceived
+        float speed = abilityUserBlackboard.GetState((int)InputTypeId.Run)
             ? dataService.HeroData.RunSpeed
             : dataService.HeroData.MovementSpeed;
 

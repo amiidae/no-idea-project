@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class IdleAbility : LocomotionAbility
 {
-    public IdleAbility(AbilityUser abilityUser, IInputService inputService)
-        : base(abilityUser, inputService) { }
+    public IdleAbility(AbilityUser abilityUser, IAbilityUserBlackboard abilityUserBlackboard)
+        : base(abilityUser, abilityUserBlackboard) { }
 
     public override bool IsTriggered()
     {
-        return inputService.MoveAxis.x == 0;
+        return abilityUserBlackboard.GetAxis2D((int)InputTypeId.Move).x == 0;
     }
 
     public override void Use()

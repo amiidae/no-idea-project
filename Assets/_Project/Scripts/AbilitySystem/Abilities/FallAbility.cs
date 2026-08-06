@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class FallAbility : Ability
 {
-    private IInputService inputService;
+    private IAbilityUserBlackboard abilityUserBlackboard;
     private IDataService dataService;
     private HeroController heroController;
 
     public FallAbility(
         AbilityUser abilityUser,
-        IInputService inputService,
+        IAbilityUserBlackboard abilityUserBlackboard,
         IDataService dataService
     )
     {
-        this.inputService = inputService;
+        this.abilityUserBlackboard = abilityUserBlackboard;
         this.dataService = dataService;
         this.heroController = abilityUser.HeroController;
     }
@@ -29,9 +29,9 @@ public class FallAbility : Ability
 
     public override void FixedUpdate()
     {
-        float direction = inputService.MoveAxis.x;
+        float direction = abilityUserBlackboard.GetAxis2D((int)InputTypeId.Move).x;
 
-        float speed = inputService.IsRunInputReceived
+        float speed = abilityUserBlackboard.GetState((int)InputTypeId.Run)
             ? dataService.HeroData.RunSpeed
             : dataService.HeroData.MovementSpeed;
 
