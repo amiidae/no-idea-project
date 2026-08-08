@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Code.AbilitySystem.Core;
 using UnityEngine;
@@ -6,14 +7,14 @@ namespace Code.AbilitySystem.Unity
 {
     public class AbilityUser : MonoBehaviour, IAbilityUser
     {
-        public IAbilityControl Control { get; private set; }
+        public IAbilityBlackboard Blackboard { get; private set; }
         
         public List<AbilityLayer> Layers { get; private set; }
         
         
         private void Start()
         {
-            Control = GetComponent<IAbilityControl>();
+            Blackboard = GetComponent<IAbilityBlackboard>();
             
             Layers = new List<AbilityLayer>();
 
@@ -38,13 +39,24 @@ namespace Code.AbilitySystem.Unity
             }
         }
 
+        private void OnDestroy()
+        {
+            foreach (AbilityLayer abilityLayer in Layers)
+            {
+                foreach (IAbility ability in abilityLayer.Abilities)
+                {
+                    ability.Destroy();
+                }
+            }
+        }
+
         private void Update()
         {
             for (int i = Layers.Count - 1; i >= 0; i--)
             {
                 AbilityLayer abilityLayer = Layers[i];
 
-                if (IsSuppressed(i))
+                if (IsSuppressed(i)) // guard clause
                 {
                     CompleteActiveAbility(abilityLayer);
                     continue;
@@ -79,7 +91,7 @@ namespace Code.AbilitySystem.Unity
 
         private void FixedUpdate()
         {
-            for (int i = 0; i < Layers.Count; i++)
+            for (int i = Layers.Count - 1; i >= 0; i--)
             {
                 if (IsSuppressed(i))
                 {

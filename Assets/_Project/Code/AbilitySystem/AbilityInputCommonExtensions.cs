@@ -5,24 +5,24 @@ namespace Code.AbilitySystem
 {
     public static class AbilityInputCommonExtensions
     {
-        public static bool HasRunInput(this IAbilityControl abilityControl)
+        public static bool HasRunInput(this IAbilityBlackboard abilityBlackboard)
         {
-            return abilityControl.GetState(ControlTypeId.Run);
+            return abilityBlackboard.GetState(ControlTypeId.Run);
         }
         
-        public static bool HasJumpInput(this IAbilityControl abilityControl)
+        public static bool HasJumpInput(this IAbilityBlackboard abilityBlackboard)
         {
-            return abilityControl.GetState(ControlTypeId.Jump);
+            return abilityBlackboard.GetState(ControlTypeId.Jump);
         }
 
-        public static bool HasMoveInput(this IAbilityControl abilityControl)
+        public static bool HasMoveInput(this IAbilityBlackboard abilityBlackboard)
         {
-            return abilityControl.MoveAxis2D().x != 0;
+            return abilityBlackboard.MoveAxis2D().x != 0;
         }
         
-        public static Vector2 MoveAxis2D(this IAbilityControl abilityControl)
+        public static Vector2 MoveAxis2D(this IAbilityBlackboard abilityBlackboard)
         {
-            return abilityControl.GetAxis2D(ControlTypeId.Move);
+            return abilityBlackboard.GetAxis2D(ControlTypeId.Move);
         }
     }
 }

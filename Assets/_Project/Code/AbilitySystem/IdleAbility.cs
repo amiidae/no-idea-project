@@ -11,7 +11,7 @@ namespace Code.AbilitySystem
 
         public override bool IsTriggered()
         {
-            return !AbilityUser.Control.HasMoveInput();
+            return !AbilityUser.Blackboard.HasMoveInput();
         }
 
         public override void Use()

@@ -5,34 +5,34 @@ namespace Code.AbilitySystem
 {
     public static class AbilityInputControlTypeExtensions
     {
-        public static void SetAxis(this IAbilityControl abilityControl, ControlTypeId controlTypeId, float value)
+        public static void SetAxis(this IAbilityBlackboard abilityBlackboard, ControlTypeId controlTypeId, float value)
         {
-            abilityControl.SetAxis((int)controlTypeId, value);
+            abilityBlackboard.SetAxis((int)controlTypeId, value);
         }
         
-        public static void SetAxis2D(this IAbilityControl abilityControl, ControlTypeId controlTypeId, Vector2 value)
+        public static void SetAxis2D(this IAbilityBlackboard abilityBlackboard, ControlTypeId controlTypeId, Vector2 value)
         {
-            abilityControl.SetAxis2D((int)controlTypeId, value);
+            abilityBlackboard.SetAxis2D((int)controlTypeId, value);
         }
         
-        public static void SetState(this IAbilityControl abilityControl, ControlTypeId controlTypeId, bool value)
+        public static void SetState(this IAbilityBlackboard abilityBlackboard, ControlTypeId controlTypeId, bool value)
         {
-            abilityControl.SetState((int)controlTypeId, value);
+            abilityBlackboard.SetState((int)controlTypeId, value);
         }
         
-        public static float GetAxis(this IAbilityControl abilityControl, ControlTypeId controlTypeId)
+        public static float GetAxis(this IAbilityBlackboard abilityBlackboard, ControlTypeId controlTypeId)
         {
-            return abilityControl.GetAxis((int)controlTypeId);
+            return abilityBlackboard.GetAxis((int)controlTypeId);
         }
         
-        public static Vector2 GetAxis2D(this IAbilityControl abilityControl, ControlTypeId controlTypeId)
+        public static Vector2 GetAxis2D(this IAbilityBlackboard abilityBlackboard, ControlTypeId controlTypeId)
         {
-            return abilityControl.GetAxis2D((int)controlTypeId);
+            return abilityBlackboard.GetAxis2D((int)controlTypeId);
         }
         
-        public static bool GetState(this IAbilityControl abilityControl, ControlTypeId controlTypeId)
+        public static bool GetState(this IAbilityBlackboard abilityBlackboard, ControlTypeId controlTypeId)
         {
-            return abilityControl.GetState((int)controlTypeId);
+            return abilityBlackboard.GetState((int)controlTypeId);
         }
     }
 }

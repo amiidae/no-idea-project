@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Code.AbilitySystem.Core
 {
-    public interface IAbilityControl
+    public interface IAbilityBlackboard
     {
         float GetAxis(int axisId);
 

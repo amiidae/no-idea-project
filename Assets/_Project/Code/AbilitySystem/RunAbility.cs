@@ -14,7 +14,7 @@ namespace Code.AbilitySystem
 
         public override bool IsTriggered()
         {
-            return AbilityUser.Control.HasMoveInput() && AbilityUser.Control.HasRunInput();
+            return AbilityUser.Blackboard.HasMoveInput() && AbilityUser.Blackboard.HasRunInput();
         }
 
         public override void Use()
@@ -24,7 +24,7 @@ namespace Code.AbilitySystem
 
         public override void FixedTick()
         {
-            float dir = AbilityUser.Control.MoveAxis2D().x;
+            float dir = AbilityUser.Blackboard.MoveAxis2D().x;
             _heroController.Move(dir, _heroDataRepository.Data.RunSpeed, _heroDataRepository.Data.RunSmoothing);
         }
     }

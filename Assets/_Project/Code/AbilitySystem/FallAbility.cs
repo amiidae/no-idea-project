@@ -25,9 +25,9 @@ namespace Code.AbilitySystem
 
         public override void FixedTick()
         {
-            float dir = AbilityUser.Control.MoveAxis2D().x;
+            float dir = AbilityUser.Blackboard.MoveAxis2D().x;
 
-            float speed = AbilityUser.Control.HasRunInput()
+            float speed = AbilityUser.Blackboard.HasRunInput()
                 ? _heroDataRepository.Data.RunSpeed
                 : _heroDataRepository.Data.MovementSpeed;
 

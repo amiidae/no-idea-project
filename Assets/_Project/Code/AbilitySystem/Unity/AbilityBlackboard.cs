@@ -2,15 +2,23 @@
 using Code.AbilitySystem.Core;
 using UnityEngine;
 
+
 namespace Code.AbilitySystem.Unity
 {
-    public class AbilityControl : MonoBehaviour, IAbilityControl
+    public class AbilityBlackboard : MonoBehaviour, IAbilityBlackboard
     {
-        private readonly Dictionary<int, float> _axes = new();
+#if  UNITY_EDITOR
+        public IReadOnlyDictionary<int, float> DebugAxes => _axes;
+        public IReadOnlyDictionary<int, Vector2> DebugAxes2D => _axes2D;
+        public IReadOnlyDictionary<int, bool> DebugStates => _states;
+#endif
         
-        private readonly Dictionary<int, Vector2> _axes2D = new();
+        private readonly Dictionary<int, float> _axes = new(); // ad
+        
+        private readonly Dictionary<int, Vector2> _axes2D = new(); // wasd
         
         private readonly Dictionary<int, bool> _states = new();
+
         
         public float GetAxis(int axisId)
         {

@@ -2,6 +2,6 @@
 {
     public interface IAbilityUser
     {
-        IAbilityControl Control { get; }
+        IAbilityBlackboard Blackboard { get; }
     }
 }

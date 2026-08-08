@@ -4,13 +4,15 @@
     {
         void Init();
 
+        void Destroy();
+        
         bool IsTriggered();
 
         bool CanBeUsed();
         
-        bool CanComplete();
-
         void Use();
+
+        bool CanComplete();
         
         void Tick();
 
@@ -18,6 +20,5 @@
 
         void Complete();
 
-        void Destroy();
     }
 }
