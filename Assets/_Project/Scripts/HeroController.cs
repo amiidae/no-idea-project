@@ -53,10 +53,20 @@ public class HeroController : MonoBehaviour
         );
     }
 
+    void OnEnable()
+    {
+        Landed += OnLanded;
+    }
+
+    void OnDisable()
+    {
+        Landed -= OnLanded;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        InitializeServices();
+        GetServices();
 
         JumpNumberReset();
     }
@@ -97,6 +107,12 @@ public class HeroController : MonoBehaviour
 
     public void Jump()
     {
+        ExecuteJump();
+        JumpNumberUpdate();
+    }
+
+    private void ExecuteJump()
+    {
         // Derive launch speed from gravity so the arc peaks at exactly JumpHeight metres
         // (kit-style): v = sqrt(2 * g * h). g is the body's actual gravity magnitude.
         float gravity = Mathf.Abs(Physics2D.gravity.y * Rb.gravityScale);
@@ -108,24 +124,25 @@ public class HeroController : MonoBehaviour
         Rb.linearVelocityY = DataRepository.HeroData.JumpHeight;
     }
 
-    public void JumpNumberReset()
+    private void OnLanded()
     {
-        NumberOfJumpsLeft = DataRepository.HeroData.MaxNumberOfJumps;
-
-        // Debug.Log(NumberOfJumpsLeft);
+        JumpNumberReset();
     }
 
-    public void JumpNumberUpdate()
-    {
-        --NumberOfJumpsLeft;
-
-        // Debug.Log(NumberOfJumpsLeft);
-    }
-
-    private void InitializeServices()
+    private void GetServices()
     {
         physics2DService = ServiceLocator.GetService<IPhysics2DService>();
         DataRepository = ServiceLocator.GetService<IDataService>();
+    }
+
+    private void JumpNumberReset()
+    {
+        NumberOfJumpsLeft = DataRepository.HeroData.MaxNumberOfJumps;
+    }
+
+    private void JumpNumberUpdate()
+    {
+        --NumberOfJumpsLeft;
     }
 
     private void GroundCheck()

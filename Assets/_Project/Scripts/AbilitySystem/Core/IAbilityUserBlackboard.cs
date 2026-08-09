@@ -11,5 +11,5 @@ public interface IAbilityUserBlackboard
 
     public void SetAxis2D(int abilityId, Vector2 value);
 
-    public void SetBool(int abilityId, bool value);
+    public void SetState(int abilityId, bool value);
 }

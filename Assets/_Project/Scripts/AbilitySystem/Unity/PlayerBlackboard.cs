@@ -9,17 +9,17 @@ public class PlayerBlackboard : MonoBehaviour, IAbilityUserBlackboard
 
     public float GetAxis(int abilityId)
     {
-        return axes[abilityId];
+        return axes.GetValueOrDefault(abilityId);
     }
 
     public Vector2 GetAxis2D(int abilityId)
     {
-        return axes2D[abilityId];
+        return axes2D.GetValueOrDefault(abilityId);
     }
 
     public bool GetState(int abilityId)
     {
-        return states[abilityId];
+        return states.GetValueOrDefault(abilityId);
     }
 
     public void SetAxis(int abilityId, float value)
@@ -32,7 +32,7 @@ public class PlayerBlackboard : MonoBehaviour, IAbilityUserBlackboard
         axes2D[abilityId] = value;
     }
 
-    public void SetBool(int abilityId, bool value)
+    public void SetState(int abilityId, bool value)
     {
         states[abilityId] = value;
     }

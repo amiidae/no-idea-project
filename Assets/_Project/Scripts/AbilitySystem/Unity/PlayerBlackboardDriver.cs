@@ -16,16 +16,16 @@ public class PlayerBlackboardDriver : MonoBehaviour
     {
         abilityUser.AbilityUserBlackboard.SetAxis2D((int)InputTypeId.Move, inputService.MoveAxis);
 
-        abilityUser.AbilityUserBlackboard.SetBool(
+        abilityUser.AbilityUserBlackboard.SetState(
             (int)InputTypeId.Run,
             inputService.IsRunInputReceived
         );
 
-        abilityUser.AbilityUserBlackboard.SetBool(
+        abilityUser.AbilityUserBlackboard.SetState(
             (int)InputTypeId.Jump,
             inputService.IsJumpInputReceived
         );
-        abilityUser.AbilityUserBlackboard.SetBool(
+        abilityUser.AbilityUserBlackboard.SetState(
             (int)InputTypeId.LongJump,
             inputService.IsJumpInputContinuous
         );

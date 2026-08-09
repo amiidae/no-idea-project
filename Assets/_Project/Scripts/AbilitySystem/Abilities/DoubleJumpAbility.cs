@@ -37,7 +37,6 @@ public class DoubleJumpAbility : Ability
     public override void Use()
     {
         heroController.Jump();
-        heroController.JumpNumberUpdate();
 
         heroController.Animator.Play("Jump");
     }

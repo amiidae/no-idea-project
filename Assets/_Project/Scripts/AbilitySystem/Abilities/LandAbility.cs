@@ -40,8 +40,6 @@ public class LandAbility : Ability
 
     private void OnLanded()
     {
-        heroController.JumpNumberReset();
-
         landed = true;
     }
 }
