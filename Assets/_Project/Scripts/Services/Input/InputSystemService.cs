@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class InputSystemService : IInputService
 {
-    InputActionAsset InputActions;
+    private InputSystemActions inputActions = new InputSystemActions();
 
     private InputAction moveAction;
     private InputAction runAction;
@@ -12,17 +12,16 @@ public class InputSystemService : IInputService
 
     public InputSystemService()
     {
-        moveAction = InputSystem.actions.FindAction("Move");
-        runAction = InputSystem.actions.FindAction("Sprint");
-        jumpAction = InputSystem.actions.FindAction("Jump");
+        moveAction = inputActions.Player.Move;
+        runAction = inputActions.Player.Sprint;
+        jumpAction = inputActions.Player.Jump;
 
-        InputActions = Resources.Load<InputActionAsset>("InputActions/InputSystem_Actions");
-        InputActions.FindActionMap("Player").Enable();
+        inputActions.Player.Enable();
     }
 
     ~InputSystemService()
     {
-        InputActions.FindActionMap("Player").Disable();
+        inputActions.Player.Disable();
     }
 
     public Vector2 MoveAxis
