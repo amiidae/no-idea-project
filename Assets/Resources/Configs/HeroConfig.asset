@@ -15,6 +15,7 @@ MonoBehaviour:
   HeroData:
     MovementSpeed: 5
     JumpHeight: 2
+    JumpAcceleration: 5
     MaxNumberOfJumps: 2
     MaxJumpDuration: 1
     WalkSmoothing: 0

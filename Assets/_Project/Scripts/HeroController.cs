@@ -28,7 +28,8 @@ public class HeroController : MonoBehaviour
     private float airMoveVelocity;
 
     private IPhysics2DService physics2DService;
-    private IDataService DataRepository;
+    private IDataService dataRepository;
+    private ITimeService timeService;
 
     void OnDrawGizmosSelected()
     {
@@ -86,7 +87,7 @@ public class HeroController : MonoBehaviour
             ref moveVelocity,
             smoothing,
             Mathf.Infinity,
-            Time.deltaTime
+            timeService.DeltaTime
         );
         PositionSprite(axis);
     }
@@ -98,9 +99,9 @@ public class HeroController : MonoBehaviour
             Rb.linearVelocityX,
             target,
             ref airMoveVelocity,
-            DataRepository.HeroData.AirSmoothing,
+            dataRepository.HeroData.AirSmoothing,
             Mathf.Infinity,
-            Time.deltaTime
+            timeService.DeltaTime
         );
         PositionSprite(axis);
     }
@@ -116,12 +117,13 @@ public class HeroController : MonoBehaviour
         // Derive launch speed from gravity so the arc peaks at exactly JumpHeight metres
         // (kit-style): v = sqrt(2 * g * h). g is the body's actual gravity magnitude.
         float gravity = Mathf.Abs(Physics2D.gravity.y * Rb.gravityScale);
-        Rb.linearVelocityY = Mathf.Sqrt(2f * gravity * DataRepository.HeroData.JumpHeight);
+        Rb.linearVelocityY = Mathf.Sqrt(2f * gravity * dataRepository.HeroData.JumpHeight);
     }
 
     public void LongJump()
     {
-        Rb.linearVelocityY = DataRepository.HeroData.JumpHeight;
+        Rb.linearVelocityY =
+            Rb.linearVelocityY + dataRepository.HeroData.JumpAcceleration * timeService.DeltaTime;
     }
 
     private void OnLanded()
@@ -132,12 +134,13 @@ public class HeroController : MonoBehaviour
     private void GetServices()
     {
         physics2DService = ServiceLocator.GetService<IPhysics2DService>();
-        DataRepository = ServiceLocator.GetService<IDataService>();
+        dataRepository = ServiceLocator.GetService<IDataService>();
+        timeService = ServiceLocator.GetService<ITimeService>();
     }
 
     private void JumpNumberReset()
     {
-        NumberOfJumpsLeft = DataRepository.HeroData.MaxNumberOfJumps;
+        NumberOfJumpsLeft = dataRepository.HeroData.MaxNumberOfJumps;
     }
 
     private void JumpNumberUpdate()
