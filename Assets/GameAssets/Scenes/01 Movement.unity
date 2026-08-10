@@ -128,7 +128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 74486503}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Environment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1985,7 +1985,7 @@ GameObject:
   - component: {fileID: 589460727}
   - component: {fileID: 589460729}
   - component: {fileID: 589460728}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Block (15)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3727,7 +3727,7 @@ GameObject:
   - component: {fileID: 1023473996}
   - component: {fileID: 1023473998}
   - component: {fileID: 1023473997}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Block (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5730,7 +5730,7 @@ GameObject:
   - component: {fileID: 1823334593}
   - component: {fileID: 1823334595}
   - component: {fileID: 1823334594}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Block (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

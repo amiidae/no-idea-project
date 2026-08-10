@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AbilitySystem;
 using Code.AbilitySystem.Core;
 using UnityEngine;
 
@@ -28,6 +29,10 @@ namespace Code.AbilitySystem.Unity
             Layers.Add(new AbilityLayer(
                 new JumpAbility(this, ServiceLocator.GetService<IHeroDataRepository>()),
                 new LandAbility(this)
+            ));
+
+            Layers.Add(new AbilityLayer(
+                new WallSlideAbility(this, ServiceLocator.GetService<IHeroDataRepository>())
             ));
 
             foreach (AbilityLayer abilityLayer in Layers)

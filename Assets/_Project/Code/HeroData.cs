@@ -24,4 +24,9 @@ public class HeroData
     public float WalkSmoothing;
     public float RunSmoothing;
     public float AirSmoothing;
+
+
+    public float WallSlideAngle;
+
+    public float WallSlideFriction;
 }

@@ -9,7 +9,9 @@ using UnityEngine.PlayerLoop;
 
 public class HeroController : MonoBehaviour
 {
+    
     [field: SerializeField] public Animator Animator { get; private set; }
+    public Rigidbody2D Rigidbody => rb;
     
     [SerializeField]
     private SpriteRenderer spriteRenderer;
@@ -101,7 +103,7 @@ public class HeroController : MonoBehaviour
         Collider2D playersCollision = physics2DService.OverlapCircle(
             gameObject.transform.position,
             0.25f,
-            1 << 7
+            LayerMasks.SurfaceMask
         );
 
         bool grounded = playersCollision != null;

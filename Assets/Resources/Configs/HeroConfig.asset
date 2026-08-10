@@ -19,3 +19,5 @@ MonoBehaviour:
     WalkSmoothing: 0
     RunSmoothing: 0.15
     AirSmoothing: 0.3
+    WallSlideAngle: 40
+    WallSlideFriction: 5
