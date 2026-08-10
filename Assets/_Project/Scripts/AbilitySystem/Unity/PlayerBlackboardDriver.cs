@@ -14,19 +14,19 @@ public class PlayerBlackboardDriver : MonoBehaviour
 
     void Update()
     {
-        abilityUser.AbilityUserBlackboard.SetAxis2D((int)InputTypeId.Move, inputService.MoveAxis);
+        abilityUser.AbilityUserBlackboard.SetAxis2D(InputTypeId.Move, inputService.MoveAxis);
 
         abilityUser.AbilityUserBlackboard.SetState(
-            (int)InputTypeId.Run,
+            InputTypeId.Run,
             inputService.IsRunInputReceived
         );
 
         abilityUser.AbilityUserBlackboard.SetState(
-            (int)InputTypeId.Jump,
+            InputTypeId.Jump,
             inputService.IsJumpInputReceived
         );
         abilityUser.AbilityUserBlackboard.SetState(
-            (int)InputTypeId.LongJump,
+            InputTypeId.LongJump,
             inputService.IsJumpInputContinuous
         );
     }

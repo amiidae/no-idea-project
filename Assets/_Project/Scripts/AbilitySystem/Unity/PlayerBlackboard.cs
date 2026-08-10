@@ -7,33 +7,33 @@ public class PlayerBlackboard : MonoBehaviour, IAbilityUserBlackboard
     private Dictionary<int, Vector2> axes2D = new Dictionary<int, Vector2>();
     private Dictionary<int, bool> states = new Dictionary<int, bool>();
 
-    public float GetAxis(int abilityId)
+    public float GetAxis(int inputTypeId)
     {
-        return axes.GetValueOrDefault(abilityId);
+        return axes.GetValueOrDefault(inputTypeId);
     }
 
-    public Vector2 GetAxis2D(int abilityId)
+    public Vector2 GetAxis2D(int inputTypeId)
     {
-        return axes2D.GetValueOrDefault(abilityId);
+        return axes2D.GetValueOrDefault(inputTypeId);
     }
 
-    public bool GetState(int abilityId)
+    public bool GetState(int inputTypeId)
     {
-        return states.GetValueOrDefault(abilityId);
+        return states.GetValueOrDefault(inputTypeId);
     }
 
-    public void SetAxis(int abilityId, float value)
+    public void SetAxis(int inputTypeId, float value)
     {
-        axes[abilityId] = value;
+        axes[inputTypeId] = value;
     }
 
-    public void SetAxis2D(int abilityId, Vector2 value)
+    public void SetAxis2D(int inputTypeId, Vector2 value)
     {
-        axes2D[abilityId] = value;
+        axes2D[inputTypeId] = value;
     }
 
-    public void SetState(int abilityId, bool value)
+    public void SetState(int inputTypeId, bool value)
     {
-        states[abilityId] = value;
+        states[inputTypeId] = value;
     }
 }
