@@ -24,7 +24,9 @@ namespace Code.AbilitySystem
             _abilityUser.Blackboard.SetAxis2D(ControlTypeId.Move, _inputService.MoveAxis);
             
             _abilityUser.Blackboard.SetState(ControlTypeId.Jump, _inputService.IsJumpInputReceived);
-            
+
+            _abilityUser.Blackboard.SetState(ControlTypeId.LongJump, _inputService.IsLongJumpInputReceived);
+
             _abilityUser.Blackboard.SetState(ControlTypeId.Run, _inputService.IsRunInputReceived);
         }
     }

@@ -8,5 +8,6 @@
         // State
         Run = 200,
         Jump = 201,
+        LongJump = 202,
     }
 }

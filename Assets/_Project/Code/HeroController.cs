@@ -78,6 +78,11 @@ public class HeroController : MonoBehaviour
         float gravity = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
         rb.linearVelocityY = Mathf.Sqrt(2f * gravity * dataRepository.HeroData.JumpHeight);
     }
+    
+    public void ApplyJumpAcceleration()
+    {
+        rb.linearVelocityY += dataRepository.HeroData.HoldJumpAcceleration * Time.deltaTime;
+    }
 
     private void InitializeServices()
     {
@@ -120,5 +125,6 @@ public class HeroController : MonoBehaviour
 
         isGrounded = grounded;
     }
+
 
 }

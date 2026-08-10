@@ -28,6 +28,7 @@ namespace Code.AbilitySystem.Unity
 
             Layers.Add(new AbilityLayer(
                 new JumpAbility(this, ServiceLocator.GetService<IDataRepository>()),
+                new AirJumpAbility(this, ServiceLocator.GetService<IDataRepository>()),
                 new LandAbility(this)
             ));
 
