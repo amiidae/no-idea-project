@@ -5,11 +5,11 @@ namespace Code.AbilitySystem
     public class FallAbility : AbilityBase
     {
         private HeroController _heroController;
-        private IHeroDataRepository _heroDataRepository;
+        private IDataRepository dataRepository;
 
-        public FallAbility(AbilityUser abilityUser, IHeroDataRepository heroDataRepository) : base(abilityUser)
+        public FallAbility(AbilityUser abilityUser, IDataRepository dataRepository) : base(abilityUser)
         {
-            _heroDataRepository = heroDataRepository;
+            this.dataRepository = dataRepository;
             _heroController = abilityUser.GetComponent<HeroController>();
         }
 
@@ -28,8 +28,8 @@ namespace Code.AbilitySystem
             float dir = AbilityUser.Blackboard.MoveAxis2D().x;
 
             float speed = AbilityUser.Blackboard.HasRunInput()
-                ? _heroDataRepository.Data.RunSpeed
-                : _heroDataRepository.Data.MovementSpeed;
+                ? dataRepository.HeroData.RunSpeed
+                : dataRepository.HeroData.MovementSpeed;
 
             _heroController.AirMove(dir, speed);
         }

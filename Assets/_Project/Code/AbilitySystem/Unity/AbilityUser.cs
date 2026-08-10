@@ -21,18 +21,18 @@ namespace Code.AbilitySystem.Unity
 
             Layers.Add(new AbilityLayer(
                 new IdleAbility(this),
-                new WalkAbility(this, ServiceLocator.GetService<IHeroDataRepository>()),
-                new RunAbility(this, ServiceLocator.GetService<IHeroDataRepository>()),
-                new FallAbility(this, ServiceLocator.GetService<IHeroDataRepository>())
+                new WalkAbility(this, ServiceLocator.GetService<IDataRepository>()),
+                new RunAbility(this, ServiceLocator.GetService<IDataRepository>()),
+                new FallAbility(this, ServiceLocator.GetService<IDataRepository>())
             ));
 
             Layers.Add(new AbilityLayer(
-                new JumpAbility(this, ServiceLocator.GetService<IHeroDataRepository>()),
+                new JumpAbility(this, ServiceLocator.GetService<IDataRepository>()),
                 new LandAbility(this)
             ));
 
             Layers.Add(new AbilityLayer(
-                new WallSlideAbility(this, ServiceLocator.GetService<IHeroDataRepository>())
+                new WallSlideAbility(this, ServiceLocator.GetService<IDataRepository>())
             ));
 
             foreach (AbilityLayer abilityLayer in Layers)

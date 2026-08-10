@@ -17,8 +17,8 @@ public class EntryPoint : MonoBehaviour
         IPhysics2DService physics2DService = new Physics2DService();
         ServiceLocator.RegisterService<IPhysics2DService>(physics2DService);
 
-        IHeroDataRepository heroDataRepository = new HeroDataRepository();
-        ServiceLocator.RegisterService<IHeroDataRepository>(heroDataRepository);
+        IDataRepository dataRepository = new DataRepository();
+        ServiceLocator.RegisterService<IDataRepository>(dataRepository);
     }
 
     private static void InitializeServices()

@@ -4,12 +4,12 @@ namespace Code.AbilitySystem
 {
     public class WalkAbility : LocomotionAbility
     {
-        private IHeroDataRepository _heroDataRepository;
+        private IDataRepository dataRepository;
 
-        public WalkAbility(AbilityUser abilityUser, IHeroDataRepository heroDataRepository)
+        public WalkAbility(AbilityUser abilityUser, IDataRepository dataRepository)
             : base(abilityUser)
         {
-            _heroDataRepository = heroDataRepository;
+            this.dataRepository = dataRepository;
         }
 
         public override bool IsTriggered()
@@ -26,7 +26,7 @@ namespace Code.AbilitySystem
         public override void FixedTick()
         {
             float dir = AbilityUser.Blackboard.MoveAxis2D().x;
-            _heroController.Move(dir, _heroDataRepository.Data.MovementSpeed, _heroDataRepository.Data.WalkSmoothing);
+            _heroController.Move(dir, dataRepository.HeroData.MovementSpeed, dataRepository.HeroData.WalkSmoothing);
         }
     }
 }

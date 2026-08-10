@@ -24,7 +24,7 @@ public class HeroController : MonoBehaviour
 
     private IInputService inputService;
     private IPhysics2DService physics2DService;
-    private IHeroDataRepository heroDataRepository;
+    private IDataRepository dataRepository;
 
     private bool isGrounded = true;
 
@@ -67,7 +67,7 @@ public class HeroController : MonoBehaviour
         float target = axis * speed;
         rb.linearVelocityX = Mathf.SmoothDamp(
             rb.linearVelocityX, target, ref _airMoveVelocity,
-            heroDataRepository.Data.AirSmoothing, Mathf.Infinity, Time.deltaTime);
+            dataRepository.HeroData.AirSmoothing, Mathf.Infinity, Time.deltaTime);
         PositionSprite(axis);
     }
 
@@ -76,14 +76,14 @@ public class HeroController : MonoBehaviour
         // Derive launch speed from gravity so the arc peaks at exactly JumpHeight metres
         // (kit-style): v = sqrt(2 * g * h). g is the body's actual gravity magnitude.
         float gravity = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
-        rb.linearVelocityY = Mathf.Sqrt(2f * gravity * heroDataRepository.Data.JumpHeight);
+        rb.linearVelocityY = Mathf.Sqrt(2f * gravity * dataRepository.HeroData.JumpHeight);
     }
 
     private void InitializeServices()
     {
         inputService = ServiceLocator.GetService<IInputService>();
         physics2DService = ServiceLocator.GetService<IPhysics2DService>();
-        heroDataRepository = ServiceLocator.GetService<IHeroDataRepository>();
+        dataRepository = ServiceLocator.GetService<IDataRepository>();
     }
 
     private void PositionSprite(float horizontalInput)

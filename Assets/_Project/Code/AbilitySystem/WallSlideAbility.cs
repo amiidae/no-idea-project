@@ -8,12 +8,12 @@ namespace AbilitySystem
     {
         private static readonly ContactPoint2D[] ContactPoints = new ContactPoint2D[8];
         
-        private IHeroDataRepository heroDataRepository;
+        private IDataRepository dataRepository;
         private HeroController heroController;
 
-        public WallSlideAbility(AbilityUser abilityUser, IHeroDataRepository heroDataRepository) : base(abilityUser)
+        public WallSlideAbility(AbilityUser abilityUser, IDataRepository dataRepository) : base(abilityUser)
         {
-            this.heroDataRepository = heroDataRepository;
+            this.dataRepository = dataRepository;
             heroController = abilityUser.GetComponent<HeroController>();
         }
 
@@ -32,7 +32,7 @@ namespace AbilitySystem
 
             float angle = AbilityUser.Blackboard.MoveAxis2D().x > 0 ? 180f : 0f;
 
-            contactFilter.SetNormalAngle(angle - heroDataRepository.Data.WallSlideAngle , angle + heroDataRepository.Data.WallSlideAngle);
+            contactFilter.SetNormalAngle(angle - dataRepository.HeroData.WallSlideAngle , angle + dataRepository.HeroData.WallSlideAngle);
 
             int count = heroController.Rigidbody.GetContacts(contactFilter, ContactPoints);
 
@@ -55,13 +55,13 @@ namespace AbilitySystem
             float dir = AbilityUser.Blackboard.MoveAxis2D().x;
 
             float speed = AbilityUser.Blackboard.HasRunInput()
-                ? heroDataRepository.Data.RunSpeed
-                : heroDataRepository.Data.MovementSpeed;
+                ? dataRepository.HeroData.RunSpeed
+                : dataRepository.HeroData.MovementSpeed;
             
             heroController.AirMove(dir, speed);
 
             Vector2 velocity = heroController.Rigidbody.linearVelocity;
-            velocity.y *= 1 - heroDataRepository.Data.WallSlideFriction * Time.deltaTime;
+            velocity.y *= 1 - dataRepository.HeroData.WallSlideFriction * Time.deltaTime;
 
             heroController.Rigidbody.linearVelocity = velocity;
 
