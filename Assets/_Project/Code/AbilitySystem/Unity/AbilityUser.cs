@@ -33,6 +33,7 @@ namespace Code.AbilitySystem.Unity
             ));
 
             Layers.Add(new AbilityLayer(
+                new WallJumpAbility(this, ServiceLocator.GetService<IDataRepository>()),
                 new WallSlideAbility(this, ServiceLocator.GetService<IDataRepository>())
             ));
 

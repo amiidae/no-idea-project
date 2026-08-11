@@ -21,5 +21,7 @@ MonoBehaviour:
     WalkSmoothing: 0
     RunSmoothing: 0.15
     AirSmoothing: 0.3
+    DetectionDistance: 0.5
     WallSlideAngle: 40
     WallSlideFriction: 5
+    WallJumpHorizontalMultiplier: 1.25

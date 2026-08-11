@@ -13,6 +13,8 @@ public class HeroController : MonoBehaviour
     [field: SerializeField] public Animator Animator { get; private set; }
     public Rigidbody2D Rigidbody => rb;
     
+    public Collider2D Collider => GetComponent<Collider2D>();
+    
     [SerializeField]
     private SpriteRenderer spriteRenderer;
 
@@ -34,7 +36,10 @@ public class HeroController : MonoBehaviour
     public bool IsGrounded => isGrounded;
     public float VerticalVelocity => rb.linearVelocityY;
 
+    public float FacingX => spriteRenderer.flipX ? -1f : 1f;
+
     public event Action Landed;
+    public event Action WallJumped;
 
     void OnDrawGizmosSelected()
     {
@@ -59,7 +64,7 @@ public class HeroController : MonoBehaviour
         rb.linearVelocityX = Mathf.SmoothDamp(
             rb.linearVelocityX, target, ref _moveVelocity,
             smoothing, Mathf.Infinity, Time.deltaTime);
-        PositionSprite(axis);
+        FaceDirection(axis);
     }
 
     public void AirMove(float axis, float speed)
@@ -68,7 +73,7 @@ public class HeroController : MonoBehaviour
         rb.linearVelocityX = Mathf.SmoothDamp(
             rb.linearVelocityX, target, ref _airMoveVelocity,
             dataRepository.HeroData.AirSmoothing, Mathf.Infinity, Time.deltaTime);
-        PositionSprite(axis);
+        FaceDirection(axis);
     }
 
     public void Jump()
@@ -79,19 +84,23 @@ public class HeroController : MonoBehaviour
         rb.linearVelocityY = Mathf.Sqrt(2f * gravity * dataRepository.HeroData.JumpHeight);
     }
     
+    public void WallJump(Vector2 wallNormal)
+    {
+        Jump();
+
+        rb.linearVelocityX =
+            wallNormal.x * rb.linearVelocityY * dataRepository.HeroData.WallJumpHorizontalMultiplier;
+
+        _airMoveVelocity = 0f;
+        WallJumped?.Invoke();
+    }
+
     public void ApplyJumpAcceleration()
     {
         rb.linearVelocityY += dataRepository.HeroData.HoldJumpAcceleration * Time.deltaTime;
     }
 
-    private void InitializeServices()
-    {
-        inputService = ServiceLocator.GetService<IInputService>();
-        physics2DService = ServiceLocator.GetService<IPhysics2DService>();
-        dataRepository = ServiceLocator.GetService<IDataRepository>();
-    }
-
-    private void PositionSprite(float horizontalInput)
+    public void FaceDirection(float horizontalInput)
     {
         if (horizontalInput > 0)
         {
@@ -101,6 +110,13 @@ public class HeroController : MonoBehaviour
         {
             spriteRenderer.flipX = true;
         }
+    }
+
+    private void InitializeServices()
+    {
+        inputService = ServiceLocator.GetService<IInputService>();
+        physics2DService = ServiceLocator.GetService<IPhysics2DService>();
+        dataRepository = ServiceLocator.GetService<IDataRepository>();
     }
 
     private void GroundCheck()

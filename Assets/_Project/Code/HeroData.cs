@@ -28,8 +28,11 @@ public class HeroData
     public float RunSmoothing;
     public float AirSmoothing;
 
+    public float DetectionDistance;
 
     public float WallSlideAngle;
 
     public float WallSlideFriction;
+
+    public float WallJumpHorizontalMultiplier;
 }

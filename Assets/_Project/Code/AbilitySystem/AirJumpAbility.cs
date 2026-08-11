@@ -13,12 +13,14 @@ namespace AbilitySystem
 
         public override void Init()
         {
-            _heroController.Landed += OnLanded;
+            _heroController.Landed += ResetAirJumps;
+            _heroController.WallJumped += ResetAirJumps;
         }
 
         public override void Destroy()
         {
-            _heroController.Landed -= OnLanded;
+            _heroController.Landed -= ResetAirJumps;
+            _heroController.WallJumped -= ResetAirJumps;
         }
 
         public override bool CanBeUsed()
@@ -33,7 +35,7 @@ namespace AbilitySystem
             base.Use();
         }
 
-        private void OnLanded()
+        private void ResetAirJumps()
         {
             _airJumpsUsed = 0;
         }
