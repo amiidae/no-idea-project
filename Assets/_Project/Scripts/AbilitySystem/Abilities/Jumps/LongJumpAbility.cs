@@ -1,12 +1,8 @@
 using System;
 using UnityEngine;
 
-public class LongJumpAbility : Ability
+public class LongJumpAbility : JumpAbilityBase
 {
-    private IAbilityUserBlackboard abilityUserBlackboard;
-    private IDataService dataService;
-    private HeroController heroController;
-
     private float jumpEndTime;
     private bool mustLand;
 
@@ -15,11 +11,7 @@ public class LongJumpAbility : Ability
         IAbilityUserBlackboard abilityUserBlackboard,
         IDataService dataService
     )
-    {
-        this.abilityUserBlackboard = abilityUserBlackboard;
-        this.dataService = dataService;
-        this.heroController = abilityUser.HeroController;
-    }
+        : base(abilityUser, abilityUserBlackboard, dataService) { }
 
     public override void Init()
     {
@@ -49,20 +41,11 @@ public class LongJumpAbility : Ability
         heroController.Animator.Play("Fall");
     }
 
-    public override void Update()
-    {
-        heroController.LongJump();
-    }
-
     public override void FixedUpdate()
     {
-        float direction = abilityUserBlackboard.GetAxis2D(InputTypeId.Move).x;
+        heroController.LongJump();
 
-        float speed = abilityUserBlackboard.GetState(InputTypeId.Run)
-            ? dataService.HeroData.RunSpeed
-            : dataService.HeroData.MovementSpeed;
-
-        heroController.AirMove(direction, speed);
+        base.FixedUpdate();
     }
 
     public override void Complete()
