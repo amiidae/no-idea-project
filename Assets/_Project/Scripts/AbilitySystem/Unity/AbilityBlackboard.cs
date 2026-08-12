@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBlackboard : MonoBehaviour, IAbilityUserBlackboard
+public class AbilityBlackboard : MonoBehaviour, IAbilityUserBlackboard
 {
     private Dictionary<int, float> axes = new Dictionary<int, float>();
     private Dictionary<int, Vector2> axes2D = new Dictionary<int, Vector2>();
