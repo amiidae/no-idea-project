@@ -50,7 +50,15 @@ public class LongJumpAbility : JumpAbilityBase
 
     public override void Complete()
     {
-        mustLand = true;
+        if (heroController.NumberOfJumpsLeft != 0)
+        {
+            mustLand = false;
+            SetJumpEndTime();
+        }
+        else
+        {
+            mustLand = true;
+        }
     }
 
     public override void Destroy()
