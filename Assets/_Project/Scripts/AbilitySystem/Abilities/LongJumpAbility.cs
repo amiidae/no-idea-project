@@ -28,7 +28,7 @@ public class LongJumpAbility : Ability
 
     public override bool IsTriggered()
     {
-        return abilityUserBlackboard.GetState((int)InputTypeId.LongJump);
+        return abilityUserBlackboard.GetState(InputTypeId.LongJump);
     }
 
     public override bool CanBeUsed()
@@ -38,7 +38,7 @@ public class LongJumpAbility : Ability
 
     public override bool CanComplete()
     {
-        return abilityUserBlackboard.GetState((int)InputTypeId.LongJump) == false
+        return abilityUserBlackboard.GetState(InputTypeId.LongJump) == false
             || jumpEndTime < Time.time;
     }
 
@@ -56,9 +56,9 @@ public class LongJumpAbility : Ability
 
     public override void FixedUpdate()
     {
-        float direction = abilityUserBlackboard.GetAxis2D((int)InputTypeId.Move).x;
+        float direction = abilityUserBlackboard.GetAxis2D(InputTypeId.Move).x;
 
-        float speed = abilityUserBlackboard.GetState((int)InputTypeId.Run)
+        float speed = abilityUserBlackboard.GetState(InputTypeId.Run)
             ? dataService.HeroData.RunSpeed
             : dataService.HeroData.MovementSpeed;
 

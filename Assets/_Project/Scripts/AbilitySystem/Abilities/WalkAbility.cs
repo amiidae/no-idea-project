@@ -16,8 +16,8 @@ public class WalkAbility : LocomotionAbility
 
     public override bool IsTriggered()
     {
-        return abilityUserBlackboard.GetAxis2D((int)InputTypeId.Move).x != 0
-            && abilityUserBlackboard.GetState((int)InputTypeId.Run) == false;
+        return abilityUserBlackboard.GetAxis2D(InputTypeId.Move).x != 0
+            && abilityUserBlackboard.GetState(InputTypeId.Run) == false;
     }
 
     public override void Use()
@@ -27,7 +27,7 @@ public class WalkAbility : LocomotionAbility
 
     public override void FixedUpdate()
     {
-        float direction = abilityUserBlackboard.GetAxis2D((int)InputTypeId.Move).x;
+        float direction = abilityUserBlackboard.GetAxis2D(InputTypeId.Move).x;
         heroController.Move(
             direction,
             dataService.HeroData.MovementSpeed,

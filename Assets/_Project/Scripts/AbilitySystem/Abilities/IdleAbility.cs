@@ -7,7 +7,7 @@ public class IdleAbility : LocomotionAbility
 
     public override bool IsTriggered()
     {
-        return abilityUserBlackboard.GetAxis2D((int)InputTypeId.Move).x == 0;
+        return abilityUserBlackboard.GetAxis2D(InputTypeId.Move).x == 0;
     }
 
     public override void Use()
