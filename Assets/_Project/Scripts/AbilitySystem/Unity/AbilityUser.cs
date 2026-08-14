@@ -61,6 +61,7 @@ public class AbilityUser : MonoBehaviour, IAbilityUser
                     CompleteActiveAbility(abilityLayer);
                 }
             }
+            Debug.Log(abilityLayer.ActiveAbility);
         }
     }
 
@@ -156,6 +157,16 @@ public class AbilityUser : MonoBehaviour, IAbilityUser
                     ServiceLocator.GetService<IDataService>()
                 ),
                 new LandAbility(this)
+            )
+        );
+
+        AbilityLayers.Add(
+            new AbilityLayer(
+                new WallJumpAbility(
+                    this,
+                    AbilityUserBlackboard,
+                    ServiceLocator.GetService<IDataService>()
+                )
             )
         );
     }

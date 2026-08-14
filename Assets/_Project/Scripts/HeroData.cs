@@ -16,6 +16,8 @@ public class HeroData
 
     public float JumpHeight;
     public float JumpAcceleration;
+    public float WallJumpPushForce;
+
     public int MaxNumberOfJumps;
     public int MaxJumpDuration;
 

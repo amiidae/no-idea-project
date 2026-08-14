@@ -29,7 +29,9 @@ public class WallSlideAbility : Ability
 
     public override bool CanBeUsed()
     {
-        return heroController.IsFacedAgainstWall == true && heroController.IsGrounded == false;
+        return heroController.IsFacedAgainstWall == true
+            && heroController.IsGrounded == false
+            && heroController.VerticalVelocity < 0;
     }
 
     public override bool CanComplete()

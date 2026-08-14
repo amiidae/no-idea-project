@@ -12,6 +12,11 @@ public class HeroController : MonoBehaviour
 
     public int NumberOfJumpsLeft { get; private set; }
 
+    public float VerticalVelocity
+    {
+        get { return Rb.linearVelocityY; }
+    }
+
     [field: SerializeField]
     public Animator Animator { get; private set; }
 
@@ -126,6 +131,16 @@ public class HeroController : MonoBehaviour
             Rb.linearVelocityY + dataRepository.HeroData.JumpAcceleration * timeService.DeltaTime;
     }
 
+    public void WallJump()
+    {
+        Vector2 lookDirection = SpriteRenderer.flipX == true ? Vector2.left : Vector2.right;
+        Rb.linearVelocityX = -lookDirection.x * dataRepository.HeroData.WallJumpPushForce;
+
+        ExecuteJump();
+
+        ForceFlip();
+    }
+
     private void OnLanded()
     {
         JumpNumberReset();
@@ -206,7 +221,7 @@ public class HeroController : MonoBehaviour
             origin,
             rayDirection,
             1f,
-            1 << 8
+            1 << 7
         );
 
         if (playersWallCollision == true)
@@ -229,5 +244,10 @@ public class HeroController : MonoBehaviour
         {
             SpriteRenderer.flipX = true;
         }
+    }
+
+    private void ForceFlip()
+    {
+        SpriteRenderer.flipX = !SpriteRenderer.flipX;
     }
 }
