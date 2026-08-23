@@ -95,6 +95,10 @@ public class HeroController : MonoBehaviour
         WallJumped?.Invoke();
     }
 
+    public void Warp(Vector2 toUnityVector)
+    {
+    }
+
     public void ApplyJumpAcceleration()
     {
         rb.linearVelocityY += dataRepository.HeroData.HoldJumpAcceleration * Time.deltaTime;
@@ -141,6 +145,4 @@ public class HeroController : MonoBehaviour
 
         isGrounded = grounded;
     }
-
-
 }

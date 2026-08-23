@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Code.Services.Input;
 using UnityEngine;
 
 public class EntryPoint : MonoBehaviour
@@ -23,6 +24,9 @@ public class EntryPoint : MonoBehaviour
 
         IDataRepository dataRepository = new DataRepository();
         ServiceLocator.RegisterService<IDataRepository>(dataRepository);
+
+        ISerializer serializer = new NewtonsoftSerializer();
+        ServiceLocator.RegisterService<ISerializer>(serializer);
     }
 
     private static void InitializeServices()
