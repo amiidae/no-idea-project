@@ -11,7 +11,11 @@ public class EntryPoint : MonoBehaviour
 
     private static void RegisterServices()
     {
+#if ENABLE_INPUT_SYSTEM
         IInputService inputService = new InputService();
+#elif ENABLE_LEGACY_INPUT_MANAGER
+        IInputService inputService = new LegacyInputManagerService();
+#endif
         ServiceLocator.RegisterService<IInputService>(inputService);
 
         IPhysics2DService physics2DService = new Physics2DService();

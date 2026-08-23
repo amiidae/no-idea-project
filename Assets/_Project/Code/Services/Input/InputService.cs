@@ -1,44 +1,62 @@
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class InputService : IInputService
+namespace Code.Services.Input
 {
-    public Vector2 MoveAxis
+    public class InputService : IInputService, IInitializableService, GameInput.IGameplayActions
     {
-        get
+        public event Action Save;
+        
+        public Vector2 MoveAxis
         {
-            float horizontalInput = Input.GetAxis("Horizontal");
-            float verticalInput = Input.GetAxis("Vertical");
-
-            Vector2 inputVector = new Vector2(horizontalInput, verticalInput);
-
-            return inputVector;
+            get
+            {
+                return _input.Player.Move.ReadValue<Vector2>();
+            }
         }
-    }
 
-    public bool IsJumpInputReceived
-    {
-        get
+        public bool IsJumpInputReceived
         {
-            bool isJumpKeyDown = Input.GetKeyDown(KeyCode.Space);
-            return isJumpKeyDown;
+            get
+            {
+                return _input.Player.Jump.WasPerformedThisFrame();
+            }
         }
-    }
 
-    public bool IsLongJumpInputReceived
-    {
-        get
+        public bool IsLongJumpInputReceived
         {
-            bool isJumpKeyHeld = Input.GetKey(KeyCode.Space);
-            return isJumpKeyHeld;
+            get
+            {
+                return _input.Player.Jump.IsPressed();
+            }
         }
-    }
 
-    public bool IsRunInputReceived
-    {
-        get
+        public bool IsRunInputReceived
         {
-            bool isRunKeyDown = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-            return isRunKeyDown;
+            get
+            {
+                return _input.Player.Sprint.IsPressed();
+            }
+        }
+
+        private GameInput _input;
+
+        public void Initialize()
+        {
+            _input = new GameInput();
+            _input.Gameplay.SetCallbacks(this);
+
+            _input.Gameplay.Enable();
+            _input.Player.Enable();
+        }
+
+        public void OnSave(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                Save?.Invoke();
+            }
         }
     }
 }
