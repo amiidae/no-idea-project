@@ -2,10 +2,10 @@
 {
     public class SaveProgressByInput : ISaveProgressStrategy
     {
-        private IInputService _inputService;
-        private SaveLoadService _saveLoadService;
+        private readonly IInputService _inputService;
+        private readonly ISaveLoadService _saveLoadService;
 
-        public SaveProgressByInput(SaveLoadService saveLoadService, IInputService inputService)
+        public SaveProgressByInput(ISaveLoadService saveLoadService, IInputService inputService)
         {
             _saveLoadService = saveLoadService;
             _inputService = inputService;

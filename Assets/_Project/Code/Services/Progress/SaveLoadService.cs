@@ -34,23 +34,21 @@ namespace Code.Services.Progress
             }
         }
 
-        
-        public ProgressData ProgressData { get; set; } = new();
-
         private readonly HashSet<IProgressWatcher> _progressWatchers = new();
-        
         private readonly List<ISaveProgressStrategy> _saveProgressStrategies = new();
+        
+        private ProgressData _progressData;
         
         private readonly ISerializer _serializer;
 
-        public SaveLoadService(ISerializer serializer)
-        {
+        public SaveLoadService(ISerializer serializer) => 
             _serializer = serializer;
-        }
-        
+
         public void Initialize()
         {
-            _saveProgressStrategies.Add(new SaveProgressByInput(this, ServiceLocator.GetService<IInputService>()));
+            SaveProgressByInput saveProgressByInput = new SaveProgressByInput(this, ServiceLocator.GetService<IInputService>());
+            _saveProgressStrategies.Add(saveProgressByInput);
+            saveProgressByInput.Initialize();
         }
 
         public void AddProgressWatcher(IProgressWatcher progressWatcher)
@@ -65,45 +63,64 @@ namespace Code.Services.Progress
 
         public async Task SaveProgress()
         {
-            ProgressData.NewGame = false;
+            if (!TryGetLoadedProgressData(out _))
+            {
+                _progressData = CreateNewProgress();
+            }
             
             foreach (IProgressWriter progressWriter in _progressWatchers.OfType<IProgressWriter>())
             {
-                progressWriter.WriteProgress(ProgressData);
+                progressWriter.WriteProgress(_progressData);
             }
-
-            string json = _serializer.Serialize(ProgressData);
-
+            
+            string json = _serializer.Serialize(_progressData);
             await File.WriteAllTextAsync(TempSaveFilePath, json);
             
-            if(File.Exists(SaveFilePath))
-                File.Delete(SaveFilePath);
-           
+            File.Delete(SaveFilePath);
             File.Move(TempSaveFilePath, SaveFilePath);
         }
 
-        public async Task LoadPrgoress()
+        public async Task LoadProgress()
         {
-            if (!File.Exists(SaveFilePath))
+            if (File.Exists(SaveFilePath))
             {
-                ProgressData = new ProgressData();
+                try
+                {
+                    string json = await File.ReadAllTextAsync(SaveFilePath);
+                    _progressData = _serializer.Deserialize<ProgressData>(json);
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogError($"Failed to load progress: {exception.Message}");
+                    _progressData = CreateNewProgress();
+                }
             }
-
-
-            try
+            else
             {
-                string json = await File.ReadAllTextAsync(SaveFilePath);
-                ProgressData = _serializer.Deserialize<ProgressData>(json) ?? new ProgressData();
-            }
-            catch (Exception exception)
-            {
-                Debug.LogException(exception);
+                _progressData = CreateNewProgress();
             }
             
             foreach (IProgressReader progressReader in _progressWatchers.OfType<IProgressReader>())
             {
-                progressReader.ReadProgress(ProgressData);
+                progressReader.ReadProgress(_progressData);
             }
+        }
+
+        public bool TryGetLoadedProgressData(out ProgressData progressData)
+        {
+            if (_progressData == null)
+            {
+                progressData = null;
+                return false;
+            }
+            
+            progressData = _progressData;
+            return true;
+        }
+
+        private ProgressData CreateNewProgress()
+        {
+            return new ProgressData();
         }
     }
 }

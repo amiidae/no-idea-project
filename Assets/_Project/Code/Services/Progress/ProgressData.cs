@@ -6,6 +6,7 @@ public enum ProgressVersion
     v1
 }
 
+
 [Serializable]
 public struct Vector2Data
 {
@@ -25,12 +26,10 @@ public class ProgressData
 {
     public ProgressVersion Version;
     public HeroProgressData HeroProgressData;
-    public bool NewGame;
 
     public ProgressData()
     {
         Version = ProgressVersion.v1;
         HeroProgressData = new HeroProgressData();
-        NewGame = true;
     }
 }
