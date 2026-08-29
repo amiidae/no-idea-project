@@ -125,6 +125,7 @@ GameObject:
   - component: {fileID: 5314740840426392778}
   - component: {fileID: 7736255653106054822}
   - component: {fileID: 5957918600937711404}
+  - component: {fileID: 1158706768085240126}
   m_Layer: 0
   m_Name: Hero
   m_TagString: Player
@@ -274,3 +275,16 @@ MonoBehaviour:
   SpriteRenderer: {fileID: 1537745906251605907}
   Rb: {fileID: 725275484281500931}
   heroCollider: {fileID: 6845752984891367293}
+  heroProgressManager: {fileID: 1158706768085240126}
+--- !u!114 &1158706768085240126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8027582293499904200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 622d28c9d3fce4244a95844826b7d456, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

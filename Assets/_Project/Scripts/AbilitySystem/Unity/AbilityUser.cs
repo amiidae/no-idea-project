@@ -48,6 +48,9 @@ public class AbilityUser : MonoBehaviour, IAbilityUser
                 {
                     CompleteActiveAbility(abilityLayer);
                     UseAbility(abilityLayer, ability);
+
+                    Debug.Log(abilityLayer.ActiveAbility);
+
                     break;
                 }
             }
@@ -61,7 +64,6 @@ public class AbilityUser : MonoBehaviour, IAbilityUser
                     CompleteActiveAbility(abilityLayer);
                 }
             }
-            Debug.Log(abilityLayer.ActiveAbility);
         }
     }
 

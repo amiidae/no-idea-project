@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class HeroController : MonoBehaviour
 {
@@ -28,6 +27,9 @@ public class HeroController : MonoBehaviour
 
     [SerializeField]
     private Collider2D heroCollider;
+
+    [SerializeField]
+    private HeroProgressManager heroProgressManager;
 
     private float moveVelocity;
     private float airMoveVelocity;
@@ -62,11 +64,13 @@ public class HeroController : MonoBehaviour
     void OnEnable()
     {
         Landed += OnLanded;
+        heroProgressManager.ProgressLoaded += OnProgressLoaded;
     }
 
     void OnDisable()
     {
         Landed -= OnLanded;
+        heroProgressManager.ProgressLoaded -= OnProgressLoaded;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -144,6 +148,16 @@ public class HeroController : MonoBehaviour
     private void OnLanded()
     {
         JumpNumberReset();
+    }
+
+    private void OnProgressLoaded(Vector3 coordinates)
+    {
+        ChangePosition(coordinates);
+    }
+
+    private void ChangePosition(Vector3 newPosition)
+    {
+        gameObject.transform.position = newPosition;
     }
 
     private void GetServices()
