@@ -2,26 +2,24 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputSystemService : IInputService
+public class InputSystemService
+    : IInputService,
+        IInitializableService,
+        InputSystemActions.IGameplayActions
 {
-    private InputSystemActions inputActions = new InputSystemActions();
+    public event Action Save;
+    private InputSystemActions inputActions;
 
     private InputAction moveAction;
     private InputAction runAction;
     private InputAction jumpAction;
 
-    public InputSystemService()
-    {
-        moveAction = inputActions.Player.Move;
-        runAction = inputActions.Player.Sprint;
-        jumpAction = inputActions.Player.Jump;
-
-        inputActions.Player.Enable();
-    }
+    public InputSystemService() { }
 
     ~InputSystemService()
     {
         inputActions.Player.Disable();
+        inputActions.Gameplay.Disable();
     }
 
     public Vector2 MoveAxis
@@ -29,7 +27,6 @@ public class InputSystemService : IInputService
         get
         {
             Vector2 inputVector = moveAction.ReadValue<Vector2>();
-            // Debug.Log(inputVector.x);
 
             return inputVector;
         }
@@ -62,6 +59,28 @@ public class InputSystemService : IInputService
         {
             bool isJumpKeyHeld = jumpAction.IsPressed();
             return isJumpKeyHeld;
+        }
+    }
+
+    public void Initialize()
+    {
+        inputActions = new InputSystemActions();
+
+        moveAction = inputActions.Player.Move;
+        runAction = inputActions.Player.Sprint;
+        jumpAction = inputActions.Player.Jump;
+
+        inputActions.Gameplay.SetCallbacks(this);
+
+        inputActions.Player.Enable();
+        inputActions.Gameplay.Enable();
+    }
+
+    public void OnSave(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Save?.Invoke();
         }
     }
 }

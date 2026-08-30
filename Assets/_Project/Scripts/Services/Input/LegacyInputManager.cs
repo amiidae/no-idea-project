@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class LegacyInputManagerService : IInputService
 {
+    public event Action Save;
+
     public Vector2 MoveAxis
     {
         get

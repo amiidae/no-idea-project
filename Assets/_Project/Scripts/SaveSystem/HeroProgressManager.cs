@@ -8,7 +8,16 @@ public class HeroProgressManager : MonoBehaviour, IProgressReader, IProgressWrit
     // public event Action ProgressSaved;
     public event Action<Vector3> ProgressLoaded;
 
+    private ISaveLoadService saveLoadService;
+
     // the line is drawn on the handling of ProgressData class
+
+    void Start()
+    {
+        saveLoadService = ServiceLocator.GetService<ISaveLoadService>();
+
+        saveLoadService.AddProgressUser(this);
+    }
 
     public void SaveProgress(ProgressData progressData)
     {
@@ -22,5 +31,10 @@ public class HeroProgressManager : MonoBehaviour, IProgressReader, IProgressWrit
         Vector3 coordinates = progressData.HeroProgressData.Position.ToUnityVector3();
 
         ProgressLoaded.Invoke(coordinates);
+    }
+
+    void OnDestroy()
+    {
+        saveLoadService.RemoveProgressUser(this);
     }
 }

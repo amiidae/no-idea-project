@@ -991,6 +991,56 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Gameplay",
+            "id": "b3e9e99d-4634-4192-97ba-64362b2e9378",
+            "actions": [
+                {
+                    "name": "Save",
+                    "type": "Button",
+                    "id": "9f725bb1-2e92-472b-a502-a28560bf6647",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "CtrlS",
+                    "id": "50281ea6-9e9e-4bac-b54c-8e058bf3bf42",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Save",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "ae14e100-5736-4118-ad29-ec9d5055f828",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Save",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "0beb6494-e32b-4d6f-89d8-2feed87e9a3f",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Save",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
         }
     ],
     "controlSchemes": [

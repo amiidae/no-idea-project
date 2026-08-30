@@ -4,5 +4,6 @@ using UnityEngine;
 [Serializable]
 public class ProgressData
 {
-    public HeroProgressData HeroProgressData;
+    // Question: how to init this madness?
+    public HeroProgressData HeroProgressData = new HeroProgressData();
 }

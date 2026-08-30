@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,14 +22,21 @@ public class EntryPoint : MonoBehaviour
 
         ServiceLocator.RegisterService<IInputService>(inputService);
 
+        ITimeService timeService = new TimeService();
+        ServiceLocator.RegisterService<ITimeService>(timeService);
+
         IPhysics2DService physics2DService = new Physics2DService();
         ServiceLocator.RegisterService<IPhysics2DService>(physics2DService);
 
         IDataService dataRepository = new DataRepository();
         ServiceLocator.RegisterService<IDataService>(dataRepository);
 
-        ITimeService timeService = new TimeService();
-        ServiceLocator.RegisterService<ITimeService>(timeService);
+        ISerializer serializer = new NewtonsoftSerializer();
+        ServiceLocator.RegisterService<ISerializer>(serializer);
+
+        // Question: is it passing  same references?
+        ISaveLoadService saveLoadService = new SaveLoadService(serializer, inputService);
+        ServiceLocator.RegisterService<ISaveLoadService>(saveLoadService);
     }
 
     private static void InitializeServices()

@@ -27,10 +27,14 @@ public class SaveLoadService : ISaveLoadService
     private HashSet<IProgressWriter> progressWriters = new HashSet<IProgressWriter>();
 
     private ISerializer serializer;
+    private IInputService inputService;
 
-    public SaveLoadService(ISerializer serializer)
+    public SaveLoadService(ISerializer serializer, IInputService inputService)
     {
         this.serializer = serializer;
+        this.inputService = inputService;
+
+        inputService.Save += OnSave;
     }
 
     public void AddProgressUser(IProgressUser progressUser)
@@ -40,7 +44,7 @@ public class SaveLoadService : ISaveLoadService
         {
             progressReaders.Add((IProgressReader)progressUser);
         }
-        else
+        if (progressUser is IProgressWriter)
         {
             progressWriters.Add((IProgressWriter)progressUser);
         }
@@ -48,13 +52,13 @@ public class SaveLoadService : ISaveLoadService
 
     public void RemoveProgressUser(IProgressUser progressUser)
     {
-        if (progressUser is IProgressReader)
+        if (progressUser is IProgressReader reader)
         {
-            progressReaders.Remove((IProgressReader)progressUser);
+            progressReaders.Remove(reader);
         }
-        else
+        if (progressUser is IProgressWriter writer)
         {
-            progressWriters.Remove((IProgressWriter)progressUser);
+            progressWriters.Remove(writer);
         }
     }
 
@@ -77,6 +81,36 @@ public class SaveLoadService : ISaveLoadService
 
     public async Task LoadProgress()
     {
-        throw new NotImplementedException();
+        if (File.Exists(SaveFile))
+        {
+            // Question:
+            // when to try catch?
+            try
+            {
+                string json = await File.ReadAllTextAsync(SaveFile); // operation performed by side worker; working with files
+                ProgressData = serializer.Deserialize<ProgressData>(json);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(
+                    $"Exception while Loading Progress: {e.Message}\nHave a good day <3"
+                );
+            }
+        }
+        else
+        {
+            ProgressData = new ProgressData();
+        }
+
+        foreach (IProgressReader progressReader in progressReaders)
+        {
+            progressReader.LoadProgress(ProgressData);
+        }
+    }
+
+    private async void OnSave()
+    {
+        await SaveProgress();
+        Debug.Log($"Saved at {SaveFile}");
     }
 }
