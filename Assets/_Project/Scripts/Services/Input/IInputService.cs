@@ -4,6 +4,7 @@ using UnityEngine;
 public interface IInputService
 {
     public event Action Save;
+    public event Action ToggleDebug;
     public Vector2 MoveAxis { get; }
 
     public bool IsMoveInputReceived { get; }

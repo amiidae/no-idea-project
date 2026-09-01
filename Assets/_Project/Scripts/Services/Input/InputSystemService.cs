@@ -8,6 +8,7 @@ public class InputSystemService
         InputSystemActions.IGameplayActions
 {
     public event Action Save;
+    public event Action ToggleDebug;
     private InputSystemActions inputActions;
 
     private InputAction moveAction;
@@ -81,6 +82,14 @@ public class InputSystemService
         if (context.performed)
         {
             Save?.Invoke();
+        }
+    }
+
+    public void OnToggleDebug(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            ToggleDebug?.Invoke();
         }
     }
 }

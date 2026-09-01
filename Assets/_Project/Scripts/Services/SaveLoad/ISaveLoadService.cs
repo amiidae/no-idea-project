@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 
 public interface ISaveLoadService
 {
-    public ProgressData ProgressData { get; }
     public void AddProgressUser(IProgressUser progressUser);
     public void RemoveProgressUser(IProgressUser progressUser);
 

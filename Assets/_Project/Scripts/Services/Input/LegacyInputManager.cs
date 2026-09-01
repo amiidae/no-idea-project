@@ -4,6 +4,7 @@ using UnityEngine;
 public class LegacyInputManagerService : IInputService
 {
     public event Action Save;
+    public event Action ToggleDebug;
 
     public Vector2 MoveAxis
     {

@@ -1090,6 +1090,15 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleDebug"",
+                    ""type"": ""Button"",
+                    ""id"": ""b53e3f2d-ad1c-4420-806c-1ec59835cbec"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1123,6 +1132,39 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Save"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""CtrlD"",
+                    ""id"": ""3d93efcd-fe60-4f43-99e4-3dfc802e7659"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleDebug"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""6eaa637f-4f61-4f36-aa36-2bde1fc498aa"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleDebug"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""21527949-ca87-4462-b06f-0efa5cc8163e"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleDebug"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -1218,6 +1260,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Save = m_Gameplay.FindAction("Save", throwIfNotFound: true);
+        m_Gameplay_ToggleDebug = m_Gameplay.FindAction("ToggleDebug", throwIfNotFound: true);
     }
 
     ~@InputSystemActions()
@@ -1680,6 +1723,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Gameplay;
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_Gameplay_Save;
+    private readonly InputAction m_Gameplay_ToggleDebug;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -1695,6 +1739,10 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Gameplay/Save".
         /// </summary>
         public InputAction @Save => m_Wrapper.m_Gameplay_Save;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/ToggleDebug".
+        /// </summary>
+        public InputAction @ToggleDebug => m_Wrapper.m_Gameplay_ToggleDebug;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1724,6 +1772,9 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
             @Save.started += instance.OnSave;
             @Save.performed += instance.OnSave;
             @Save.canceled += instance.OnSave;
+            @ToggleDebug.started += instance.OnToggleDebug;
+            @ToggleDebug.performed += instance.OnToggleDebug;
+            @ToggleDebug.canceled += instance.OnToggleDebug;
         }
 
         /// <summary>
@@ -1738,6 +1789,9 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
             @Save.started -= instance.OnSave;
             @Save.performed -= instance.OnSave;
             @Save.canceled -= instance.OnSave;
+            @ToggleDebug.started -= instance.OnToggleDebug;
+            @ToggleDebug.performed -= instance.OnToggleDebug;
+            @ToggleDebug.canceled -= instance.OnToggleDebug;
         }
 
         /// <summary>
@@ -1999,5 +2053,12 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSave(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleDebug" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleDebug(InputAction.CallbackContext context);
     }
 }

@@ -21,13 +21,13 @@ public class SaveLoadService : ISaveLoadService
         get { return Path.Combine(SaveDirectory, "savefile.save"); }
     }
 
-    public ProgressData ProgressData { get; private set; } = new ProgressData();
-
     private HashSet<IProgressReader> progressReaders = new HashSet<IProgressReader>();
     private HashSet<IProgressWriter> progressWriters = new HashSet<IProgressWriter>();
 
     private ISerializer serializer;
     private IInputService inputService;
+
+    private ProgressData progressData;
 
     public SaveLoadService(ISerializer serializer, IInputService inputService)
     {
@@ -35,6 +35,20 @@ public class SaveLoadService : ISaveLoadService
         this.inputService = inputService;
 
         inputService.Save += OnSave;
+    }
+
+    public bool TryGetProgressData(out ProgressData progressData)
+    {
+        progressData = this.progressData;
+
+        if (progressData == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     public void AddProgressUser(IProgressUser progressUser)
@@ -64,19 +78,22 @@ public class SaveLoadService : ISaveLoadService
 
     public async Task SaveProgress()
     {
-        foreach (IProgressWriter progressWriter in progressWriters)
+        if (TryGetProgressData(out _) == false)
         {
-            progressWriter.SaveProgress(ProgressData);
+            CreateNewProgress();
         }
 
-        string progressJson = serializer.Serialize<ProgressData>(ProgressData);
+        foreach (IProgressWriter progressWriter in progressWriters)
+        {
+            progressWriter.SaveProgress(progressData);
+        }
 
-        await File.WriteAllTextAsync(TempSaveFile, progressJson);
+        string json = serializer.Serialize<ProgressData>(progressData, true);
+
+        await File.WriteAllTextAsync(TempSaveFile, json);
 
         File.Delete(SaveFile);
         File.Move(TempSaveFile, SaveFile);
-
-        Debug.Log("progress saved");
     }
 
     public async Task LoadProgress()
@@ -88,24 +105,30 @@ public class SaveLoadService : ISaveLoadService
             try
             {
                 string json = await File.ReadAllTextAsync(SaveFile); // operation performed by side worker; working with files
-                ProgressData = serializer.Deserialize<ProgressData>(json);
+                progressData = serializer.Deserialize<ProgressData>(json);
             }
             catch (System.Exception e)
             {
                 Debug.LogError(
                     $"Exception while Loading Progress: {e.Message}\nHave a good day <3"
                 );
+                CreateNewProgress();
             }
         }
         else
         {
-            ProgressData = new ProgressData();
+            CreateNewProgress();
         }
 
         foreach (IProgressReader progressReader in progressReaders)
         {
-            progressReader.LoadProgress(ProgressData);
+            progressReader.LoadProgress(progressData);
         }
+    }
+
+    private void CreateNewProgress()
+    {
+        progressData = new ProgressData();
     }
 
     private async void OnSave()
