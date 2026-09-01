@@ -1,13 +1,15 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class DataRepository : IDataService
+namespace Bnny.Scripts.Services.Data
 {
-    public HeroData HeroData { get; private set; }
-
-    public void Initialize()
+    public class DataRepository : IDataService
     {
-        HeroConfig heroConfig = Resources.Load<HeroConfig>("Configs/HeroConfig");
-        HeroData = heroConfig.HeroData;
+        public HeroData HeroData { get; private set; }
+
+        public void Initialize()
+        {
+            HeroConfig heroConfig = Resources.Load<HeroConfig>("Configs/HeroConfig");
+            HeroData = heroConfig.HeroData;
+        }
     }
 }

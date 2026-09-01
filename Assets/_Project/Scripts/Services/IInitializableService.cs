@@ -1,4 +1,7 @@
-public interface IInitializableService
+namespace Bnny.Scripts.Services
 {
-    public void Initialize();
+    public interface IInitializableService
+    {
+        public void Initialize();
+    }
 }

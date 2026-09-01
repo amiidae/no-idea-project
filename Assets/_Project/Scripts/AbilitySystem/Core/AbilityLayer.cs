@@ -1,13 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class AbilityLayer
+namespace Bnny.Scripts.AbilitySystem.Core
 {
-    public IAbility ActiveAbility;
-    public IReadOnlyList<IAbility> Abilities { get; private set; }
-
-    public AbilityLayer(params IAbility[] abilities)
+    public class AbilityLayer
     {
-        this.Abilities = abilities.ToList();
+        public IAbility ActiveAbility;
+        public IReadOnlyList<IAbility> Abilities { get; private set; }
+
+        public AbilityLayer(params IAbility[] abilities)
+        {
+            this.Abilities = abilities.ToList();
+        }
     }
 }

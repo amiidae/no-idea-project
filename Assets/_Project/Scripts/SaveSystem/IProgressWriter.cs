@@ -1,4 +1,9 @@
-internal interface IProgressWriter : IProgressUser
+using Bnny.Scripts.Data;
+
+namespace Bnny.Scripts.SaveSystem
 {
-    public void SaveProgress(ProgressData progressData);
+    public interface IProgressWriter : IProgressUser
+    {
+        public void SaveProgress(ProgressData progressData);
+    }
 }

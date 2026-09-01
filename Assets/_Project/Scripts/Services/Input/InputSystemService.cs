@@ -2,94 +2,97 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputSystemService
-    : IInputService,
-        IInitializableService,
-        InputSystemActions.IGameplayActions
+namespace Bnny.Scripts.Services.Input
 {
-    public event Action Save;
-    public event Action ToggleDebug;
-    private InputSystemActions inputActions;
-
-    private InputAction moveAction;
-    private InputAction runAction;
-    private InputAction jumpAction;
-
-    public InputSystemService() { }
-
-    ~InputSystemService()
+    public class InputSystemService
+        : IInputService,
+            IInitializableService,
+            InputSystemActions.IGameplayActions
     {
-        inputActions.Player.Disable();
-        inputActions.Gameplay.Disable();
-    }
+        public event Action Save;
+        public event Action ToggleDebug;
+        private InputSystemActions inputActions;
 
-    public Vector2 MoveAxis
-    {
-        get
+        private InputAction moveAction;
+        private InputAction runAction;
+        private InputAction jumpAction;
+
+        public InputSystemService() { }
+
+        ~InputSystemService()
         {
-            Vector2 inputVector = moveAction.ReadValue<Vector2>();
-
-            return inputVector;
+            inputActions.Player.Disable();
+            inputActions.Gameplay.Disable();
         }
-    }
 
-    public bool IsMoveInputReceived
-    {
-        get { return Math.Abs(MoveAxis.x) > 0; }
-    }
-    public bool IsRunInputReceived
-    {
-        get
+        public Vector2 MoveAxis
         {
-            bool isRunKeyHeld = runAction.IsPressed();
-            return isRunKeyHeld;
+            get
+            {
+                Vector2 inputVector = moveAction.ReadValue<Vector2>();
+
+                return inputVector;
+            }
         }
-    }
-    public bool IsJumpInputReceived
-    {
-        get
+
+        public bool IsMoveInputReceived
         {
-            bool isJumpKeyDown = jumpAction.WasPressedThisFrame();
-            return isJumpKeyDown;
+            get { return Math.Abs(MoveAxis.x) > 0; }
         }
-    }
-
-    public bool IsJumpInputContinuous
-    {
-        get
+        public bool IsRunInputReceived
         {
-            bool isJumpKeyHeld = jumpAction.IsPressed();
-            return isJumpKeyHeld;
+            get
+            {
+                bool isRunKeyHeld = runAction.IsPressed();
+                return isRunKeyHeld;
+            }
         }
-    }
-
-    public void Initialize()
-    {
-        inputActions = new InputSystemActions();
-
-        moveAction = inputActions.Player.Move;
-        runAction = inputActions.Player.Sprint;
-        jumpAction = inputActions.Player.Jump;
-
-        inputActions.Gameplay.SetCallbacks(this);
-
-        inputActions.Player.Enable();
-        inputActions.Gameplay.Enable();
-    }
-
-    public void OnSave(InputAction.CallbackContext context)
-    {
-        if (context.performed)
+        public bool IsJumpInputReceived
         {
-            Save?.Invoke();
+            get
+            {
+                bool isJumpKeyDown = jumpAction.WasPressedThisFrame();
+                return isJumpKeyDown;
+            }
         }
-    }
 
-    public void OnToggleDebug(InputAction.CallbackContext context)
-    {
-        if (context.performed)
+        public bool IsJumpInputContinuous
         {
-            ToggleDebug?.Invoke();
+            get
+            {
+                bool isJumpKeyHeld = jumpAction.IsPressed();
+                return isJumpKeyHeld;
+            }
+        }
+
+        public void Initialize()
+        {
+            inputActions = new InputSystemActions();
+
+            moveAction = inputActions.Player.Move;
+            runAction = inputActions.Player.Sprint;
+            jumpAction = inputActions.Player.Jump;
+
+            inputActions.Gameplay.SetCallbacks(this);
+
+            inputActions.Player.Enable();
+            inputActions.Gameplay.Enable();
+        }
+
+        public void OnSave(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                Save?.Invoke();
+            }
+        }
+
+        public void OnToggleDebug(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                ToggleDebug?.Invoke();
+            }
         }
     }
 }

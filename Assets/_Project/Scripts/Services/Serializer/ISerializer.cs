@@ -1,7 +1,10 @@
 using System;
 
-public interface ISerializer
+namespace Bnny.Scripts.Services.Serializer
 {
-    public string Serialize<T>(T obj, bool prettify = false);
-    public T Deserialize<T>(string json);
+    public interface ISerializer
+    {
+        public string Serialize<T>(T obj, bool prettify = false);
+        public T Deserialize<T>(string json);
+    }
 }

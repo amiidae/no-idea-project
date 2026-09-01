@@ -1,4 +1,7 @@
-public interface IAbilityUser
+namespace Bnny.Scripts.AbilitySystem.Core
 {
-    public IAbilityUserBlackboard AbilityUserBlackboard { get; }
+    public interface IAbilityUser
+    {
+        public IAbilityUserBlackboard AbilityUserBlackboard { get; }
+    }
 }

@@ -1,13 +1,17 @@
 using System;
 using System.Threading.Tasks;
+using Bnny.Scripts.SaveSystem;
 
-public interface ISaveLoadService
+namespace Bnny.Scripts.Services.SaveLoad
 {
-    public void AddProgressUser(IProgressUser progressUser);
-    public void RemoveProgressUser(IProgressUser progressUser);
+    public interface ISaveLoadService
+    {
+        public void AddProgressUser(IProgressUser progressUser);
+        public void RemoveProgressUser(IProgressUser progressUser);
 
-    public Task SaveProgress();
-    public Task LoadProgress();
+        public Task SaveProgress();
+        public Task LoadProgress();
+    }
 }
 
 /*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⢄⣠⣤⣶⣿⣿⣿⣿⠿⠛⢋⠉⠉⠉⠹⠍⡉⠍⣛⢿⣿⣿⠦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣾⣿⣿⣿⣿⣿⡟⠛⠉⠉⠝⢻⢿⣿⣿⣿⣆⠀⠀⠀⠀⠀*/

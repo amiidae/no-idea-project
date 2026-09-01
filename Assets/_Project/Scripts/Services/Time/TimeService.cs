@@ -1,13 +1,16 @@
 using UnityEngine;
 
-public class TimeService : ITimeService
+namespace Bnny.Scripts.Services.Time
 {
-    public float DeltaTime
+    public class TimeService : ITimeService
     {
-        get
+        public float DeltaTime
         {
-            float deltaTime = Time.deltaTime;
-            return deltaTime;
+            get
+            {
+                float deltaTime = UnityEngine.Time.deltaTime;
+                return deltaTime;
+            }
         }
     }
 }

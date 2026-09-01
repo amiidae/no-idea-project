@@ -1,56 +1,62 @@
+using Bnny.Scripts.AbilitySystem.Core;
+using Bnny.Scripts.AbilitySystem.Unity;
+using Bnny.Scripts.Services.Data;
 using UnityEngine;
 
-public class WallSlideAbility : Ability
+namespace Bnny.Scripts.AbilitySystem.Abilities
 {
-    private IAbilityUserBlackboard abilityUserBlackboard;
-    private IDataService dataService;
-    private HeroController heroController;
-
-    public WallSlideAbility(
-        AbilityUser abilityUser,
-        IAbilityUserBlackboard abilityUserBlackboard,
-        IDataService dataService
-    )
+    public class WallSlideAbility : Ability
     {
-        this.abilityUserBlackboard = abilityUserBlackboard;
-        this.dataService = dataService;
-        this.heroController = abilityUser.HeroController;
+        private IAbilityUserBlackboard abilityUserBlackboard;
+        private IDataService dataService;
+        private HeroController heroController;
+
+        public WallSlideAbility(
+            AbilityUser abilityUser,
+            IAbilityUserBlackboard abilityUserBlackboard,
+            IDataService dataService
+        )
+        {
+            this.abilityUserBlackboard = abilityUserBlackboard;
+            this.dataService = dataService;
+            this.heroController = abilityUser.HeroController;
+        }
+
+        public override void Init()
+        {
+            // LedgeHang;
+        }
+
+        public override bool IsTriggered()
+        {
+            return heroController.IsFacedAgainstWall == true && heroController.IsGrounded == false; // hero collides with a wall with a raycast
+        }
+
+        public override bool CanBeUsed()
+        {
+            return heroController.IsFacedAgainstWall == true
+                && heroController.IsGrounded == false
+                && heroController.VerticalVelocity < 0;
+        }
+
+        public override bool CanComplete()
+        {
+            return heroController.IsFacedAgainstWall == false && heroController.IsGrounded == true;
+        }
+
+        public override void Use()
+        {
+            heroController.Animator.Play("LedgeHang");
+        }
+
+        public override void Update() { }
+
+        public override void FixedUpdate() { }
+
+        public override void Complete() { }
+
+        public override void Destroy() { }
     }
-
-    public override void Init()
-    {
-        // LedgeHang;
-    }
-
-    public override bool IsTriggered()
-    {
-        return heroController.IsFacedAgainstWall == true && heroController.IsGrounded == false; // hero collides with a wall with a raycast
-    }
-
-    public override bool CanBeUsed()
-    {
-        return heroController.IsFacedAgainstWall == true
-            && heroController.IsGrounded == false
-            && heroController.VerticalVelocity < 0;
-    }
-
-    public override bool CanComplete()
-    {
-        return heroController.IsFacedAgainstWall == false && heroController.IsGrounded == true;
-    }
-
-    public override void Use()
-    {
-        heroController.Animator.Play("LedgeHang");
-    }
-
-    public override void Update() { }
-
-    public override void FixedUpdate() { }
-
-    public override void Complete() { }
-
-    public override void Destroy() { }
 }
 
 

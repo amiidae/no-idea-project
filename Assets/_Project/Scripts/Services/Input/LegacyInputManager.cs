@@ -1,54 +1,57 @@
 using System;
 using UnityEngine;
 
-public class LegacyInputManagerService : IInputService
+namespace Bnny.Scripts.Services.Input
 {
-    public event Action Save;
-    public event Action ToggleDebug;
-
-    public Vector2 MoveAxis
+    public class LegacyInputManagerService : IInputService
     {
-        get
+        public event Action Save;
+        public event Action ToggleDebug;
+
+        public Vector2 MoveAxis
         {
-            // logical inconsistency
-            // need to lose the y input
-            float horizontalInput = Input.GetAxis("Horizontal");
-            float verticalInput = Input.GetAxis("Vertical");
+            get
+            {
+                // logical inconsistency
+                // need to lose the y input
+                float horizontalInput = UnityEngine.Input.GetAxis("Horizontal");
+                float verticalInput = UnityEngine.Input.GetAxis("Vertical");
 
-            Vector2 inputVector = new Vector2(horizontalInput, verticalInput);
+                Vector2 inputVector = new Vector2(horizontalInput, verticalInput);
 
-            return inputVector;
+                return inputVector;
+            }
         }
-    }
 
-    public bool IsMoveInputReceived
-    {
-        get { return Math.Abs(MoveAxis.x) > 0; }
-    }
-
-    public bool IsRunInputReceived
-    {
-        get
+        public bool IsMoveInputReceived
         {
-            bool isRunKeyHeld = Input.GetKey(KeyCode.LeftShift);
-            return isRunKeyHeld;
+            get { return Math.Abs(MoveAxis.x) > 0; }
         }
-    }
-    public bool IsJumpInputReceived
-    {
-        get
-        {
-            bool isJumpKeyDown = Input.GetKeyDown(KeyCode.Space);
-            return isJumpKeyDown;
-        }
-    }
 
-    public bool IsJumpInputContinuous
-    {
-        get
+        public bool IsRunInputReceived
         {
-            bool isJumpKeyHeld = Input.GetKey(KeyCode.Space);
-            return isJumpKeyHeld;
+            get
+            {
+                bool isRunKeyHeld = UnityEngine.Input.GetKey(KeyCode.LeftShift);
+                return isRunKeyHeld;
+            }
+        }
+        public bool IsJumpInputReceived
+        {
+            get
+            {
+                bool isJumpKeyDown = UnityEngine.Input.GetKeyDown(KeyCode.Space);
+                return isJumpKeyDown;
+            }
+        }
+
+        public bool IsJumpInputContinuous
+        {
+            get
+            {
+                bool isJumpKeyHeld = UnityEngine.Input.GetKey(KeyCode.Space);
+                return isJumpKeyHeld;
+            }
         }
     }
 }

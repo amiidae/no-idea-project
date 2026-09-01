@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public interface ITimeService
+namespace Bnny.Scripts.Services.Time
 {
-    public float DeltaTime { get; }
+    public interface ITimeService
+    {
+        public float DeltaTime { get; }
+    }
 }

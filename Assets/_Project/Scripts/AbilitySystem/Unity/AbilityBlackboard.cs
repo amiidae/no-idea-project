@@ -1,39 +1,43 @@
 using System.Collections.Generic;
+using Bnny.Scripts.AbilitySystem.Core;
 using UnityEngine;
 
-public class AbilityBlackboard : MonoBehaviour, IAbilityUserBlackboard
+namespace Bnny.Scripts.AbilitySystem.Unity
 {
-    private Dictionary<int, float> axes = new Dictionary<int, float>();
-    private Dictionary<int, Vector2> axes2D = new Dictionary<int, Vector2>();
-    private Dictionary<int, bool> states = new Dictionary<int, bool>();
-
-    public float GetAxis(int inputTypeId)
+    public class AbilityBlackboard : MonoBehaviour, IAbilityUserBlackboard
     {
-        return axes.GetValueOrDefault(inputTypeId);
-    }
+        private Dictionary<int, float> axes = new Dictionary<int, float>();
+        private Dictionary<int, Vector2> axes2D = new Dictionary<int, Vector2>();
+        private Dictionary<int, bool> states = new Dictionary<int, bool>();
 
-    public Vector2 GetAxis2D(int inputTypeId)
-    {
-        return axes2D.GetValueOrDefault(inputTypeId);
-    }
+        public float GetAxis(int inputTypeId)
+        {
+            return axes.GetValueOrDefault(inputTypeId);
+        }
 
-    public bool GetState(int inputTypeId)
-    {
-        return states.GetValueOrDefault(inputTypeId);
-    }
+        public Vector2 GetAxis2D(int inputTypeId)
+        {
+            return axes2D.GetValueOrDefault(inputTypeId);
+        }
 
-    public void SetAxis(int inputTypeId, float value)
-    {
-        axes[inputTypeId] = value;
-    }
+        public bool GetState(int inputTypeId)
+        {
+            return states.GetValueOrDefault(inputTypeId);
+        }
 
-    public void SetAxis2D(int inputTypeId, Vector2 value)
-    {
-        axes2D[inputTypeId] = value;
-    }
+        public void SetAxis(int inputTypeId, float value)
+        {
+            axes[inputTypeId] = value;
+        }
 
-    public void SetState(int inputTypeId, bool value)
-    {
-        states[inputTypeId] = value;
+        public void SetAxis2D(int inputTypeId, Vector2 value)
+        {
+            axes2D[inputTypeId] = value;
+        }
+
+        public void SetState(int inputTypeId, bool value)
+        {
+            states[inputTypeId] = value;
+        }
     }
 }

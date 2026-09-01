@@ -1,33 +1,39 @@
+using Bnny.Scripts.AbilitySystem.Core;
+using Bnny.Scripts.Services;
+using Bnny.Scripts.Services.Input;
 using UnityEngine;
 
-public class PlayerBlackboardDriver : MonoBehaviour
+namespace Bnny.Scripts.AbilitySystem.Unity
 {
-    private IInputService inputService;
-    private IAbilityUser abilityUser;
-
-    void Start()
+    public class PlayerBlackboardDriver : MonoBehaviour
     {
-        inputService = ServiceLocator.GetService<IInputService>();
+        private IInputService inputService;
+        private IAbilityUser abilityUser;
 
-        abilityUser = gameObject.GetComponent<IAbilityUser>();
-    }
+        void Start()
+        {
+            inputService = ServiceLocator.GetService<IInputService>();
 
-    void Update()
-    {
-        abilityUser.AbilityUserBlackboard.SetAxis2D(InputTypeId.Move, inputService.MoveAxis);
+            abilityUser = gameObject.GetComponent<IAbilityUser>();
+        }
 
-        abilityUser.AbilityUserBlackboard.SetState(
-            InputTypeId.Run,
-            inputService.IsRunInputReceived
-        );
+        void Update()
+        {
+            abilityUser.AbilityUserBlackboard.SetAxis2D(InputTypeId.Move, inputService.MoveAxis);
 
-        abilityUser.AbilityUserBlackboard.SetState(
-            InputTypeId.Jump,
-            inputService.IsJumpInputReceived
-        );
-        abilityUser.AbilityUserBlackboard.SetState(
-            InputTypeId.LongJump,
-            inputService.IsJumpInputContinuous
-        );
+            abilityUser.AbilityUserBlackboard.SetState(
+                InputTypeId.Run,
+                inputService.IsRunInputReceived
+            );
+
+            abilityUser.AbilityUserBlackboard.SetState(
+                InputTypeId.Jump,
+                inputService.IsJumpInputReceived
+            );
+            abilityUser.AbilityUserBlackboard.SetState(
+                InputTypeId.LongJump,
+                inputService.IsJumpInputContinuous
+            );
+        }
     }
 }

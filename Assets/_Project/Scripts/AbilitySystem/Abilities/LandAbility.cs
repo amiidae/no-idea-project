@@ -1,45 +1,49 @@
+using Bnny.Scripts.AbilitySystem.Unity;
 using UnityEngine;
 
-public class LandAbility : Ability
+namespace Bnny.Scripts.AbilitySystem.Abilities
 {
-    private bool landed;
-    private HeroController heroController;
-
-    public LandAbility(AbilityUser abilityUser)
+    public class LandAbility : Ability
     {
-        this.heroController = abilityUser.HeroController;
-    }
+        private bool landed;
+        private HeroController heroController;
 
-    public override void Init()
-    {
-        heroController.Landed += OnLanded;
-    }
+        public LandAbility(AbilityUser abilityUser)
+        {
+            this.heroController = abilityUser.HeroController;
+        }
 
-    public override void Destroy()
-    {
-        heroController.Landed -= OnLanded;
-    }
+        public override void Init()
+        {
+            heroController.Landed += OnLanded;
+        }
 
-    public override bool IsTriggered()
-    {
-        return landed;
-    }
+        public override void Destroy()
+        {
+            heroController.Landed -= OnLanded;
+        }
 
-    public override bool CanComplete()
-    {
-        AnimatorStateInfo state = heroController.Animator.GetCurrentAnimatorStateInfo(0);
-        return state.IsName("Land") && state.normalizedTime >= 1f;
-    }
+        public override bool IsTriggered()
+        {
+            return landed;
+        }
 
-    public override void Use()
-    {
-        heroController.Animator.Play("Land");
+        public override bool CanComplete()
+        {
+            AnimatorStateInfo state = heroController.Animator.GetCurrentAnimatorStateInfo(0);
+            return state.IsName("Land") && state.normalizedTime >= 1f;
+        }
 
-        landed = false;
-    }
+        public override void Use()
+        {
+            heroController.Animator.Play("Land");
 
-    private void OnLanded()
-    {
-        landed = true;
+            landed = false;
+        }
+
+        private void OnLanded()
+        {
+            landed = true;
+        }
     }
 }

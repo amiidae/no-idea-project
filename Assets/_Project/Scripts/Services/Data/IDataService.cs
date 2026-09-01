@@ -1,4 +1,7 @@
-public interface IDataService : IInitializableService
+namespace Bnny.Scripts.Services.Data
 {
-    public HeroData HeroData { get; }
+    public interface IDataService : IInitializableService
+    {
+        public HeroData HeroData { get; }
+    }
 }

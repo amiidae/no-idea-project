@@ -1,30 +1,36 @@
+using Bnny.Scripts.AbilitySystem.Core;
+using Bnny.Scripts.AbilitySystem.Unity;
+using Bnny.Scripts.Services.Data;
 using UnityEngine;
 
-public class WallJumpAbility : JumpAbilityBase
+namespace Bnny.Scripts.AbilitySystem.Abilities.Jumps
 {
-    public WallJumpAbility(
-        AbilityUser abilityUser,
-        IAbilityUserBlackboard abilityUserBlackboard,
-        IDataService dataService
-    )
-        : base(abilityUser, abilityUserBlackboard, dataService) { }
-
-    public override bool IsTriggered()
+    public class WallJumpAbility : JumpAbilityBase
     {
-        return heroController.IsFacedAgainstWall == true
-            && abilityUserBlackboard.GetState(InputTypeId.Jump) == true;
-        /* player facing the wall == true && jump pressed?*/
-    }
+        public WallJumpAbility(
+            AbilityUser abilityUser,
+            IAbilityUserBlackboard abilityUserBlackboard,
+            IDataService dataService
+        )
+            : base(abilityUser, abilityUserBlackboard, dataService) { }
 
-    public override bool CanBeUsed()
-    {
-        return heroController.IsFacedAgainstWall == true && heroController.IsGrounded == false;
-    }
+        public override bool IsTriggered()
+        {
+            return heroController.IsFacedAgainstWall == true
+                && abilityUserBlackboard.GetState(InputTypeId.Jump) == true;
+            /* player facing the wall == true && jump pressed?*/
+        }
 
-    public override void Use()
-    {
-        heroController.WallJump();
+        public override bool CanBeUsed()
+        {
+            return heroController.IsFacedAgainstWall == true && heroController.IsGrounded == false;
+        }
 
-        heroController.Animator.Play("Jump");
+        public override void Use()
+        {
+            heroController.WallJump();
+
+            heroController.Animator.Play("Jump");
+        }
     }
 }

@@ -1,16 +1,22 @@
+using Bnny.Scripts.AbilitySystem.Core;
+using Bnny.Scripts.AbilitySystem.Unity;
+using Bnny.Scripts.Services.Data;
 using UnityEngine;
 
-public class JumpAbility : JumpAbilityBase
+namespace Bnny.Scripts.AbilitySystem.Abilities.Jumps
 {
-    public JumpAbility(
-        AbilityUser abilityUser,
-        IAbilityUserBlackboard abilityUserBlackboard,
-        IDataService dataService
-    )
-        : base(abilityUser, abilityUserBlackboard, dataService) { }
-
-    public override bool CanBeUsed()
+    public class JumpAbility : JumpAbilityBase
     {
-        return heroController.IsGrounded == true;
+        public JumpAbility(
+            AbilityUser abilityUser,
+            IAbilityUserBlackboard abilityUserBlackboard,
+            IDataService dataService
+        )
+            : base(abilityUser, abilityUserBlackboard, dataService) { }
+
+        public override bool CanBeUsed()
+        {
+            return heroController.IsGrounded == true;
+        }
     }
 }

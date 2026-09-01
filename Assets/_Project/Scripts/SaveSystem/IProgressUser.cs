@@ -1,1 +1,4 @@
-public interface IProgressUser { }
+namespace Bnny.Scripts.SaveSystem
+{
+    public interface IProgressUser { }
+}

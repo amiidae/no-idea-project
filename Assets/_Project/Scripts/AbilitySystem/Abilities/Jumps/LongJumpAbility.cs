@@ -1,78 +1,84 @@
 using System;
+using Bnny.Scripts.AbilitySystem.Core;
+using Bnny.Scripts.AbilitySystem.Unity;
+using Bnny.Scripts.Services.Data;
 using UnityEngine;
 
-public class LongJumpAbility : JumpAbilityBase
+namespace Bnny.Scripts.AbilitySystem.Abilities.Jumps
 {
-    private float jumpEndTime;
-    private bool mustLand;
-
-    public LongJumpAbility(
-        AbilityUser abilityUser,
-        IAbilityUserBlackboard abilityUserBlackboard,
-        IDataService dataService
-    )
-        : base(abilityUser, abilityUserBlackboard, dataService) { }
-
-    public override void Init()
+    public class LongJumpAbility : JumpAbilityBase
     {
-        heroController.Landed += OnLanded;
-    }
+        private float jumpEndTime;
+        private bool mustLand;
 
-    public override bool IsTriggered()
-    {
-        return abilityUserBlackboard.GetState(InputTypeId.LongJump);
-    }
+        public LongJumpAbility(
+            AbilityUser abilityUser,
+            IAbilityUserBlackboard abilityUserBlackboard,
+            IDataService dataService
+        )
+            : base(abilityUser, abilityUserBlackboard, dataService) { }
 
-    public override bool CanBeUsed()
-    {
-        return heroController.IsGrounded == false && mustLand == false;
-    }
+        public override void Init()
+        {
+            heroController.Landed += OnLanded;
+        }
 
-    public override bool CanComplete()
-    {
-        return abilityUserBlackboard.GetState(InputTypeId.LongJump) == false
-            || jumpEndTime < Time.time;
-    }
+        public override bool IsTriggered()
+        {
+            return abilityUserBlackboard.GetState(InputTypeId.LongJump);
+        }
 
-    public override void Use()
-    {
-        SetJumpEndTime();
+        public override bool CanBeUsed()
+        {
+            return heroController.IsGrounded == false && mustLand == false;
+        }
 
-        heroController.Animator.Play("Fall");
-    }
+        public override bool CanComplete()
+        {
+            return abilityUserBlackboard.GetState(InputTypeId.LongJump) == false
+                || jumpEndTime < Time.time;
+        }
 
-    public override void FixedUpdate()
-    {
-        heroController.LongJump();
+        public override void Use()
+        {
+            SetJumpEndTime();
 
-        base.FixedUpdate();
-    }
+            heroController.Animator.Play("Fall");
+        }
 
-    public override void Complete()
-    {
-        if (heroController.NumberOfJumpsLeft != 0)
+        public override void FixedUpdate()
+        {
+            heroController.LongJump();
+
+            base.FixedUpdate();
+        }
+
+        public override void Complete()
+        {
+            if (heroController.NumberOfJumpsLeft != 0)
+            {
+                mustLand = false;
+                SetJumpEndTime();
+            }
+            else
+            {
+                mustLand = true;
+            }
+        }
+
+        public override void Destroy()
+        {
+            heroController.Landed -= OnLanded;
+        }
+
+        private void SetJumpEndTime()
+        {
+            jumpEndTime = Time.time + dataService.HeroData.MaxJumpDuration;
+        }
+
+        private void OnLanded()
         {
             mustLand = false;
-            SetJumpEndTime();
         }
-        else
-        {
-            mustLand = true;
-        }
-    }
-
-    public override void Destroy()
-    {
-        heroController.Landed -= OnLanded;
-    }
-
-    private void SetJumpEndTime()
-    {
-        jumpEndTime = Time.time + dataService.HeroData.MaxJumpDuration;
-    }
-
-    private void OnLanded()
-    {
-        mustLand = false;
     }
 }

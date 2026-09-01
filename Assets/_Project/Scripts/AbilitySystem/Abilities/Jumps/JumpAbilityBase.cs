@@ -1,48 +1,54 @@
+using Bnny.Scripts.AbilitySystem.Core;
+using Bnny.Scripts.AbilitySystem.Unity;
+using Bnny.Scripts.Services.Data;
 using UnityEngine;
 
-public abstract class JumpAbilityBase : Ability
+namespace Bnny.Scripts.AbilitySystem.Abilities.Jumps
 {
-    protected IAbilityUserBlackboard abilityUserBlackboard;
-    protected IDataService dataService;
-    protected HeroController heroController;
-
-    public JumpAbilityBase(
-        AbilityUser abilityUser,
-        IAbilityUserBlackboard abilityUserBlackboard,
-        IDataService dataService
-    )
+    public abstract class JumpAbilityBase : Ability
     {
-        this.abilityUserBlackboard = abilityUserBlackboard;
-        this.dataService = dataService;
-        this.heroController = abilityUser.HeroController;
-    }
+        protected IAbilityUserBlackboard abilityUserBlackboard;
+        protected IDataService dataService;
+        protected HeroController heroController;
 
-    public override bool IsTriggered()
-    {
-        return abilityUserBlackboard.GetState(InputTypeId.Jump);
-    }
+        public JumpAbilityBase(
+            AbilityUser abilityUser,
+            IAbilityUserBlackboard abilityUserBlackboard,
+            IDataService dataService
+        )
+        {
+            this.abilityUserBlackboard = abilityUserBlackboard;
+            this.dataService = dataService;
+            this.heroController = abilityUser.HeroController;
+        }
 
-    public override bool CanComplete()
-    {
-        AnimatorStateInfo state = heroController.Animator.GetCurrentAnimatorStateInfo(0);
-        return state.IsName("Jump") && state.normalizedTime >= 1f;
-    }
+        public override bool IsTriggered()
+        {
+            return abilityUserBlackboard.GetState(InputTypeId.Jump);
+        }
 
-    public override void Use()
-    {
-        heroController.Jump();
+        public override bool CanComplete()
+        {
+            AnimatorStateInfo state = heroController.Animator.GetCurrentAnimatorStateInfo(0);
+            return state.IsName("Jump") && state.normalizedTime >= 1f;
+        }
 
-        heroController.Animator.Play("Jump");
-    }
+        public override void Use()
+        {
+            heroController.Jump();
 
-    public override void FixedUpdate()
-    {
-        float direction = abilityUserBlackboard.GetAxis2D(InputTypeId.Move).x;
+            heroController.Animator.Play("Jump");
+        }
 
-        float speed = abilityUserBlackboard.GetState(InputTypeId.Run)
-            ? dataService.HeroData.RunSpeed
-            : dataService.HeroData.MovementSpeed;
+        public override void FixedUpdate()
+        {
+            float direction = abilityUserBlackboard.GetAxis2D(InputTypeId.Move).x;
 
-        heroController.AirMove(direction, speed);
+            float speed = abilityUserBlackboard.GetState(InputTypeId.Run)
+                ? dataService.HeroData.RunSpeed
+                : dataService.HeroData.MovementSpeed;
+
+            heroController.AirMove(direction, speed);
+        }
     }
 }

@@ -1,7 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "HeroConfig", menuName = "Project/HeroConfig")]
-public class HeroConfig : ScriptableObject
+namespace Bnny.Scripts
 {
-    public HeroData HeroData;
+    [CreateAssetMenu(fileName = "HeroConfig", menuName = "Project/HeroConfig")]
+    public class HeroConfig : ScriptableObject
+    {
+        public HeroData HeroData;
+    }
 }

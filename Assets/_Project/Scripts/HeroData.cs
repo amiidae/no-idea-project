@@ -1,30 +1,33 @@
 using System;
 using UnityEngine;
 
-[Serializable]
-public class HeroData
+namespace Bnny.Scripts
 {
-    public float MovementSpeed;
-    public float RunSpeed
+    [Serializable]
+    public class HeroData
     {
-        get
+        public float MovementSpeed;
+        public float RunSpeed
         {
-            float runSpeed = MovementSpeed * runSpeedCoefficient;
-            return runSpeed;
+            get
+            {
+                float runSpeed = MovementSpeed * runSpeedCoefficient;
+                return runSpeed;
+            }
         }
+
+        public float JumpHeight;
+        public float JumpAcceleration;
+        public float WallJumpPushForce;
+
+        public int MaxNumberOfJumps;
+        public int MaxJumpDuration;
+
+        public float WalkSmoothing;
+        public float RunSmoothing;
+        public float AirSmoothing;
+
+        [SerializeField]
+        private float runSpeedCoefficient;
     }
-
-    public float JumpHeight;
-    public float JumpAcceleration;
-    public float WallJumpPushForce;
-
-    public int MaxNumberOfJumps;
-    public int MaxJumpDuration;
-
-    public float WalkSmoothing;
-    public float RunSmoothing;
-    public float AirSmoothing;
-
-    [SerializeField]
-    private float runSpeedCoefficient;
 }

@@ -1,40 +1,45 @@
-using UnityEngine;
+using Bnny.Scripts.AbilitySystem.Core;
+using Bnny.Scripts.AbilitySystem.Unity;
+using Bnny.Scripts.Services.Data;
 
-public class FallAbility : Ability
+namespace Bnny.Scripts.AbilitySystem.Abilities
 {
-    private IAbilityUserBlackboard abilityUserBlackboard;
-    private IDataService dataService;
-    private HeroController heroController;
-
-    public FallAbility(
-        AbilityUser abilityUser,
-        IAbilityUserBlackboard abilityUserBlackboard,
-        IDataService dataService
-    )
+    public class FallAbility : Ability
     {
-        this.abilityUserBlackboard = abilityUserBlackboard;
-        this.dataService = dataService;
-        this.heroController = abilityUser.HeroController;
-    }
+        private IAbilityUserBlackboard abilityUserBlackboard;
+        private IDataService dataService;
+        private HeroController heroController;
 
-    public override bool IsTriggered()
-    {
-        return heroController.IsGrounded == false;
-    }
+        public FallAbility(
+            AbilityUser abilityUser,
+            IAbilityUserBlackboard abilityUserBlackboard,
+            IDataService dataService
+        )
+        {
+            this.abilityUserBlackboard = abilityUserBlackboard;
+            this.dataService = dataService;
+            this.heroController = abilityUser.HeroController;
+        }
 
-    public override void Use()
-    {
-        heroController.Animator.Play("Fall");
-    }
+        public override bool IsTriggered()
+        {
+            return heroController.IsGrounded == false;
+        }
 
-    public override void FixedUpdate()
-    {
-        float direction = abilityUserBlackboard.GetAxis2D(InputTypeId.Move).x;
+        public override void Use()
+        {
+            heroController.Animator.Play("Fall");
+        }
 
-        float speed = abilityUserBlackboard.GetState(InputTypeId.Run)
-            ? dataService.HeroData.RunSpeed
-            : dataService.HeroData.MovementSpeed;
+        public override void FixedUpdate()
+        {
+            float direction = abilityUserBlackboard.GetAxis2D(InputTypeId.Move).x;
 
-        heroController.AirMove(direction, speed);
+            float speed = abilityUserBlackboard.GetState(InputTypeId.Run)
+                ? dataService.HeroData.RunSpeed
+                : dataService.HeroData.MovementSpeed;
+
+            heroController.AirMove(direction, speed);
+        }
     }
 }
