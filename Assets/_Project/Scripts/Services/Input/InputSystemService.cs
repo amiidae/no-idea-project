@@ -1,12 +1,14 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using VContainer.Unity;
 
 namespace Bnny.Scripts.Services.Input
 {
     public class InputSystemService
         : IInputService,
             IInitializableService,
+            IInitializable,
             InputSystemActions.IGameplayActions
     {
         public event Action Save;

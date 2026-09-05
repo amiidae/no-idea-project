@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bnny.Scripts.Services
+namespace Bnny.Scripts
 {
     public static class ServiceLocator
     {

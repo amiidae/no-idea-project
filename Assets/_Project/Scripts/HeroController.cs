@@ -6,6 +6,7 @@ using Bnny.Scripts.Services.Data;
 using Bnny.Scripts.Services.Physics;
 using Bnny.Scripts.Services.Time;
 using UnityEngine;
+using VContainer;
 
 namespace Bnny.Scripts
 {
@@ -83,7 +84,7 @@ namespace Bnny.Scripts
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            GetServices();
+            // GetServices();
 
             JumpNumberReset();
         }
@@ -168,12 +169,24 @@ namespace Bnny.Scripts
             gameObject.transform.position = newPosition;
         }
 
-        private void GetServices()
+        [Inject]
+        private void Construct(
+            IPhysics2DService physics2DService,
+            IDataService dataRepository,
+            ITimeService timeService
+        )
         {
-            physics2DService = ServiceLocator.GetService<IPhysics2DService>();
-            dataRepository = ServiceLocator.GetService<IDataService>();
-            timeService = ServiceLocator.GetService<ITimeService>();
+            this.physics2DService = physics2DService;
+            this.dataRepository = dataRepository;
+            this.timeService = timeService;
         }
+
+        // private void GetServices()
+        // {
+        //     physics2DService = ServiceLocator.GetService<IPhysics2DService>();
+        //     dataRepository = ServiceLocator.GetService<IDataService>();
+        //     timeService = ServiceLocator.GetService<ITimeService>();
+        // }
 
         private void JumpNumberReset()
         {
