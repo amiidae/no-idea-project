@@ -26,7 +26,7 @@ using VContainer.Unity;
 ⣿⣿⡧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⠠⠄⣀⣀⠀⠀⠀⣀⣀⠤⠒⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 */
-namespace Bnny.Scripts
+namespace Bnny.Scripts.DI
 {
     public class RootLifetimeScope : LifetimeScope
     {
@@ -43,13 +43,11 @@ namespace Bnny.Scripts
             builder.Register<ITimeService, TimeService>(Lifetime.Singleton);
 
             builder.Register<IPhysics2DService, Physics2DService>(Lifetime.Singleton);
-            // what to do with initializable services?
-            builder
-                .Register<IDataService, DataRepository>(Lifetime.Singleton)
-                .As<IInitializable>();
+
+            builder.Register<IDataService, DataRepository>(Lifetime.Singleton).As<IInitializable>();
 
             builder.Register<ISerializer, NewtonsoftSerializer>(Lifetime.Singleton);
-            // this puppy requires two other services to function. so?
+
             builder.Register<ISaveLoadService, SaveLoadService>(Lifetime.Singleton);
         }
     }
@@ -59,3 +57,5 @@ namespace Bnny.Scripts
 // Question:
 // what is the deal with keys
 // https://vcontainer.hadashikick.jp/resolving/constructor-injection#key-attribute
+
+// WithParameters takes a type of arg and the value of arg and adds them to the list. Then it takes the value of arg from the list to pass it as argument to the instance, created by resolver.Resolve

@@ -11,12 +11,8 @@ namespace Bnny.Scripts.AbilitySystem.Abilities.Jumps
         private float jumpEndTime;
         private bool mustLand;
 
-        public LongJumpAbility(
-            AbilityUser abilityUser,
-            IAbilityUserBlackboard abilityUserBlackboard,
-            IDataService dataService
-        )
-            : base(abilityUser, abilityUserBlackboard, dataService) { }
+        public LongJumpAbility(AbilityUser abilityUser, IDataService dataService)
+            : base(abilityUser, dataService) { }
 
         public override void Init()
         {
@@ -25,7 +21,7 @@ namespace Bnny.Scripts.AbilitySystem.Abilities.Jumps
 
         public override bool IsTriggered()
         {
-            return abilityUserBlackboard.GetState(InputTypeId.LongJump);
+            return abilityUser.AbilityUserBlackboard.GetState(InputTypeId.LongJump);
         }
 
         public override bool CanBeUsed()
@@ -35,7 +31,7 @@ namespace Bnny.Scripts.AbilitySystem.Abilities.Jumps
 
         public override bool CanComplete()
         {
-            return abilityUserBlackboard.GetState(InputTypeId.LongJump) == false
+            return abilityUser.AbilityUserBlackboard.GetState(InputTypeId.LongJump) == false
                 || jumpEndTime < Time.time;
         }
 

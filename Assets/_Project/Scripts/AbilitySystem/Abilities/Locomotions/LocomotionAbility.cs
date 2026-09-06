@@ -6,15 +6,12 @@ namespace Bnny.Scripts.AbilitySystem.Abilities.Locomotions
 {
     public abstract class LocomotionAbility : Ability
     {
-        protected IAbilityUserBlackboard abilityUserBlackboard;
+        protected AbilityUser abilityUser;
         protected HeroController heroController;
 
-        protected LocomotionAbility(
-            AbilityUser abilityUser,
-            IAbilityUserBlackboard abilityUserBlackboard
-        )
+        protected LocomotionAbility(AbilityUser abilityUser)
         {
-            this.abilityUserBlackboard = abilityUserBlackboard;
+            this.abilityUser = abilityUser;
             this.heroController = abilityUser.HeroController;
         }
 

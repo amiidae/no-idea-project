@@ -7,18 +7,10 @@ namespace Bnny.Scripts.AbilitySystem.Abilities
 {
     public class WallSlideAbility : Ability
     {
-        private IAbilityUserBlackboard abilityUserBlackboard;
-        private IDataService dataService;
         private HeroController heroController;
 
-        public WallSlideAbility(
-            AbilityUser abilityUser,
-            IAbilityUserBlackboard abilityUserBlackboard,
-            IDataService dataService
-        )
+        public WallSlideAbility(AbilityUser abilityUser)
         {
-            this.abilityUserBlackboard = abilityUserBlackboard;
-            this.dataService = dataService;
             this.heroController = abilityUser.HeroController;
         }
 

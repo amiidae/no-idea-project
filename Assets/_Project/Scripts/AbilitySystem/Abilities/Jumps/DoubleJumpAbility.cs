@@ -7,12 +7,8 @@ namespace Bnny.Scripts.AbilitySystem.Abilities.Jumps
 {
     public class DoubleJumpAbility : JumpAbilityBase
     {
-        public DoubleJumpAbility(
-            AbilityUser abilityUser,
-            IAbilityUserBlackboard abilityUserBlackboard,
-            IDataService dataService
-        )
-            : base(abilityUser, abilityUserBlackboard, dataService) { }
+        public DoubleJumpAbility(AbilityUser abilityUser, IDataService dataService)
+            : base(abilityUser, dataService) { }
 
         public override bool IsTriggered()
         {

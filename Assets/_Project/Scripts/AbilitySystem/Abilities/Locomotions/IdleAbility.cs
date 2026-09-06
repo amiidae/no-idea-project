@@ -6,12 +6,12 @@ namespace Bnny.Scripts.AbilitySystem.Abilities.Locomotions
 {
     public class IdleAbility : LocomotionAbility
     {
-        public IdleAbility(AbilityUser abilityUser, IAbilityUserBlackboard abilityUserBlackboard)
-            : base(abilityUser, abilityUserBlackboard) { }
+        public IdleAbility(AbilityUser abilityUser)
+            : base(abilityUser) { }
 
         public override bool IsTriggered()
         {
-            return abilityUserBlackboard.GetAxis2D(InputTypeId.Move).x == 0;
+            return abilityUser.AbilityUserBlackboard.GetAxis2D(InputTypeId.Move).x == 0;
         }
 
         public override void Use()

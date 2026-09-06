@@ -4,9 +4,10 @@ using Bnny.Scripts.AbilitySystem.Abilities;
 using Bnny.Scripts.AbilitySystem.Abilities.Jumps;
 using Bnny.Scripts.AbilitySystem.Abilities.Locomotions;
 using Bnny.Scripts.AbilitySystem.Core;
-using Bnny.Scripts.Services;
-using Bnny.Scripts.Services.Data;
+using Bnny.Scripts.DI;
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
 namespace Bnny.Scripts.AbilitySystem.Unity
 {
@@ -19,6 +20,14 @@ namespace Bnny.Scripts.AbilitySystem.Unity
         public IAbilityUserBlackboard AbilityUserBlackboard { get; private set; }
 
         public List<AbilityLayer> AbilityLayers { get; private set; } = new List<AbilityLayer>();
+
+        private IObjectResolver container;
+
+        [Inject]
+        private void Construct(IObjectResolver container)
+        {
+            this.container = container;
+        }
 
         void Start()
         {
@@ -120,65 +129,25 @@ namespace Bnny.Scripts.AbilitySystem.Unity
         {
             AbilityLayers.Add(
                 new AbilityLayer(
-                    new IdleAbility(this, AbilityUserBlackboard),
-                    new WalkAbility(
-                        this,
-                        AbilityUserBlackboard,
-                        ServiceLocator.GetService<IDataService>()
-                    ),
-                    new RunAbility(
-                        this,
-                        AbilityUserBlackboard,
-                        ServiceLocator.GetService<IDataService>()
-                    ),
-                    new FallAbility(
-                        this,
-                        AbilityUserBlackboard,
-                        ServiceLocator.GetService<IDataService>()
-                    )
+                    container.Instantiate<IdleAbility>(this),
+                    container.Instantiate<WalkAbility>(this),
+                    container.Instantiate<RunAbility>(this),
+                    container.Instantiate<FallAbility>(this)
                 )
             );
 
-            AbilityLayers.Add(
-                new AbilityLayer(
-                    new WallSlideAbility(
-                        this,
-                        AbilityUserBlackboard,
-                        ServiceLocator.GetService<IDataService>()
-                    )
-                )
-            );
+            AbilityLayers.Add(new AbilityLayer(container.Instantiate<WallSlideAbility>(this)));
 
             AbilityLayers.Add(
                 new AbilityLayer(
-                    new JumpAbility(
-                        this,
-                        AbilityUserBlackboard,
-                        ServiceLocator.GetService<IDataService>()
-                    ),
-                    new DoubleJumpAbility(
-                        this,
-                        AbilityUserBlackboard,
-                        ServiceLocator.GetService<IDataService>()
-                    ),
-                    new LongJumpAbility(
-                        this,
-                        AbilityUserBlackboard,
-                        ServiceLocator.GetService<IDataService>()
-                    ),
-                    new LandAbility(this)
+                    container.Instantiate<JumpAbility>(this),
+                    container.Instantiate<DoubleJumpAbility>(this),
+                    container.Instantiate<LongJumpAbility>(this),
+                    container.Instantiate<LandAbility>(this)
                 )
             );
 
-            AbilityLayers.Add(
-                new AbilityLayer(
-                    new WallJumpAbility(
-                        this,
-                        AbilityUserBlackboard,
-                        ServiceLocator.GetService<IDataService>()
-                    )
-                )
-            );
+            AbilityLayers.Add(new AbilityLayer(container.Instantiate<WallJumpAbility>(this)));
         }
 
         private void InitializeAbilities()

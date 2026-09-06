@@ -7,17 +7,13 @@ namespace Bnny.Scripts.AbilitySystem.Abilities.Jumps
 {
     public class WallJumpAbility : JumpAbilityBase
     {
-        public WallJumpAbility(
-            AbilityUser abilityUser,
-            IAbilityUserBlackboard abilityUserBlackboard,
-            IDataService dataService
-        )
-            : base(abilityUser, abilityUserBlackboard, dataService) { }
+        public WallJumpAbility(AbilityUser abilityUser, IDataService dataService)
+            : base(abilityUser, dataService) { }
 
         public override bool IsTriggered()
         {
             return heroController.IsFacedAgainstWall == true
-                && abilityUserBlackboard.GetState(InputTypeId.Jump) == true;
+                && abilityUser.AbilityUserBlackboard.GetState(InputTypeId.Jump) == true;
             /* player facing the wall == true && jump pressed?*/
         }
 

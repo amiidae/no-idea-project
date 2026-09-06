@@ -7,24 +7,20 @@ namespace Bnny.Scripts.AbilitySystem.Abilities.Jumps
 {
     public abstract class JumpAbilityBase : Ability
     {
-        protected IAbilityUserBlackboard abilityUserBlackboard;
+        protected AbilityUser abilityUser;
         protected IDataService dataService;
         protected HeroController heroController;
 
-        public JumpAbilityBase(
-            AbilityUser abilityUser,
-            IAbilityUserBlackboard abilityUserBlackboard,
-            IDataService dataService
-        )
+        public JumpAbilityBase(AbilityUser abilityUser, IDataService dataService)
         {
-            this.abilityUserBlackboard = abilityUserBlackboard;
+            this.abilityUser = abilityUser;
             this.dataService = dataService;
             this.heroController = abilityUser.HeroController;
         }
 
         public override bool IsTriggered()
         {
-            return abilityUserBlackboard.GetState(InputTypeId.Jump);
+            return abilityUser.AbilityUserBlackboard.GetState(InputTypeId.Jump);
         }
 
         public override bool CanComplete()
@@ -42,9 +38,9 @@ namespace Bnny.Scripts.AbilitySystem.Abilities.Jumps
 
         public override void FixedUpdate()
         {
-            float direction = abilityUserBlackboard.GetAxis2D(InputTypeId.Move).x;
+            float direction = abilityUser.AbilityUserBlackboard.GetAxis2D(InputTypeId.Move).x;
 
-            float speed = abilityUserBlackboard.GetState(InputTypeId.Run)
+            float speed = abilityUser.AbilityUserBlackboard.GetState(InputTypeId.Run)
                 ? dataService.HeroData.RunSpeed
                 : dataService.HeroData.MovementSpeed;
 

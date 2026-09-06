@@ -3,6 +3,7 @@ using Bnny.Scripts.Data;
 using Bnny.Scripts.Services;
 using Bnny.Scripts.Services.SaveLoad;
 using UnityEngine;
+using VContainer;
 
 namespace Bnny.Scripts.SaveSystem
 // Question:
@@ -17,9 +18,15 @@ namespace Bnny.Scripts.SaveSystem
 
         // the line is drawn on the handling of ProgressData class
 
+        [Inject]
+        private void Construct(ISaveLoadService saveLoadService)
+        {
+            this.saveLoadService = saveLoadService;
+        }
+
         void Start()
         {
-            saveLoadService = ServiceLocator.GetService<ISaveLoadService>();
+            // saveLoadService = ServiceLocator.GetService<ISaveLoadService>();
 
             saveLoadService.AddProgressUser(this);
         }

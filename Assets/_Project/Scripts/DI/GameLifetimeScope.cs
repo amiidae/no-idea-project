@@ -1,7 +1,7 @@
 using VContainer;
 using VContainer.Unity;
 
-namespace Bnny.Scripts
+namespace Bnny.Scripts.DI
 {
     // Question:
     // why is this ?kind of? composition root if we do not compose modules together

@@ -6,17 +6,13 @@ namespace Bnny.Scripts.AbilitySystem.Abilities
 {
     public class FallAbility : Ability
     {
-        private IAbilityUserBlackboard abilityUserBlackboard;
+        private AbilityUser abilityUser;
         private IDataService dataService;
         private HeroController heroController;
 
-        public FallAbility(
-            AbilityUser abilityUser,
-            IAbilityUserBlackboard abilityUserBlackboard,
-            IDataService dataService
-        )
+        public FallAbility(AbilityUser abilityUser, IDataService dataService)
         {
-            this.abilityUserBlackboard = abilityUserBlackboard;
+            this.abilityUser = abilityUser;
             this.dataService = dataService;
             this.heroController = abilityUser.HeroController;
         }
@@ -33,9 +29,9 @@ namespace Bnny.Scripts.AbilitySystem.Abilities
 
         public override void FixedUpdate()
         {
-            float direction = abilityUserBlackboard.GetAxis2D(InputTypeId.Move).x;
+            float direction = abilityUser.AbilityUserBlackboard.GetAxis2D(InputTypeId.Move).x;
 
-            float speed = abilityUserBlackboard.GetState(InputTypeId.Run)
+            float speed = abilityUser.AbilityUserBlackboard.GetState(InputTypeId.Run)
                 ? dataService.HeroData.RunSpeed
                 : dataService.HeroData.MovementSpeed;
 

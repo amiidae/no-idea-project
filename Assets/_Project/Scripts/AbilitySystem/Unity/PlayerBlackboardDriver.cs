@@ -2,6 +2,7 @@ using Bnny.Scripts.AbilitySystem.Core;
 using Bnny.Scripts.Services;
 using Bnny.Scripts.Services.Input;
 using UnityEngine;
+using VContainer;
 
 namespace Bnny.Scripts.AbilitySystem.Unity
 {
@@ -10,9 +11,15 @@ namespace Bnny.Scripts.AbilitySystem.Unity
         private IInputService inputService;
         private IAbilityUser abilityUser;
 
+        [Inject]
+        private void Construct(IInputService inputService)
+        {
+            this.inputService = inputService;
+        }
+
         void Start()
         {
-            inputService = ServiceLocator.GetService<IInputService>();
+            // inputService = ServiceLocator.GetService<IInputService>();
 
             abilityUser = gameObject.GetComponent<IAbilityUser>();
         }

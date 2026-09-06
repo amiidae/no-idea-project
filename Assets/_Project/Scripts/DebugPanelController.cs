@@ -1,6 +1,7 @@
 using Bnny.Scripts.Services;
 using Bnny.Scripts.Services.Input;
 using UnityEngine;
+using VContainer;
 
 namespace Bnny.Scripts //                                                                               /*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣦⣤⣄⡀⠀⠀⠀⠀⢀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
 { //                                                                                                    /*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠟⠙⠀⠀⠀⠈⢻⡆⠀⣴⠞⠋⠉⠉⠙⠳⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
@@ -16,12 +17,12 @@ namespace Bnny.Scripts //                                                       
         void Start() //                                                                                 /*⠀⠀⠀⠀⠀⠀⣼⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢙⣷⠀⠀⠘⢿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
         { //                                                                                            /*⠀⠀⠀⠀⠀⢸⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣇⠀⠀⠀⢹⣧⠀⠀⠀⠀⠀⠀⠀⠀*/
 #if DEBUG   //                                                                                          /*⠀⠀⠀⠀⠀⣿⢣⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡏⣡⠀⠀⠀⠻⣧⠀⠀⠀⠀⠀⠀⠀*/
-            activePanel = GameObject.Instantiate(debugPanel, gameObject.transform); //                  /*⠀⠀⠀⠀⠀⣿⡾⡿⠖⠀⠀⠀⠀⠀⠀⠀⠀⢀⣶⣿⣤⠀⠀⠀⠀⠀⠀⠀⣼⡇⠃⠀⠀⠀⠀⢹⣇⠀⠀⠀⠀⠀*/
+            activePanel = GameObject.Instantiate(debugPanel, gameObject.transform); // /*⠀⠀⠀⠀⠀⣿⡾⡿⠖⠀⠀⠀⠀⠀⠀⠀⠀⢀⣶⣿⣤⠀⠀⠀⠀⠀⠀⠀⣼⡇⠃⠀⠀⠀⠀⢹⣇⠀⠀⠀⠀⠀*/
             activePanel.name = panelName; //                                                            /*⠀⠀⠀⠀⠀⠹⣧⡀⠀⠀⠰⣦⣸⣶⠄⠀⠀⠸⡿⠿⠇⠀⠀⠀⠀⠀⠀⢢⡿⠅⠀⠀⠀⠀⠀ ⣿⠀⠀⠀⠀⠀*/
-            isDebugPanelActive = PlayerPrefs.GetInt("DebugPanelActive", 1) == 1; //                     /*⠀⠀⠀⠀⠀⠀⠈⠻⣦⣒⠸⠛⠻⠖⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⠟⠁⠀⠀⠀⠀⣄⠀⠀⣾⠀⠀⠀⠀⠀*/
-            activePanel.SetActive(isDebugPanelActive); //                                               /*⠀⠀⠀⠀⠀⠀⠀⠀⠈⢙⣷⢶⣤⣀⣀⠀⠀⠀⠀⠀⠀⠀⣀⣤⡶⠟⠁⠀⠀⠀⠀⠀⣼⢏⣠⣾⠟⠀⠀⠀⠀⠀*/
+            isDebugPanelActive = PlayerPrefs.GetInt("DebugPanelActive", 1) == 1; //   /*⠀⠀⠀⠀⠀⠀⠈⠻⣦⣒⠸⠛⠻⠖⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⠟⠁⠀⠀⠀⠀⣄⠀⠀⣾⠀⠀⠀⠀⠀*/
+            activePanel.SetActive(isDebugPanelActive); //                                         /*⠀⠀⠀⠀⠀⠀⠀⠀⠈⢙⣷⢶⣤⣀⣀⠀⠀⠀⠀⠀⠀⠀⣀⣤⡶⠟⠁⠀⠀⠀⠀⠀⣼⢏⣠⣾⠟⠀⠀⠀⠀⠀*/
 
-            inputService = ServiceLocator.GetService<IInputService>(); //                                /*⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⠃⠀⠀⠉⠛⠛⠻⠶⠶⠶⠶⠞⠋⠁⠀⠀⠀⠀⠀⠀⣰⡾⠛⠛⠉⠀⠀⠀⠀⠀⠀⠀*/
+            // inputService = ServiceLocator.GetService<IInputService>(); //                             /*⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⠃⠀⠀⠉⠛⠛⠻⠶⠶⠶⠶⠞⠋⠁⠀⠀⠀⠀⠀⠀⣰⡾⠛⠛⠉⠀⠀⠀⠀⠀⠀⠀*/
             inputService.ToggleDebug += OnToggleDebug; //                                                /*⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⠀⠀⠀⠀⠀⢲⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⣠⡾⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
 #endif   //                                                                                              /*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣧⡀⠀⠀⣡⣿⠛⠻⠶⣾⠀⠀⠀⠀⠀⠀⠈⢾⡟⠆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
             //                                                                                           /*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠛⠛⠋⠁⠀⠀⠀⢿⣦⠀⠀⠀⠀⠀⣠⡾⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
@@ -44,6 +45,12 @@ namespace Bnny.Scripts //                                                       
         void OnDestroy()
         {
             inputService.ToggleDebug -= OnToggleDebug;
+        }
+
+        [Inject]
+        private void Construct(IInputService inputService)
+        {
+            this.inputService = inputService;
         }
     }
 }

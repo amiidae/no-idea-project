@@ -9,20 +9,16 @@ namespace Bnny.Scripts.AbilitySystem.Abilities.Locomotions
     {
         private IDataService dataService;
 
-        public RunAbility(
-            AbilityUser abilityUser,
-            IAbilityUserBlackboard abilityUserBlackboard,
-            IDataService dataService
-        )
-            : base(abilityUser, abilityUserBlackboard)
+        public RunAbility(AbilityUser abilityUser, IDataService dataService)
+            : base(abilityUser)
         {
             this.dataService = dataService;
         }
 
         public override bool IsTriggered()
         {
-            return abilityUserBlackboard.GetAxis2D(InputTypeId.Move).x != 0
-                && abilityUserBlackboard.GetState(InputTypeId.Run) == true;
+            return abilityUser.AbilityUserBlackboard.GetAxis2D(InputTypeId.Move).x != 0
+                && abilityUser.AbilityUserBlackboard.GetState(InputTypeId.Run) == true;
         }
 
         public override void Use()
@@ -32,7 +28,7 @@ namespace Bnny.Scripts.AbilitySystem.Abilities.Locomotions
 
         public override void FixedUpdate()
         {
-            float direction = abilityUserBlackboard.GetAxis2D(InputTypeId.Move).x;
+            float direction = abilityUser.AbilityUserBlackboard.GetAxis2D(InputTypeId.Move).x;
             heroController.Move(
                 direction,
                 dataService.HeroData.RunSpeed,
