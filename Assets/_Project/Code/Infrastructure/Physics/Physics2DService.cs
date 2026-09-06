@@ -1,4 +1,6 @@
+using Code.Extensions;
 using UnityEngine;
+using VContainer;
 
 public class Physics2DService : IPhysics2DService
 {

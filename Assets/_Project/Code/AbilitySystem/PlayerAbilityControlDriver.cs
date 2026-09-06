@@ -1,5 +1,6 @@
 ﻿using Code.AbilitySystem.Core;
 using UnityEngine;
+using VContainer;
 
 namespace Code.AbilitySystem
 {
@@ -8,9 +9,14 @@ namespace Code.AbilitySystem
         private IInputService _inputService;
         private IAbilityUser _abilityUser;
 
+        [Inject]
+        public void Construct(IInputService inputService)
+        {
+            _inputService = inputService;
+        }
+
         private void Start()
         {
-            _inputService = ServiceLocator.GetService<IInputService>();
             _abilityUser = GetComponent<IAbilityUser>();
         }
 

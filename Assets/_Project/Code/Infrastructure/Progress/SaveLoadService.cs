@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace Code.Services.Progress
 {
-    public class SaveLoadService : ISaveLoadService, IInitializableService
+    public class SaveLoadService : ISaveLoadService
     {
         public static string SavesFolder
         {
@@ -35,20 +35,14 @@ namespace Code.Services.Progress
         }
 
         private readonly HashSet<IProgressWatcher> _progressWatchers = new();
-        private readonly List<ISaveProgressStrategy> _saveProgressStrategies = new();
         
         private ProgressData _progressData;
         
         private readonly ISerializer _serializer;
 
-        public SaveLoadService(ISerializer serializer) => 
-            _serializer = serializer;
-
-        public void Initialize()
+        public SaveLoadService(ISerializer serializer)
         {
-            SaveProgressByInput saveProgressByInput = new SaveProgressByInput(this, ServiceLocator.GetService<IInputService>());
-            _saveProgressStrategies.Add(saveProgressByInput);
-            saveProgressByInput.Initialize();
+            _serializer = serializer;
         }
 
         public void AddProgressWatcher(IProgressWatcher progressWatcher)
@@ -108,14 +102,8 @@ namespace Code.Services.Progress
 
         public bool TryGetLoadedProgressData(out ProgressData progressData)
         {
-            if (_progressData == null)
-            {
-                progressData = null;
-                return false;
-            }
-            
             progressData = _progressData;
-            return true;
+            return progressData != null;
         }
 
         private ProgressData CreateNewProgress()

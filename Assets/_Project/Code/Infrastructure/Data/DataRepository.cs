@@ -1,6 +1,7 @@
 using UnityEngine;
+using VContainer.Unity;
 
-public class DataRepository : IDataRepository
+public class DataRepository : IDataRepository, IInitializable
 {
     public HeroData HeroData { get; private set; }
 

@@ -1,6 +1,9 @@
-﻿namespace Code.Services.Progress
+﻿using UnityEngine;
+using VContainer.Unity;
+
+namespace Code.Services.Progress
 {
-    public class SaveProgressByInput : ISaveProgressStrategy
+    public class SaveProgressByInput : ISaveProgressStrategy, IInitializable
     {
         private readonly IInputService _inputService;
         private readonly ISaveLoadService _saveLoadService;

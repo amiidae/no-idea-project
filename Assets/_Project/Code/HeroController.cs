@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using VContainer;
 
 // LocomotionState
 // Idle: Idle, Walk, Run, Fall  IdleStateMachine 
@@ -24,14 +25,12 @@ public class HeroController : MonoBehaviour
     [SerializeField]
     private Rigidbody2D rb;
 
-    private IInputService inputService;
-    private IPhysics2DService physics2DService;
-    private IDataRepository dataRepository;
-
     private bool isGrounded = true;
 
     private float _moveVelocity;
     private float _airMoveVelocity;
+    private IDataRepository _dataRepository;
+    private IPhysics2DService _physics2DService;
 
     public bool IsGrounded => isGrounded;
     public float VerticalVelocity => rb.linearVelocityY;
@@ -47,10 +46,11 @@ public class HeroController : MonoBehaviour
         Gizmos.DrawSphere(gameObject.transform.position, 0.25f);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [Inject]
+    private void Construct(IDataRepository dataRepository, IPhysics2DService physics2DService)
     {
-        InitializeServices();
+        _physics2DService = physics2DService;
+        _dataRepository = dataRepository;
     }
 
     void FixedUpdate()
@@ -72,7 +72,7 @@ public class HeroController : MonoBehaviour
         float target = axis * speed;
         rb.linearVelocityX = Mathf.SmoothDamp(
             rb.linearVelocityX, target, ref _airMoveVelocity,
-            dataRepository.HeroData.AirSmoothing, Mathf.Infinity, Time.deltaTime);
+            _dataRepository.HeroData.AirSmoothing, Mathf.Infinity, Time.deltaTime);
         FaceDirection(axis);
     }
 
@@ -81,7 +81,7 @@ public class HeroController : MonoBehaviour
         // Derive launch speed from gravity so the arc peaks at exactly JumpHeight metres
         // (kit-style): v = sqrt(2 * g * h). g is the body's actual gravity magnitude.
         float gravity = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
-        rb.linearVelocityY = Mathf.Sqrt(2f * gravity * dataRepository.HeroData.JumpHeight);
+        rb.linearVelocityY = Mathf.Sqrt(2f * gravity * _dataRepository.HeroData.JumpHeight);
     }
     
     public void WallJump(Vector2 wallNormal)
@@ -89,7 +89,7 @@ public class HeroController : MonoBehaviour
         Jump();
 
         rb.linearVelocityX =
-            wallNormal.x * rb.linearVelocityY * dataRepository.HeroData.WallJumpHorizontalMultiplier;
+            wallNormal.x * rb.linearVelocityY * _dataRepository.HeroData.WallJumpHorizontalMultiplier;
 
         _airMoveVelocity = 0f;
         WallJumped?.Invoke();
@@ -101,7 +101,7 @@ public class HeroController : MonoBehaviour
 
     public void ApplyJumpAcceleration()
     {
-        rb.linearVelocityY += dataRepository.HeroData.HoldJumpAcceleration * Time.deltaTime;
+        rb.linearVelocityY += _dataRepository.HeroData.HoldJumpAcceleration * Time.deltaTime;
     }
 
     public void FaceDirection(float horizontalInput)
@@ -116,16 +116,9 @@ public class HeroController : MonoBehaviour
         }
     }
 
-    private void InitializeServices()
-    {
-        inputService = ServiceLocator.GetService<IInputService>();
-        physics2DService = ServiceLocator.GetService<IPhysics2DService>();
-        dataRepository = ServiceLocator.GetService<IDataRepository>();
-    }
-
     private void GroundCheck()
     {
-        Collider2D playersCollision = physics2DService.OverlapCircle(
+        Collider2D playersCollision = _physics2DService.OverlapCircle(
             gameObject.transform.position,
             0.25f,
             LayerMasks.SurfaceMask

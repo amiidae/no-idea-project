@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using VContainer.Unity;
 
 namespace Code.Services.Input
 {
-    public class InputService : IInputService, IInitializableService, GameInput.IGameplayActions
+    public class InputService : IInputService, IInitializable, GameInput.IGameplayActions
     {
         public event Action Save;
         

@@ -5,6 +5,19 @@ public class LegacyInputService : IInputService
 {
     public event Action Save;
 
+
+    public bool IsDebugPanelActive
+    {
+        get
+        {
+            return PlayerPrefs.GetInt("IsDebugPanelActive", 1) == 1;
+        }
+        set
+        {
+            PlayerPrefs.SetInt("IsDebugPanelActive", 1);
+        }
+    }
+
     public Vector2 MoveAxis
     {
         get

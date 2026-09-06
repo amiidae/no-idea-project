@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using AbilitySystem;
 using Code.AbilitySystem.Core;
+using Code.Extensions;
 using UnityEngine;
+using VContainer;
 
 namespace Code.AbilitySystem.Unity
 {
@@ -11,7 +13,14 @@ namespace Code.AbilitySystem.Unity
         public IAbilityBlackboard Blackboard { get; private set; }
         
         public List<AbilityLayer> Layers { get; private set; }
-        
+
+        private IObjectResolver _container;
+
+        [Inject]
+        public void Construct(IObjectResolver container)
+        {
+            _container = container;
+        }
         
         private void Start()
         {
@@ -20,21 +29,21 @@ namespace Code.AbilitySystem.Unity
             Layers = new List<AbilityLayer>();
 
             Layers.Add(new AbilityLayer(
-                new IdleAbility(this),
-                new WalkAbility(this, ServiceLocator.GetService<IDataRepository>()),
-                new RunAbility(this, ServiceLocator.GetService<IDataRepository>()),
-                new FallAbility(this, ServiceLocator.GetService<IDataRepository>())
+                CreateAbility<IdleAbility>(),
+                CreateAbility<WalkAbility>(),
+                CreateAbility<RunAbility>(),
+                CreateAbility<FallAbility>()
             ));
 
             Layers.Add(new AbilityLayer(
-                new JumpAbility(this, ServiceLocator.GetService<IDataRepository>()),
-                new AirJumpAbility(this, ServiceLocator.GetService<IDataRepository>()),
-                new LandAbility(this)
+                CreateAbility<JumpAbility>(),
+                CreateAbility<AirJumpAbility>(),
+                CreateAbility<LandAbility>()
             ));
 
             Layers.Add(new AbilityLayer(
-                new WallJumpAbility(this, ServiceLocator.GetService<IDataRepository>()),
-                new WallSlideAbility(this, ServiceLocator.GetService<IDataRepository>())
+                CreateAbility<WallJumpAbility>(),
+                CreateAbility<WallSlideAbility>()
             ));
 
             foreach (AbilityLayer abilityLayer in Layers)
@@ -44,6 +53,11 @@ namespace Code.AbilitySystem.Unity
                     ability.Init();
                 }
             }
+        }
+
+        private TAbility CreateAbility<TAbility>() where TAbility : IAbility
+        {
+            return (TAbility)_container.Instantiate(typeof(TAbility), this);
         }
 
         private void OnDestroy()
