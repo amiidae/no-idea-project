@@ -1,32 +1,64 @@
 using Bnny.Scripts.Services;
 using Bnny.Scripts.Services.Input;
+using Bnny.Scripts.Services.Settings;
 using UnityEngine;
 using VContainer;
 
-namespace Bnny.Scripts //                                                                               /*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣦⣤⣄⡀⠀⠀⠀⠀⢀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
-{ //                                                                                                    /*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠟⠙⠀⠀⠀⠈⢻⡆⠀⣴⠞⠋⠉⠉⠙⠳⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
-    public class DebugPanelController : MonoBehaviour //                                                /*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡛⠂⠀⠀⠀⠀⠀⠈⣿⣾⠋⠀⠀⠀⠀⠀⠀⠈⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
-    { //                                                                                                /*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣽⠁⠀⠀⠀⠀⠀⠀⠀⣽⢇⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
-        [SerializeField] //                                                                             /*⠀⠀⠀⠀⠀⠀⠀⠀⠀⢨⡟⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
-        private GameObject debugPanel; //                                                               /*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⢠⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
-        private const string panelName = "GraphyDebugPanel"; //                                         /*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡆⠀⠀⢀⣀⣀⡀⢸⣇⠀⠀⠀⠀⠀⠀⠀⢀⣾⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
-        private GameObject activePanel; //                                                              /*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣘⡟⠰⠛⠛⠉⠙⠉⠈⠃⠀⠀⠀⠀⠀⠀⢰⣾⡟⠚⢶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
-        bool isDebugPanelActive; //                                                                     /*⠀⠀⠀⠀⠀⠀⠀⠀⣤⡾⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⡁⠀⢀⡬⢹⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
-        private IInputService inputService; //                                                          /*⠀⠀⠀⠀⠀⠀⠀⣴⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣷⠀⠚⢷⣼⡷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣦⣤⣄⡀⠀⠀⠀⠀⢀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠟⠙⠀⠀⠀⠈⢻⡆⠀⣴⠞⠋⠉⠉⠙⠳⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡛⠂⠀⠀⠀⠀⠀⠈⣿⣾⠋⠀⠀⠀⠀⠀⠀⠈⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣽⠁⠀⠀⠀⠀⠀⠀⠀⣽⢇⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠀⠀⠀⠀⢨⡟⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⢠⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡆⠀⠀⢀⣀⣀⡀⢸⣇⠀⠀⠀⠀⠀⠀⠀⢀⣾⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣘⡟⠰⠛⠛⠉⠙⠉⠈⠃⠀⠀⠀⠀⠀⠀⢰⣾⡟⠚⢶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠀⠀⠀⣤⡾⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⡁⠀⢀⡬⢹⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠀⠀⣴⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣷⠀⠚⢷⣼⡷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠀⣼⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢙⣷⠀⠀⠘⢿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⢸⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣇⠀⠀⠀⢹⣧⠀⠀⠀⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⣿⢣⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡏⣡⠀⠀⠀⠻⣧⠀⠀⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⣿⡾⡿⠖⠀⠀⠀⠀⠀⠀⠀⠀⢀⣶⣿⣤⠀⠀⠀⠀⠀⠀⠀⣼⡇⠃⠀⠀⠀⠀⢹⣇⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠹⣧⡀⠀⠀⠰⣦⣸⣶⠄⠀⠀⠸⡿⠿⠇⠀⠀⠀⠀⠀⠀⢢⡿⠅⠀⠀⠀⠀⠀ ⣿⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠀⠈⠻⣦⣒⠸⠛⠻⠖⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⠟⠁⠀⠀⠀⠀⣄⠀⠀⣾⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠀⠀⠀⠈⢙⣷⢶⣤⣀⣀⠀⠀⠀⠀⠀⠀⠀⣀⣤⡶⠟⠁⠀⠀⠀⠀⠀⣼⢏⣠⣾⠟⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⠃⠀⠀⠉⠛⠛⠻⠶⠶⠶⠶⠞⠋⠁⠀⠀⠀⠀⠀⠀⣰⡾⠛⠛⠉⠀⠀⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⠀⠀⠀⠀⠀⢲⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⣠⡾⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣧⡀⠀⠀⣡⣿⠛⠻⠶⣾⠀⠀⠀⠀⠀⠀⠈⢾⡟⠆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠛⠛⠋⠁⠀⠀⠀⢿⣦⠀⠀⠀⠀⠀⣠⡾⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
+/*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣶⣤⣀⣦⣴⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
 
-        void Start() //                                                                                 /*⠀⠀⠀⠀⠀⠀⣼⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢙⣷⠀⠀⠘⢿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
-        { //                                                                                            /*⠀⠀⠀⠀⠀⢸⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣇⠀⠀⠀⢹⣧⠀⠀⠀⠀⠀⠀⠀⠀*/
-#if DEBUG   //                                                                                          /*⠀⠀⠀⠀⠀⣿⢣⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡏⣡⠀⠀⠀⠻⣧⠀⠀⠀⠀⠀⠀⠀*/
-            activePanel = GameObject.Instantiate(debugPanel, gameObject.transform); // /*⠀⠀⠀⠀⠀⣿⡾⡿⠖⠀⠀⠀⠀⠀⠀⠀⠀⢀⣶⣿⣤⠀⠀⠀⠀⠀⠀⠀⣼⡇⠃⠀⠀⠀⠀⢹⣇⠀⠀⠀⠀⠀*/
-            activePanel.name = panelName; //                                                            /*⠀⠀⠀⠀⠀⠹⣧⡀⠀⠀⠰⣦⣸⣶⠄⠀⠀⠸⡿⠿⠇⠀⠀⠀⠀⠀⠀⢢⡿⠅⠀⠀⠀⠀⠀ ⣿⠀⠀⠀⠀⠀*/
-            isDebugPanelActive = PlayerPrefs.GetInt("DebugPanelActive", 1) == 1; //   /*⠀⠀⠀⠀⠀⠀⠈⠻⣦⣒⠸⠛⠻⠖⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⠟⠁⠀⠀⠀⠀⣄⠀⠀⣾⠀⠀⠀⠀⠀*/
-            activePanel.SetActive(isDebugPanelActive); //                                         /*⠀⠀⠀⠀⠀⠀⠀⠀⠈⢙⣷⢶⣤⣀⣀⠀⠀⠀⠀⠀⠀⠀⣀⣤⡶⠟⠁⠀⠀⠀⠀⠀⣼⢏⣠⣾⠟⠀⠀⠀⠀⠀*/
+namespace Bnny.Scripts //
+{ //
+    public class DebugPanelController : MonoBehaviour //
+    { //
+        [SerializeField] //
+        private GameObject debugPanel; //
+        private const string panelName = "GraphyDebugPanel"; //
+        private GameObject activePanel; //
+        bool isDebugPanelActive; //
+        private IInputService inputService; //
+        private ISettingsService settingsService;
 
-            // inputService = ServiceLocator.GetService<IInputService>(); //                             /*⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⠃⠀⠀⠉⠛⠛⠻⠶⠶⠶⠶⠞⠋⠁⠀⠀⠀⠀⠀⠀⣰⡾⠛⠛⠉⠀⠀⠀⠀⠀⠀⠀*/
-            inputService.ToggleDebug += OnToggleDebug; //                                                /*⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⠀⠀⠀⠀⠀⢲⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⣠⡾⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
-#endif   //                                                                                              /*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣧⡀⠀⠀⣡⣿⠛⠻⠶⣾⠀⠀⠀⠀⠀⠀⠈⢾⡟⠆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
-            //                                                                                           /*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠛⠛⠋⠁⠀⠀⠀⢿⣦⠀⠀⠀⠀⠀⣠⡾⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
-        } //                                                                                             /*⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣶⣤⣀⣦⣴⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀*/
+        [Inject]
+        private void Construct(IInputService inputService, ISettingsService settingsService)
+        {
+            this.inputService = inputService;
+            this.settingsService = settingsService;
+        }
+
+        void Start() //
+        { //
+#if DEBUG   //
+            activePanel = GameObject.Instantiate(debugPanel, gameObject.transform); //
+            activePanel.name = panelName; //
+            isDebugPanelActive = settingsService.IsDebugPlayerActiveSetting; //
+            activePanel.SetActive(isDebugPanelActive); //
+
+            // inputService = ServiceLocator.GetService<IInputService>(); //
+            inputService.ToggleDebug += OnToggleDebug; //
+#endif   //
+            //
+        } //
 
         private void OnToggleDebug()
         {
@@ -39,18 +71,12 @@ namespace Bnny.Scripts //                                                       
                 isDebugPanelActive = true;
             }
             activePanel.SetActive(isDebugPanelActive);
-            PlayerPrefs.SetInt("DebugPanelActive", isDebugPanelActive ? 1 : 0);
+            settingsService.IsDebugPlayerActiveSetting = isDebugPanelActive;
         }
 
         void OnDestroy()
         {
             inputService.ToggleDebug -= OnToggleDebug;
-        }
-
-        [Inject]
-        private void Construct(IInputService inputService)
-        {
-            this.inputService = inputService;
         }
     }
 }

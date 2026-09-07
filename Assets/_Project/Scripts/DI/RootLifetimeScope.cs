@@ -3,6 +3,7 @@ using Bnny.Scripts.Services.Input;
 using Bnny.Scripts.Services.Physics;
 using Bnny.Scripts.Services.SaveLoad;
 using Bnny.Scripts.Services.Serializer;
+using Bnny.Scripts.Services.Settings;
 using Bnny.Scripts.Services.Time;
 using VContainer;
 using VContainer.Unity;
@@ -49,6 +50,8 @@ namespace Bnny.Scripts.DI
             builder.Register<ISerializer, NewtonsoftSerializer>(Lifetime.Singleton);
 
             builder.Register<ISaveLoadService, SaveLoadService>(Lifetime.Singleton);
+
+            builder.Register<ISettingsService, SettingsService>(Lifetime.Singleton);
         }
     }
 }
@@ -57,5 +60,3 @@ namespace Bnny.Scripts.DI
 // Question:
 // what is the deal with keys
 // https://vcontainer.hadashikick.jp/resolving/constructor-injection#key-attribute
-
-// WithParameters takes a type of arg and the value of arg and adds them to the list. Then it takes the value of arg from the list to pass it as argument to the instance, created by resolver.Resolve
