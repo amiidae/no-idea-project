@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using VContainer;
 
 namespace Bnny.Scripts.DI

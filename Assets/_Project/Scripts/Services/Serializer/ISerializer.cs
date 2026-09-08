@@ -1,5 +1,3 @@
-using System;
-
 namespace Bnny.Scripts.Services.Serializer
 {
     public interface ISerializer
