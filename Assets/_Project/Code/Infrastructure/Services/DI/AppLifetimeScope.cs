@@ -5,44 +5,44 @@ using VContainer.Unity;
 
 namespace Code.Infrastructure.DI
 {
-    public class AppLifetimeScope : LifetimeScope
+    public class AppLifetimeScope : LifetimeScopeBase
     {
-        protected override void Configure(IContainerBuilder builder)
+        protected override void InstallBindings()
         {
-            RegisterDataRepository(builder);
-            RegisterInputService(builder);
-            RegisterSerializer(builder);
-            RegisterPhysicsService(builder);
-            RegisterSaveLoadService(builder);
+            RegisterDataRepository();
+            RegisterInputService();
+            RegisterSerializer();
+            RegisterPhysicsService();
+            RegisterSaveLoadService();
         }
-
-        private void RegisterSerializer(IContainerBuilder builder)
+        
+        private void RegisterSerializer()
         {
-            builder
+            ContainerBuilder
                 .Register<NewtonsoftSerializer>(Lifetime.Singleton)
                 .AsImplementedInterfaces()
                 ;
         }
 
-        private void RegisterPhysicsService(IContainerBuilder builder)
+        private void RegisterPhysicsService()
         {
-            builder
+            ContainerBuilder
                 .Register<Physics2DService>(Lifetime.Singleton)
                 .AsImplementedInterfaces()
                 ;
         }
 
-        private void RegisterDataRepository(IContainerBuilder builder)
+        private void RegisterDataRepository()
         {
-            builder
+            ContainerBuilder
                 .Register<DataRepository>(Lifetime.Singleton)
                 .AsImplementedInterfaces()
                 ;
         }
 
-        private void RegisterInputService(IContainerBuilder builder)
+        private void RegisterInputService()
         {
-            builder
+            ContainerBuilder
 #if ENABLE_INPUT_SYSTEM
                 .Register<InputService>(Lifetime.Singleton)
 #elif ENABLE_LEGACY_INPUT_MANAGER
@@ -54,14 +54,14 @@ namespace Code.Infrastructure.DI
    
         }
 
-        private void RegisterSaveLoadService(IContainerBuilder builder)
+        private void RegisterSaveLoadService()
         {
-            builder
+            ContainerBuilder
                 .Register<SaveLoadService>(Lifetime.Singleton)
                 .AsImplementedInterfaces()
                 ;
             
-            builder
+            ContainerBuilder
                 .Register<SaveProgressByInput>(Lifetime.Singleton)
                 .AsImplementedInterfaces()
                 ;
