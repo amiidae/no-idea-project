@@ -13,8 +13,5 @@ namespace Bnny.Scripts.DI
     // and be like - "this dependent module needs this and this and this "provider" module
     // do i have them registered? yes i have them registered - lets insert them"
     // ?
-    public class GameLifetimeScope : LifetimeScope
-    {
-        protected override void Configure(IContainerBuilder builder) { }
-    }
+    public class GameLifetimeScope : LifetimeScopeBase { }
 }
