@@ -30,16 +30,12 @@ namespace Bnny.Scripts.Services.SaveLoad
         private HashSet<IProgressWriter> progressWriters = new HashSet<IProgressWriter>();
 
         private ISerializer serializer;
-        private IInputService inputService;
 
         private ProgressData progressData;
 
-        public SaveLoadService(ISerializer serializer, IInputService inputService)
+        public SaveLoadService(ISerializer serializer)
         {
             this.serializer = serializer;
-            this.inputService = inputService;
-
-            inputService.Save += OnSave;
         }
 
         public bool TryGetProgressData(out ProgressData progressData)
@@ -134,12 +130,6 @@ namespace Bnny.Scripts.Services.SaveLoad
         private void CreateNewProgress()
         {
             progressData = new ProgressData();
-        }
-
-        private async void OnSave()
-        {
-            await SaveProgress();
-            Debug.Log($"Saved at {SaveFile}");
         }
     }
 }

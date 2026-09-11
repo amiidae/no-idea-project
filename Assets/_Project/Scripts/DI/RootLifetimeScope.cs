@@ -1,4 +1,5 @@
 using System;
+using Bnny.Scripts.SaveSystem;
 using Bnny.Scripts.Services.Data;
 using Bnny.Scripts.Services.Input;
 using Bnny.Scripts.Services.Physics;
@@ -44,7 +45,7 @@ namespace Bnny.Scripts.DI
             RegisterPhysicsService();
             RegisterDataService();
             RegisterSerializerService();
-            RegisterSaveLoadService();
+            RegisterSaveLoadComponents();
             RegisterSettingsService();
         }
 
@@ -81,9 +82,11 @@ namespace Bnny.Scripts.DI
             ContainerBuilder.Register<ISerializer, NewtonsoftSerializer>(Lifetime.Singleton);
         }
 
-        private void RegisterSaveLoadService()
+        private void RegisterSaveLoadComponents()
         {
             ContainerBuilder.Register<ISaveLoadService, SaveLoadService>(Lifetime.Singleton);
+
+            ContainerBuilder.Register<SaveByInput>(Lifetime.Singleton).As<IInitializable>();
         }
 
         private void RegisterSettingsService()
