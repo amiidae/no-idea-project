@@ -1,4 +1,6 @@
 using System;
+using Bnny.Scripts.AbilitySystem.Core;
+using Bnny.Scripts.AbilitySystem.Unity;
 using Bnny.Scripts.SaveSystem;
 using Bnny.Scripts.Services.Data;
 using Bnny.Scripts.Services.Input;
@@ -29,6 +31,7 @@ using VContainer.Unity;
 ⣿⣿⡧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⠠⠄⣀⣀⠀⠀⠀⣀⣀⠤⠒⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 */
+
 namespace Bnny.Scripts.DI
 {
     public class RootLifetimeScope : LifetimeScopeBase
@@ -47,6 +50,7 @@ namespace Bnny.Scripts.DI
             RegisterSerializerService();
             RegisterSaveLoadComponents();
             RegisterSettingsService();
+            RegisterAbilityCreator();
         }
 
         private void RegisterInputService()
@@ -92,6 +96,11 @@ namespace Bnny.Scripts.DI
         private void RegisterSettingsService()
         {
             ContainerBuilder.Register<ISettingsService, SettingsService>(Lifetime.Singleton);
+        }
+
+        private void RegisterAbilityCreator()
+        {
+            ContainerBuilder.Register<IAbilityCreator, AbilityCreator>(Lifetime.Singleton);
         }
     }
 }

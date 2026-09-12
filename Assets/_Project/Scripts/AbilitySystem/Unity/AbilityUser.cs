@@ -21,12 +21,12 @@ namespace Bnny.Scripts.AbilitySystem.Unity
 
         public List<AbilityLayer> AbilityLayers { get; private set; } = new List<AbilityLayer>();
 
-        private IObjectResolver container;
+        private IAbilityCreator abilityCreator;
 
         [Inject]
-        private void Construct(IObjectResolver container)
+        private void Construct(IAbilityCreator abilityCreator)
         {
-            this.container = container;
+            this.abilityCreator = abilityCreator;
         }
 
         void Start()
@@ -129,25 +129,29 @@ namespace Bnny.Scripts.AbilitySystem.Unity
         {
             AbilityLayers.Add(
                 new AbilityLayer(
-                    container.Instantiate<IdleAbility>(this),
-                    container.Instantiate<WalkAbility>(this),
-                    container.Instantiate<RunAbility>(this),
-                    container.Instantiate<FallAbility>(this)
+                    abilityCreator.CreateAbility<IdleAbility>(this),
+                    abilityCreator.CreateAbility<WalkAbility>(this),
+                    abilityCreator.CreateAbility<RunAbility>(this),
+                    abilityCreator.CreateAbility<FallAbility>(this)
                 )
             );
 
-            AbilityLayers.Add(new AbilityLayer(container.Instantiate<WallSlideAbility>(this)));
+            AbilityLayers.Add(
+                new AbilityLayer(abilityCreator.CreateAbility<WallSlideAbility>(this))
+            );
 
             AbilityLayers.Add(
                 new AbilityLayer(
-                    container.Instantiate<JumpAbility>(this),
-                    container.Instantiate<DoubleJumpAbility>(this),
-                    container.Instantiate<LongJumpAbility>(this),
-                    container.Instantiate<LandAbility>(this)
+                    abilityCreator.CreateAbility<JumpAbility>(this),
+                    abilityCreator.CreateAbility<DoubleJumpAbility>(this),
+                    abilityCreator.CreateAbility<LongJumpAbility>(this),
+                    abilityCreator.CreateAbility<LandAbility>(this)
                 )
             );
 
-            AbilityLayers.Add(new AbilityLayer(container.Instantiate<WallJumpAbility>(this)));
+            AbilityLayers.Add(
+                new AbilityLayer(abilityCreator.CreateAbility<WallJumpAbility>(this))
+            );
         }
 
         private void InitializeAbilities()
