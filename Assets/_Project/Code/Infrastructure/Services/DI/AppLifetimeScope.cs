@@ -13,7 +13,7 @@ namespace Code.Infrastructure.DI
             RegisterInputService();
             RegisterSerializer();
             RegisterPhysicsService();
-            RegisterSaveLoadService();
+            RegisterSaveLoadComponents();
         }
         
         private void RegisterSerializer()
@@ -54,7 +54,7 @@ namespace Code.Infrastructure.DI
    
         }
 
-        private void RegisterSaveLoadService()
+        private void RegisterSaveLoadComponents()
         {
             ContainerBuilder
                 .Register<SaveLoadService>(Lifetime.Singleton)
@@ -63,7 +63,6 @@ namespace Code.Infrastructure.DI
             
             ContainerBuilder
                 .Register<SaveProgressByInput>(Lifetime.Singleton)
-                .AsImplementedInterfaces()
                 ;
         }
     }

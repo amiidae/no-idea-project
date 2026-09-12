@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using VContainer.Unity;
 
 namespace Code.Services.Progress
 {
-    public class SaveProgressByInput : ISaveProgressStrategy, IInitializable
+    public class SaveProgressByInput : IInitializable, IDisposable
     {
         private readonly IInputService _inputService;
         private readonly ISaveLoadService _saveLoadService;
@@ -17,6 +18,11 @@ namespace Code.Services.Progress
         public void Initialize()
         {
             _inputService.Save += OnSaveProgress;
+        }
+
+        public void Dispose()
+        {
+            _inputService.Save -= OnSaveProgress;
         }
 
         private void OnSaveProgress()
