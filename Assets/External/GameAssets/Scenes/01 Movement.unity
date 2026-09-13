@@ -5746,7 +5746,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec9678fce8164fceb32b5af5cf1cd8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugPanel: {fileID: 177638, guid: 0abab5bb77339e4428787a870eb31bd3, type: 3}
+  debugPanelPrefab: {fileID: 177638, guid: 0abab5bb77339e4428787a870eb31bd3, type: 3}
 --- !u!1 &1737671097
 GameObject:
   m_ObjectHideFlags: 0
@@ -6503,7 +6503,8 @@ MonoBehaviour:
   parentReference:
     TypeName: 
   autoRun: 1
-  autoInjectGameObjects: []
+  autoInjectGameObjects:
+  - {fileID: 1726307046}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
