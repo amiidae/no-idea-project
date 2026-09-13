@@ -17,11 +17,11 @@ namespace Bnny.Scripts.AbilitySystem.Unity
     ⠀⠀⠀⢻⡇⣀⡀⠀⠺⣿⠇⠀⣀⣤⣄⣀⣠⣬⣥⣤⠾⠛⠁⠀⠀⠀⠀⠀⠀⠀
     ⠀⠀⠀⠀⠉⠛⠓⠂⠤⠤⠖⠊⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
     */
-    public class AbilityCreator : IAbilityCreator
+    public class AbilityFactory : IAbilityFactory
     {
         IObjectResolver container;
 
-        public AbilityCreator(IObjectResolver container)
+        public AbilityFactory(IObjectResolver container)
         {
             this.container = container;
         }

@@ -50,7 +50,7 @@ namespace Bnny.Scripts.DI
             RegisterSerializerService();
             RegisterSaveLoadComponents();
             RegisterSettingsService();
-            RegisterAbilityCreator();
+            RegisterAbilityFactory();
         }
 
         private void RegisterInputService()
@@ -98,9 +98,9 @@ namespace Bnny.Scripts.DI
             ContainerBuilder.Register<ISettingsService, SettingsService>(Lifetime.Singleton);
         }
 
-        private void RegisterAbilityCreator()
+        private void RegisterAbilityFactory()
         {
-            ContainerBuilder.Register<IAbilityCreator, AbilityCreator>(Lifetime.Singleton);
+            ContainerBuilder.Register<IAbilityFactory, AbilityFactory>(Lifetime.Singleton);
         }
     }
 }
